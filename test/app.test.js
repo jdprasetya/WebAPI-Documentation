@@ -3,7 +3,7 @@ const fs = require("node:fs");
 const test = require("node:test");
 const { parse } = require("csv-parse/sync");
 const YAML = require("yaml");
-const { createApp, normalizeBasePath } = require("../src/create-app");
+const { createApp, normalizeBasePath } = require("../src/app");
 
 const openapiSource = fs.readFileSync("openapi/openapi.yaml", "utf8");
 const openapiDocument = YAML.parse(openapiSource);
