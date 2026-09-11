@@ -82,3 +82,10 @@ test("serves health, the OpenAPI document, and Swagger UI", async (context) => {
   assert.equal(swaggerConfigResponse.status, 200);
   assert.match(await swaggerConfigResponse.text(), /"url": "\/portal\/openapi.yaml"/);
 });
+
+test("exports an Express handler for Vercel without opening a listener", () => {
+  const vercelApp = require("../api");
+
+  assert.equal(typeof vercelApp, "function");
+  assert.equal(vercelApp.listening, undefined);
+});

@@ -24,6 +24,17 @@ Useful endpoints:
 
 Run all checks with `npm run check`.
 
+## Deploy to Vercel
+
+Import the repository into Vercel and keep the framework preset set to **Other**.
+No custom build or output-directory setting is required. The root URL redirects
+to `/docs/`, and Vercel invokes the Express app through `api/index.js`.
+
+Do not set `PORT`, `HOST`, or `OPENAPI_FILE` in Vercel. Those variables are for
+the long-running local/Docker server; the serverless entry uses the bundled
+`openapi/openapi.yaml` file. `BASE_PATH`, `TRUST_PROXY`, and
+`ENABLE_TRY_IT_OUT` remain optional.
+
 ## Write your API contract
 
 The API catalog is generated from `data/api_documentation_inventory.csv`. After replacing or editing that inventory, rebuild and validate the documentation:
