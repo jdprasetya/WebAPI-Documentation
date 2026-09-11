@@ -1,0 +1,84 @@
+const assert = require("node:assert/strict");
+const fs = require("node:fs");
+const test = require("node:test");
+const { parse } = require("csv-parse/sync");
+const YAML = require("yaml");
+const { createApp, normalizeBasePath } = require("../src/app");
+
+const openapiSource = fs.readFileSync("openapi/openapi.yaml", "utf8");
+const openapiDocument = YAML.parse(openapiSource);
+
+test("includes every API inventory operation", () => {
+  const methods = new Set(["get", "post", "put", "patch", "delete", "head", "options", "trace"]);
+  const inventoryRows = parse(fs.readFileSync("data/api_documentation_inventory.csv", "utf8"), {
+    bom: true,
+    columns: true,
+    skip_empty_lines: true
+  });
+  const operationCount = Object.values(openapiDocument.paths).reduce(
+    (count, pathItem) => count + Object.keys(pathItem).filter((key) => methods.has(key)).length,
+    0
+  );
+
+  assert.equal(operationCount, inventoryRows.length);
+  const operationIds = new Set();
+  for (const row of inventoryRows) {
+    const method = row.http_method === "ANY" ? "get" : row.http_method.toLowerCase();
+    const operation = openapiDocument.paths[row.path]?.[method];
+    assert.ok(operation, `Missing generated operation: ${row.http_method} ${row.path}`);
+    assert.equal(operation["x-source-location"], row.source);
+    assert.equal(operation["x-source-http-method"], row.http_method);
+    assert.ok(!operationIds.has(operation.operationId), `Duplicate operationId: ${operation.operationId}`);
+    operationIds.add(operation.operationId);
+  }
+  assert.deepEqual(
+    openapiDocument.paths["/api/account/auth/login"].post.requestBody.content["application/json"].schema.required,
+    ["email", "password"]
+  );
+  assert.equal(
+    openapiDocument.paths["/api/bogabot/uploadfile/{fileType}"].get.parameters[0].in,
+    "path"
+  );
+  assert.equal(
+    openapiDocument.paths["/api/cms/report/main/users/total"].get["x-source-http-method"],
+    "ANY"
+  );
+});
+
+test("normalizes deployment base paths", () => {
+  assert.equal(normalizeBasePath("/internal/api-docs/"), "/internal/api-docs");
+  assert.equal(normalizeBasePath("/"), "");
+});
+
+test("serves health, the OpenAPI document, and Swagger UI", async (context) => {
+  const app = createApp({ openapiDocument, openapiSource, basePath: "/portal" });
+  const server = app.listen(0, "127.0.0.1");
+  context.after(() => server.close());
+
+  await new Promise((resolve) => server.once("listening", resolve));
+  const address = server.address();
+  const origin = `http://127.0.0.1:${address.port}`;
+
+  const healthResponse = await fetch(`${origin}/portal/health`);
+  assert.equal(healthResponse.status, 200);
+  assert.deepEqual(await healthResponse.json(), { status: "ok" });
+
+  const specResponse = await fetch(`${origin}/portal/openapi.yaml`);
+  assert.equal(specResponse.status, 200);
+  assert.match(await specResponse.text(), /openapi: 3\.0\.3/);
+
+  const docsResponse = await fetch(`${origin}/portal/docs/`);
+  assert.equal(docsResponse.status, 200);
+  const docsHtml = await docsResponse.text();
+  assert.match(docsHtml, /<title>Boga API Developer Documetation<\/title>/);
+  assert.match(docsHtml, /Boga API Developer Documetation/);
+  assert.match(docsHtml, /\/portal\/assets\/boga-logo.webp/);
+
+  const logoResponse = await fetch(`${origin}/portal/assets/boga-logo.webp`);
+  assert.equal(logoResponse.status, 200);
+  assert.match(logoResponse.headers.get("content-type"), /^image\/webp/);
+
+  const swaggerConfigResponse = await fetch(`${origin}/portal/docs/swagger-ui-init.js`);
+  assert.equal(swaggerConfigResponse.status, 200);
+  assert.match(await swaggerConfigResponse.text(), /"url": "\/portal\/openapi.yaml"/);
+});

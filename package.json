@@ -1,0 +1,27 @@
+{
+  "name": "internal-api-documentation",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Self-hosted Swagger UI for internal API documentation",
+  "main": "src/server.js",
+  "scripts": {
+    "generate": "node scripts/generate-openapi.js",
+    "dev": "node src/server.js",
+    "start": "node src/server.js",
+    "test": "node test/app.test.js",
+    "validate": "node scripts/validate-openapi.js",
+    "check": "npm run generate && npm run validate && npm test"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "express": "^5.1.0",
+    "swagger-ui-express": "^5.0.1",
+    "yaml": "^2.8.1"
+  },
+  "devDependencies": {
+    "@apidevtools/swagger-parser": "^10.1.1",
+    "csv-parse": "^7.0.2"
+  }
+}
