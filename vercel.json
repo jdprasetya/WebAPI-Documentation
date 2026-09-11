@@ -2,10 +2,7 @@
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "functions": {
     "src/app.js": {
-      "includeFiles": [
-        "openapi/openapi.yaml",
-        "public/**"
-      ]
+      "includeFiles": "{openapi/openapi.yaml,public/**}"
     }
   }
 }
