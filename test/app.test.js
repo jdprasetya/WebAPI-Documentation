@@ -3,7 +3,7 @@ const fs = require("node:fs");
 const test = require("node:test");
 const { parse } = require("csv-parse/sync");
 const YAML = require("yaml");
-const { createApp, normalizeBasePath } = require("../src/app");
+const { createApp, normalizeBasePath } = require("../src/create-app");
 
 const openapiSource = fs.readFileSync("openapi/openapi.yaml", "utf8");
 const openapiDocument = YAML.parse(openapiSource);
@@ -78,13 +78,17 @@ test("serves health, the OpenAPI document, and Swagger UI", async (context) => {
   assert.equal(logoResponse.status, 200);
   assert.match(logoResponse.headers.get("content-type"), /^image\/webp/);
 
+  const faviconResponse = await fetch(`${origin}/portal/favicon.ico`);
+  assert.equal(faviconResponse.status, 200);
+  assert.match(faviconResponse.headers.get("content-type"), /^image\/webp/);
+
   const swaggerConfigResponse = await fetch(`${origin}/portal/docs/swagger-ui-init.js`);
   assert.equal(swaggerConfigResponse.status, 200);
   assert.match(await swaggerConfigResponse.text(), /"url": "\/portal\/openapi.yaml"/);
 });
 
 test("exports an Express handler for Vercel without opening a listener", () => {
-  const vercelApp = require("../api");
+  const vercelApp = require("../src/app");
 
   assert.equal(typeof vercelApp, "function");
   assert.equal(vercelApp.listening, undefined);

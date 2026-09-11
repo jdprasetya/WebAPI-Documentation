@@ -28,7 +28,7 @@ Run all checks with `npm run check`.
 
 Import the repository into Vercel and keep the framework preset set to **Other**.
 No custom build or output-directory setting is required. The root URL redirects
-to `/docs/`, and Vercel invokes the Express app through `api/index.js`.
+to `/docs/`, and Vercel invokes the exported Express app in `src/app.js`.
 
 Do not set `PORT`, `HOST`, or `OPENAPI_FILE` in Vercel. Those variables are for
 the long-running local/Docker server; the serverless entry uses the bundled

@@ -1,17 +1,11 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "functions": {
-    "api/index.js": {
+    "src/app.js": {
       "includeFiles": [
         "openapi/openapi.yaml",
         "public/**"
       ]
     }
-  },
-  "rewrites": [
-    {
-      "source": "/(.*)",
-      "destination": "/api/index"
-    }
-  ]
+  }
 }
