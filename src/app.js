@@ -3,6 +3,7 @@ const fs = require("node:fs");
 const path = require("node:path");
 const swaggerUi = require("swagger-ui-express");
 const YAML = require("yaml");
+const { buildCatalog } = require("./build-catalog");
 
 function normalizeBasePath(value = "") {
   const trimmed = value.trim();
@@ -22,9 +23,18 @@ function createApp({ openapiDocument, openapiSource, basePath = process.env.BASE
   const app = express();
   const mountPath = normalizeBasePath(basePath);
   const docsPath = `${mountPath}/docs`;
+  const swaggerPath = `${mountPath}/swagger`;
   const specPath = `${mountPath}/openapi.yaml`;
   const logoPath = `${mountPath}/assets/boga-logo.webp`;
   const enableTryItOut = process.env.ENABLE_TRY_IT_OUT === "true";
+  const portalDir = path.join(__dirname, "../public/portal");
+  const portalTemplate = fs.readFileSync(path.join(portalDir, "index.html"), "utf8");
+  const catalog = buildCatalog(openapiDocument);
+  const catalogSource = JSON.stringify(catalog);
+  const siteTitle = openapiDocument.info?.title || "API Documentation";
+  const portalHtml = portalTemplate
+    .replaceAll("{{TITLE}}", siteTitle)
+    .replaceAll("{{BASE_PATH}}", mountPath);
 
   app.disable("x-powered-by");
   app.set("trust proxy", process.env.TRUST_PROXY === "true" ? 1 : false);
@@ -52,8 +62,18 @@ function createApp({ openapiDocument, openapiSource, basePath = process.env.BASE
 
   app.use(`${mountPath}/assets`, express.static(path.join(__dirname, "../public")));
 
+  app.get(`${docsPath}/catalog.json`, (request, response) => {
+    response.type("application/json").send(catalogSource);
+  });
+
+  app.get([docsPath, `${docsPath}/`], (request, response) => {
+    response.type("html").send(portalHtml);
+  });
+
+  app.use(docsPath, express.static(portalDir, { index: false, extensions: ["css", "js"] }));
+
   app.use(
-    docsPath,
+    swaggerPath,
     swaggerUi.serve,
     swaggerUi.setup(undefined, {
       customCss: `
@@ -68,12 +88,17 @@ function createApp({ openapiDocument, openapiSource, basePath = process.env.BASE
         }
         .swagger-ui .topbar .link span { display: none; }
         .swagger-ui .topbar .link::after {
-          content: "Boga API Developer Documetation";
+          content: "${siteTitle.replaceAll("\\", "\\\\").replaceAll("\"", "\\\"")}";
           margin-left: 14px;
           color: #fff;
           font-size: 18px;
-          font-weight: 600;
+          font-weight: 700;
           white-space: nowrap;
+        }
+        .swagger-ui .opblock-tag,
+        .swagger-ui .opblock-summary-description,
+        .swagger-ui .info .title {
+          font-weight: 700;
         }
         @media (max-width: 540px) {
           .swagger-ui .topbar .link img { width: 48px; height: 48px; }
@@ -85,13 +110,15 @@ function createApp({ openapiDocument, openapiSource, basePath = process.env.BASE
         }
       `,
       customfavIcon: logoPath,
-      customSiteTitle: openapiDocument.info?.title || "API Documentation",
+      customSiteTitle: siteTitle,
       swaggerOptions: {
         url: specPath,
         deepLinking: true,
         displayRequestDuration: true,
+        docExpansion: "list",
         filter: true,
         persistAuthorization: true,
+        operationsSorter: "alpha",
         supportedSubmitMethods: enableTryItOut
           ? ["get", "put", "post", "delete", "options", "head", "patch", "trace"]
           : [],

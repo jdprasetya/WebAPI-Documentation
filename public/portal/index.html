@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{TITLE}}</title>
+  <link rel="icon" href="{{BASE_PATH}}/assets/boga-logo.webp">
+  <script>
+    (function () {
+      try {
+        var stored = localStorage.getItem("boga-docs-theme");
+        var theme = stored || (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+        document.documentElement.setAttribute("data-theme", theme);
+      } catch (error) {
+        document.documentElement.setAttribute("data-theme", "light");
+      }
+    })();
+  </script>
+  <link rel="stylesheet" href="{{BASE_PATH}}/docs/styles.css">
+</head>
+<body>
+  <a class="skip-link" href="#content">Skip to content</a>
+  <header class="topbar">
+    <button class="nav-toggle" type="button" aria-label="Open category menu" aria-expanded="false">Menu</button>
+    <a class="brand" href="#getting-started">
+      <img src="{{BASE_PATH}}/assets/boga-logo.webp" alt="Boga Group" width="48" height="48">
+      <span>{{TITLE}}</span>
+    </a>
+    <div class="topbar-actions">
+      <button type="button" class="theme-toggle" id="theme-toggle" aria-label="Switch to dark mode">Dark mode</button>
+    </div>
+  </header>
+  <div class="shell">
+    <aside class="sidebar" id="sidebar">
+      <label class="sidebar-search">
+        <span class="visually-hidden">Search categories and endpoints</span>
+        <input type="search" id="nav-search" placeholder="Find..." autocomplete="off">
+      </label>
+      <nav class="sidenav" id="sidenav" aria-label="API categories"></nav>
+    </aside>
+    <div class="sidebar-backdrop" hidden></div>
+    <main class="content" id="content" tabindex="-1">
+      <p class="loading">Loading documentation…</p>
+    </main>
+  </div>
+  <script>
+    window.DOCS_CONFIG = {
+      basePath: "{{BASE_PATH}}",
+      catalogUrl: "{{BASE_PATH}}/docs/catalog.json",
+      swaggerUrl: "{{BASE_PATH}}/swagger/"
+    };
+  </script>
+  <script src="{{BASE_PATH}}/docs/app.js"></script>
+</body>
+</html>

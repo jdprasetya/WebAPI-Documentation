@@ -1,6 +1,9 @@
-# Internal API Documentation
+# Boga API Documentation
 
-A self-hosted Swagger UI for developers on a private network. All browser assets are served by this application; the deployed site does not depend on a public CDN.
+A self-hosted API reference for developers, System Analysts, and Support.
+The reader portal groups endpoints by category, puts **Authentication** first in each category, and gives copy-ready curl, PowerShell, and JSON samples.
+
+The deployed site serves its own browser assets and does not depend on a public CDN.
 
 ## Run locally
 
@@ -18,11 +21,24 @@ Useful endpoints:
 
 | URL | Purpose |
 | --- | --- |
-| `/docs/` | Swagger UI |
+| `/docs/` | Reader portal with category sidebar and copy-ready requests |
+| `/swagger/` | Swagger UI for schema exploration |
 | `/openapi.yaml` | Raw OpenAPI contract |
 | `/health` | Deployment health check |
 
 Run all checks with `npm run check`.
+
+## How to use the portal
+
+The portal is written so non-developers can test an API without guessing headers or payloads.
+
+1. Search or scan the **left sidebar** by category.
+2. Open the category and read **Authentication** at the top.
+3. Open an endpoint. Titles are **Title Case** and bold.
+4. Use **Copy everything**, **Copy curl**, **Copy PowerShell**, or **Copy JSON**.
+5. Replace placeholders such as `<access_token>` and `{baseUrl}` before sending the request.
+
+Never paste production secrets, customer personal data, or live credentials into examples or tickets.
 
 ## Deploy to Vercel
 
@@ -44,15 +60,16 @@ npm run generate
 npm run validate
 ```
 
-`openapi/openapi.yaml` is generated output and should not be edited by hand. Update `scripts/generate-openapi.js` when the inventory format or shared documentation metadata changes.
+`openapi/openapi.yaml` is generated output and should not be edited by hand. Update `scripts/generate-openapi.js` and `scripts/lib/docs-model.js` when the inventory format or shared documentation metadata changes.
 
 Each operation should normally include:
 
 - a stable `operationId`;
-- a short summary and appropriate tag;
+- a Title Case summary and appropriate tag;
+- authentication metadata that the portal can show first in the category;
 - all path, query, header, and request-body inputs;
 - success and expected error responses;
-- realistic examples with no production secrets or personal data.
+- realistic copy-ready examples with no production secrets or personal data.
 
 Validate after every contract change:
 
@@ -60,7 +77,7 @@ Validate after every contract change:
 npm run validate
 ```
 
-The **Try it out** feature sends requests from the developer's browser directly to a URL listed in `servers`. It is disabled by default. To enable it, set `ENABLE_TRY_IT_OUT=true`; the target API must then allow the documentation site's origin through CORS.
+The **Try it out** feature in Swagger UI sends requests from the browser directly to a URL listed in `servers`. It is disabled by default. To enable it, set `ENABLE_TRY_IT_OUT=true`; the target API must then allow the documentation site's origin through CORS. The reader portal does not send live requests; testers copy the sample into Postman, curl, or PowerShell.
 
 ## Run with Docker
 
