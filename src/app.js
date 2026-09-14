@@ -3,6 +3,7 @@ const fs = require("node:fs");
 const path = require("node:path");
 const swaggerUi = require("swagger-ui-express");
 const YAML = require("yaml");
+const { apps } = require("./apps-config");
 const { buildCatalog } = require("./build-catalog");
 
 function normalizeBasePath(value = "") {
@@ -34,7 +35,8 @@ function createApp({ openapiDocument, openapiSource, basePath = process.env.BASE
   const siteTitle = openapiDocument.info?.title || "API Documentation";
   const portalHtml = portalTemplate
     .replaceAll("{{TITLE}}", siteTitle)
-    .replaceAll("{{BASE_PATH}}", mountPath);
+    .replaceAll("{{BASE_PATH}}", mountPath)
+    .replaceAll("{{APPS_JSON}}", JSON.stringify(apps));
 
   app.disable("x-powered-by");
   app.set("trust proxy", process.env.TRUST_PROXY === "true" ? 1 : false);

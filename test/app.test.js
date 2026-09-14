@@ -4,6 +4,7 @@ const test = require("node:test");
 const { parse } = require("csv-parse/sync");
 const YAML = require("yaml");
 const { createApp, normalizeBasePath } = require("../src/app");
+const { apps } = require("../src/apps-config");
 const { buildCatalog } = require("../src/build-catalog");
 const { titleCase } = require("../scripts/lib/docs-model");
 
@@ -80,6 +81,17 @@ test("builds a category catalog with authentication first", () => {
   assert.match(accountAuth.operations.find((operation) => operation.title === "Login").copy.curl, /curl -X POST/);
 });
 
+test("lists the four application menu options", () => {
+  assert.deepEqual(apps.map((app) => app.id), ["boga-app", "webapps", "budgeting", "sync-process"]);
+  assert.equal(apps[0].name, "Boga APP API");
+  assert.equal(apps[0].hasCatalog, true);
+  assert.equal(apps[1].name, "WebApps API");
+  assert.equal(apps[1].subtitle, "MyBoga, VMS, ATS, BogaBOT");
+  assert.equal(apps[2].name, "Budgeting API");
+  assert.equal(apps[3].name, "Sync Process API");
+  assert.ok(apps.slice(1).every((app) => app.hasCatalog === false));
+});
+
 test("normalizes deployment base paths", () => {
   assert.equal(normalizeBasePath("/internal/api-docs/"), "/internal/api-docs");
   assert.equal(normalizeBasePath("/"), "");
@@ -109,6 +121,13 @@ test("serves the reader portal, catalog, and Swagger UI", async (context) => {
   assert.match(docsHtml, /id="sidenav"/);
   assert.match(docsHtml, /id="theme-toggle"/);
   assert.match(docsHtml, /boga-docs-theme/);
+  assert.match(docsHtml, /href="#apps"/);
+  assert.match(docsHtml, /Boga APP API/);
+  assert.match(docsHtml, /WebApps API/);
+  assert.match(docsHtml, /Budgeting API/);
+  assert.match(docsHtml, /Sync Process API/);
+  assert.match(docsHtml, /MyBoga, VMS, ATS, BogaBOT/);
+  assert.doesNotMatch(docsHtml, /\{\{APPS_JSON\}\}/);
   assert.match(docsHtml, /\/portal\/assets\/boga-logo.webp/);
   assert.match(docsHtml, /\/portal\/docs\/catalog.json/);
 

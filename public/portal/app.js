@@ -1,5 +1,45 @@
 const config = window.DOCS_CONFIG || { catalogUrl: "./catalog.json" };
 const THEME_KEY = "boga-docs-theme";
+const DEFAULT_APP_ID = "boga-app";
+const FALLBACK_APPS = [
+  {
+    id: "boga-app",
+    name: "Boga APP API",
+    description: "Customer-facing Boga mobile app APIs. Covers account, catalog, orders, payments, vouchers, and related services.",
+    accent: "orange",
+    hasCatalog: true
+  },
+  {
+    id: "webapps",
+    name: "WebApps API",
+    subtitle: "MyBoga, VMS, ATS, BogaBOT",
+    description: "APIs for Boga web applications, including MyBoga, VMS, ATS, and BogaBOT.",
+    accent: "slate",
+    hasCatalog: false
+  },
+  {
+    id: "budgeting",
+    name: "Budgeting API",
+    description: "Budget planning and financial-control APIs. Manage allocations, approvals, and reporting.",
+    accent: "teal",
+    hasCatalog: false
+  },
+  {
+    id: "sync-process",
+    name: "Sync Process API",
+    description: "Synchronization APIs between Boga systems, partners, and downstream services.",
+    accent: "sand",
+    hasCatalog: false
+  }
+];
+
+function getApps() {
+  return Array.isArray(config.apps) && config.apps.length ? config.apps : FALLBACK_APPS;
+}
+
+function findApp(appId) {
+  return getApps().find((app) => app.id === appId) || null;
+}
 
 function currentTheme() {
   return document.documentElement.getAttribute("data-theme") === "dark" ? "dark" : "light";
@@ -87,11 +127,54 @@ function copyBox(id, title, value, extraButtons = []) {
   `;
 }
 
-function renderHome(catalog) {
+function documentIcon() {
+  return `
+    <svg class="app-card-glyph" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+      <path d="M7.25 3.75h7.05L18.25 7.7v12.55H7.25z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+      <path d="M14.15 3.75v4.1h4.1" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+      <path d="M10 12.15h5.4M10 15.35h5.4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+    </svg>
+  `;
+}
+
+function renderApps() {
+  return `
+    <section class="app-menu" id="apps">
+      <div class="app-menu-grid">
+        ${getApps().map((app) => `
+          <a class="app-card accent-${escapeHtml(app.accent || "slate")}" href="#app/${escapeHtml(app.id)}">
+            <span class="app-card-icon">${documentIcon()}</span>
+            <h2>${escapeHtml(app.name)}</h2>
+            ${app.subtitle ? `<p class="app-card-subtitle">${escapeHtml(app.subtitle)}</p>` : ""}
+            <p>${escapeHtml(app.description)}</p>
+          </a>
+        `).join("")}
+      </div>
+    </section>
+  `;
+}
+
+function renderPlaceholder(app) {
+  return `
+    <section class="app-placeholder" id="app-overview">
+      <p class="crumb"><a href="#apps">Applications</a> / ${escapeHtml(app.name)}</p>
+      <h1>${escapeHtml(app.name)}</h1>
+      ${app.subtitle ? `<p class="lead">${escapeHtml(app.subtitle)}</p>` : ""}
+      <p>${escapeHtml(app.description)}</p>
+      <div class="placeholder-panel">
+        <h2>Endpoint catalog</h2>
+        <p>Endpoint documentation for this application is being prepared. The published list will use the same category sidebar, authentication notes, and copy-ready samples as Boga APP API.</p>
+      </div>
+    </section>
+  `;
+}
+
+function renderHome(catalog, app) {
   return `
     <section class="hero" id="getting-started">
+      <p class="crumb"><a href="#apps">Applications</a> / ${escapeHtml(app?.name || "Boga APP API")}</p>
       <h1>Getting Started</h1>
-      <p class="lead">This portal is for developers, System Analysts, and Support. Use the left sidebar to jump by category. Each category starts with Authentication so you can see what to send before you test an endpoint.</p>
+      <p class="lead">This portal is for developers, System Analysts, and Support. You are viewing <strong>${escapeHtml(app?.name || "Boga APP API")}</strong>. Use the left sidebar to jump by category. Each category starts with Authentication so you can see what to send before you test an endpoint.</p>
       <h2 class="section-title">How To Test An API</h2>
       <ol class="steps">
         <li>Select a category from the sidebar.</li>
@@ -232,27 +315,36 @@ function renderSidenav(filtered, route) {
     `;
   }).join("");
   return `
-    <a class="nav-home ${homeActive}" href="#getting-started">Overview</a>
+    <a class="nav-home nav-apps" href="#apps">All applications</a>
+    <a class="nav-home ${homeActive}" href="#app/${DEFAULT_APP_ID}">Overview</a>
     ${items || `<p class="nav-empty">No matching endpoints.</p>`}
   `;
 }
 
 function parseRoute(catalog) {
   const hash = decodeURIComponent((location.hash || "").replace(/^#/, ""));
-  if (!hash || hash === "getting-started") return { type: "home" };
-  if (!hash.startsWith("api-")) return { type: "home" };
+  const defaultApp = findApp(DEFAULT_APP_ID);
+  if (!hash || hash === "apps") return { type: "apps" };
+  if (hash.startsWith("app/")) {
+    const app = findApp(hash.slice(4).split("/")[0]);
+    if (!app) return { type: "apps" };
+    if (!app.hasCatalog) return { type: "placeholder", app };
+    return { type: "home", app };
+  }
+  if (hash === "getting-started") return { type: "home", app: defaultApp };
+  if (!hash.startsWith("api-")) return { type: "apps" };
   const rest = hash.slice(4);
   const categories = [...catalog.categories].sort((left, right) => right.id.length - left.id.length);
   for (const category of categories) {
     if (rest === category.id || rest === `${category.id}-authentication`) {
-      return { type: "category", categoryId: category.id, focus: "authentication" };
+      return { type: "category", app: defaultApp, categoryId: category.id, focus: "authentication" };
     }
     const prefix = `${category.id}-`;
     if (rest.startsWith(prefix)) {
-      return { type: "category", categoryId: category.id, operationId: rest.slice(prefix.length) };
+      return { type: "category", app: defaultApp, categoryId: category.id, operationId: rest.slice(prefix.length) };
     }
   }
-  return { type: "home" };
+  return { type: "home", app: defaultApp };
 }
 
 function closeMobileNav() {
@@ -293,34 +385,55 @@ async function main() {
   const search = document.getElementById("nav-search");
   const toggle = document.querySelector(".nav-toggle");
   const backdrop = document.querySelector(".sidebar-backdrop");
-  let catalog;
-  try {
-    const response = await fetch(config.catalogUrl);
-    if (!response.ok) throw new Error("Could not load catalog");
-    catalog = await response.json();
-  } catch (error) {
-    content.innerHTML = `<p class="error">Could not load the API catalog. ${escapeHtml(error.message)}</p>`;
-    return;
+  let catalog = { info: { title: document.title }, categories: [], authTypes: [] };
+
+  function setChrome(route) {
+    const hideSidebar = route.type === "apps" || route.type === "placeholder";
+    document.body.classList.toggle("landing-mode", hideSidebar);
+    if (toggle) toggle.hidden = hideSidebar;
+    const brandTitle = document.getElementById("brand-title");
+    if (brandTitle) {
+      brandTitle.textContent = route.app?.name || catalog.info?.title || "Boga API Documentation";
+    }
+    if (hideSidebar) closeMobileNav();
   }
 
   function render() {
     const query = search.value || "";
     const route = parseRoute(catalog);
     const filtered = filterCatalog(catalog, query);
-    sidenav.innerHTML = renderSidenav(filtered, route);
-    if (route.type === "home") {
-      content.innerHTML = renderHome(catalog);
+    setChrome(route);
+    if (route.type === "apps") {
+      sidenav.innerHTML = "";
+      content.innerHTML = renderApps();
+    } else if (route.type === "placeholder") {
+      sidenav.innerHTML = "";
+      content.innerHTML = renderPlaceholder(route.app);
     } else {
-      const category = catalog.categories.find((item) => item.id === route.categoryId);
-      content.innerHTML = category ? renderCategory(category) : renderHome(catalog);
+      sidenav.innerHTML = renderSidenav(filtered, route);
+      if (catalog.loadError) {
+        content.innerHTML = `<p class="error">Could not load the API catalog. ${escapeHtml(catalog.loadError)}</p>`;
+      } else if (route.type === "home") {
+        content.innerHTML = renderHome(catalog, route.app);
+      } else {
+        const category = catalog.categories.find((item) => item.id === route.categoryId);
+        content.innerHTML = category ? renderCategory(category) : renderHome(catalog, route.app);
+      }
     }
     bindCopyButtons(document);
-    const focusId = location.hash.replace(/^#/, "") || "getting-started";
-    const focusNode = document.getElementById(focusId);
-    if (focusNode) {
-      focusNode.scrollIntoView({ block: "start" });
-    } else {
+    const hash = location.hash.replace(/^#/, "");
+    if (route.type === "apps") {
       content.scrollTo({ top: 0 });
+    } else {
+      const focusId = !hash || hash.startsWith("app/")
+        ? (route.type === "placeholder" ? "app-overview" : "getting-started")
+        : hash;
+      const focusNode = document.getElementById(focusId);
+      if (focusNode) {
+        focusNode.scrollIntoView({ block: "start" });
+      } else {
+        content.scrollTo({ top: 0 });
+      }
     }
     sidenav.querySelectorAll("a").forEach((link) => {
       link.addEventListener("click", () => closeMobileNav());
@@ -336,12 +449,23 @@ async function main() {
   search.addEventListener("input", render);
   window.addEventListener("hashchange", render);
   document.addEventListener("keydown", (event) => {
-    if (event.key === "/" && document.activeElement !== search) {
+    if (event.key === "/" && document.activeElement !== search && !document.body.classList.contains("landing-mode")) {
       event.preventDefault();
       search.focus();
     }
   });
   render();
+
+  try {
+    const response = await fetch(config.catalogUrl);
+    if (!response.ok) throw new Error("Could not load catalog");
+    catalog = await response.json();
+  } catch (error) {
+    catalog = { ...catalog, loadError: error.message };
+  }
+  if (parseRoute(catalog).type !== "apps") {
+    render();
+  }
 }
 
 main();

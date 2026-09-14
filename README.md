@@ -1,7 +1,7 @@
 # Boga API Documentation
 
 A self-hosted API reference for developers, System Analysts, and Support.
-The reader portal groups endpoints by category, puts **Authentication** first in each category, and gives copy-ready curl, PowerShell, and JSON samples.
+The reader portal starts with an application menu, then groups that app's endpoints by category, puts **Authentication** first in each category, and gives copy-ready curl, PowerShell, and JSON samples.
 
 The deployed site serves its own browser assets and does not depend on a public CDN.
 
@@ -21,7 +21,8 @@ Useful endpoints:
 
 | URL | Purpose |
 | --- | --- |
-| `/docs/` | Reader portal with category sidebar and copy-ready requests |
+| `/docs/` | Application menu: Boga APP API, WebApps API, Budgeting API, Sync Process API |
+| `/docs/#app/boga-app` | Boga APP API reader portal with category sidebar and copy-ready requests |
 | `/swagger/` | Swagger UI for schema exploration |
 | `/openapi.yaml` | Raw OpenAPI contract |
 | `/health` | Deployment health check |
@@ -32,11 +33,12 @@ Run all checks with `npm run check`.
 
 The portal is written so non-developers can test an API without guessing headers or payloads.
 
-1. Search or scan the **left sidebar** by category.
-2. Open the category and read **Authentication** at the top.
-3. Open an endpoint. Titles are **Title Case** and bold.
-4. Use **Copy everything**, **Copy curl**, **Copy PowerShell**, or **Copy JSON**.
-5. Replace placeholders such as `<access_token>` and `{baseUrl}` before sending the request.
+1. Choose an application from the main menu. **Boga APP API** is the published catalog. WebApps API (MyBoga, VMS, ATS, BogaBOT), Budgeting API, and Sync Process API are listed and will receive endpoint docs when their inventories are published.
+2. Search or scan the **left sidebar** by category.
+3. Open the category and read **Authentication** at the top.
+4. Open an endpoint. Titles are **Title Case** and bold.
+5. Use **Copy everything**, **Copy curl**, **Copy PowerShell**, or **Copy JSON**.
+6. Replace placeholders such as `<access_token>` and `{baseUrl}` before sending the request.
 
 Never paste production secrets, customer personal data, or live credentials into examples or tickets.
 

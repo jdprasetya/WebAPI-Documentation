@@ -18,13 +18,13 @@
   </script>
   <link rel="stylesheet" href="{{BASE_PATH}}/docs/styles.css">
 </head>
-<body>
+<body class="landing-mode">
   <a class="skip-link" href="#content">Skip to content</a>
   <header class="topbar">
-    <button class="nav-toggle" type="button" aria-label="Open category menu" aria-expanded="false">Menu</button>
-    <a class="brand" href="#getting-started">
+    <button class="nav-toggle" type="button" hidden aria-label="Open category menu" aria-expanded="false">Menu</button>
+    <a class="brand" href="#apps">
       <img src="{{BASE_PATH}}/assets/boga-logo.webp" alt="Boga Group" width="48" height="48">
-      <span>{{TITLE}}</span>
+      <span id="brand-title">{{TITLE}}</span>
     </a>
     <div class="topbar-actions">
       <button type="button" class="theme-toggle" id="theme-toggle" aria-label="Switch to dark mode">Dark mode</button>
@@ -47,7 +47,8 @@
     window.DOCS_CONFIG = {
       basePath: "{{BASE_PATH}}",
       catalogUrl: "{{BASE_PATH}}/docs/catalog.json",
-      swaggerUrl: "{{BASE_PATH}}/swagger/"
+      swaggerUrl: "{{BASE_PATH}}/swagger/",
+      apps: {{APPS_JSON}}
     };
   </script>
   <script src="{{BASE_PATH}}/docs/app.js"></script>
