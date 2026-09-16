@@ -19,13 +19,17 @@ const ACRONYMS = new Map([
   ["sms", "SMS"],
   ["ats", "ATS"],
   ["ba", "BA"],
+  ["bom", "BOM"],
   ["ca", "CA"],
+  ["hpp", "HPP"],
   ["it", "IT"],
   ["kpi", "KPI"],
   ["mrp", "MRP"],
+  ["msdb", "MSDB"],
   ["ocr", "OCR"],
   ["ods", "ODS"],
   ["pod", "POD"],
+  ["so", "SO"],
   ["spv", "SPV"],
   ["url", "URL"],
   ["uuid", "UUID"],
@@ -49,6 +53,8 @@ const FIELD_HINTS = [
   [/phone|mobile/, "Phone number."],
   [/outlet|branch/, "Outlet / branch code."],
   [/brand/, "Brand identifier."],
+  [/retention/, "How many days of history to keep."],
+  [/stopmail/, "When true, Database Mail is stopped during delete and restarted after."],
   [/country/, "Country identifier."],
   [/user-?agent/, "Client User-Agent string. Some public APIs validate this header."],
   [/content-?type/, "Request body format."],
@@ -68,6 +74,7 @@ function tokenizeName(value) {
   const protectedTokens = [];
   let text = String(value || "")
     .replace(/Controller$/, "")
+    .replace(/Handler$/, "")
     .replace(/Task$/, " Task");
 
   const protect = (pattern, canonical) => {
@@ -93,6 +100,9 @@ function tokenizeName(value) {
   protect(/ATS/g, "ATS");
   protect(/VMS/g, "VMS");
   protect(/POD/g, "POD");
+  protect(/HPP/g, "HPP");
+  protect(/MSDB/g, "MSDB");
+  protect(/BOM/g, "BOM");
 
   text = text
     .replace(/([a-z0-9])([A-Z])/g, "$1 $2")
@@ -212,6 +222,7 @@ function exampleValue(name, type = "String") {
     if (/limit/.test(n)) return 20;
     if (/offset/.test(n)) return 0;
     if (/page/.test(n)) return 1;
+    if (/retention/.test(n)) return 30;
     return 1;
   }
   if (schema.type === "number") return 10000;
@@ -255,6 +266,7 @@ function placeholderForHeader(name) {
   if (/^authorization$/i.test(name)) return "Bearer <access_token>";
   if (/signature/i.test(name)) return "<request_signature>";
   if (/timestamp/i.test(name)) return "2026-09-14T04:00:00+07:00";
+  if (/admin-?key/i.test(name)) return "<audit_admin_key>";
   if (/client-?key|apikey|api-?key|boga-?key|secret|insider/i.test(name)) return "<api_key>";
   if (/partner/i.test(name)) return "<partner_id>";
   if (/external/i.test(name)) return "<external_id>";
@@ -300,6 +312,19 @@ function classifyAuth(row) {
     type = "User-Agent Check";
     required = true;
     summary = "The server validates the User-Agent header. Use the official app or an approved client string when testing.";
+  } else if (/HTTP Basic/i.test(authorization)) {
+    type = "HTTP Basic";
+    required = true;
+    summary = "Requires HTTP Basic authentication. Send `Authorization: Basic <base64(user:password)>` using BASIC_AUTH_USER and BASIC_AUTH_PASSWORD. You can also use `curl -u user:password`.";
+    addHeader(
+      "Authorization",
+      "Basic <base64(user:password)>",
+      "Replace with base64 of BASIC_AUTH_USER:BASIC_AUTH_PASSWORD, or use curl -u."
+    );
+    if (declaredHeaders.some((header) => /key|secret/i.test(header)) || /API\/client\/secret key|secret key/i.test(authorization)) {
+      type = "HTTP Basic + API Key";
+      summary = "Requires HTTP Basic authentication and an admin API key. Send `Authorization: Basic <base64(user:password)>` plus the extra header below. You can also use `curl -u user:password`.";
+    }
   } else if (/Bearer JWT/i.test(authorization) && declaredHeaders.length === 0) {
     type = "Bearer JWT";
     required = true;
@@ -351,6 +376,12 @@ function audienceFor(controller, path, row = {}) {
   if (area === "VMS") return "VMS, procurement, System Analysts, and Support";
   if (area === "BogaBOT") return "BogaBOT, operations, System Analysts, and Support";
   if (area === "MyBoga") return "MyBoga, System Analysts, and Support";
+  if (area === "Health") return "Anyone checking whether the Sync Process API is up";
+  if (area === "Admin") return "Operations, DBAs, System Analysts, and Support";
+  if (area === "Sync") return "Operations and Support when replaying a scheduled sync job";
+  if (/\/healthz$/.test(path)) return "Anyone checking whether the Sync Process API is up";
+  if (/\/api\/v1\/admin\//.test(path)) return "Operations, DBAs, System Analysts, and Support";
+  if (/\/api\/v1\/sync\//.test(path)) return "Operations and Support when replaying a scheduled sync job";
   if (/CMS|Cms/.test(controller) || /\/cms\//.test(path)) return "CMS, System Analysts, and Support";
   if (/Task$/.test(controller) || /\/task\//.test(path)) return "Operations and Support when replaying a scheduled job";
   if (/BogaBot/.test(controller)) return "BogaBot and integration partners";
@@ -384,7 +415,8 @@ function normalizeInventoryRow(row) {
   const source = String(row.source || "").trim();
   const line = String(row.line || "").trim();
   const sourceWithLine = source && line && !/:\d+$/.test(source) ? `${source}:${line}` : source;
-  const isWebapps = Boolean(String(row.app_area || "").trim());
+  const area = String(row.app_area || "").trim();
+  const isWebapps = ["ATS", "BogaBOT", "MyBoga", "VMS"].includes(area);
   const isPost = httpMethod === "POST";
 
   return {
@@ -710,11 +742,42 @@ Never put production secrets, customer personal data, or live credentials into e
 
 A reader-friendly portal with a category sidebar is available at \`/docs/\`. Swagger UI remains at \`/swagger/\`.`;
 
+const SYNC_INFO_DESCRIPTION = `This documentation is written for **developers**, **System Analysts**, and **Support**.
+
+Sync Process API is the Go service that runs scheduled and on-demand data-sync jobs against SQL Server, with HTTP request audit logging in PostgreSQL.
+
+
+## How To Use This Documentation
+
+1. Open a category from the sidebar. Start with **Health**, then the **Sync** job you need, then **Admin** for maintenance.
+2. Read **Authentication** at the top of that category before you test anything. Every protected route uses HTTP Basic.
+3. Copy the sample request, replace placeholders, and send it from Postman, curl, or PowerShell.
+
+
+Placeholders look like \`<base64(user:password)>\` or \`<audit_admin_key>\`. Sample body values such as \`1\` are safe fixtures, not real company codes.
+
+Most sync POST calls have no request body. A successful sync returns \`{"status":"ok"}\`. Jobs can run up to \`SYNC_RUN_TIMEOUT_SEC\` (default 3600 seconds).
+
+
+## Authentication
+
+- **HTTP Basic** — \`Authorization: Basic <base64(user:password)>\` with \`BASIC_AUTH_USER\` and \`BASIC_AUTH_PASSWORD\`. \`curl -u user:password\` sends the same header.
+- **Admin API key** — purge of request logs also requires \`X-Audit-Admin-Key: <audit_admin_key>\` (\`AUDIT_ADMIN_KEY\`).
+
+Missing or invalid Basic credentials return **401** with \`WWW-Authenticate: Basic realm="restricted"\`. An invalid admin key returns **401** without a token flow.
+
+Never put production secrets, customer personal data, or live credentials into examples or tickets.
+
+A reader-friendly portal with a category sidebar is available at \`/docs/\`. Swagger UI remains at \`/swagger/\`.`;
+
 const AREA_ORDER = {
   ATS: 1,
   BogaBOT: 2,
   MyBoga: 3,
-  VMS: 4
+  VMS: 4,
+  Health: 1,
+  Sync: 2,
+  Admin: 3
 };
 
 function buildDocument(rows, options = {}) {
@@ -834,8 +897,10 @@ function buildDocument(rows, options = {}) {
     const authHeaders = splitList(row.auth_headers);
     const requiredHeaders = splitList(row.required_headers);
     const optionalHeaders = splitList(row.optional_headers);
+    const isBasic = /HTTP Basic/i.test(row.authorization || "");
     const security = {};
     for (const header of authHeaders) {
+      if (isBasic && /^authorization$/i.test(header)) continue;
       const key = headerSchemeKey(header);
       securitySchemes[key] ||= {
         type: "apiKey",
@@ -844,6 +909,14 @@ function buildDocument(rows, options = {}) {
         description: `Send \`${header}: ${placeholderForHeader(header)}\`. Replace the placeholder with the real credential.`
       };
       security[key] = [];
+    }
+    if (isBasic) {
+      securitySchemes.basicAuth ||= {
+        type: "http",
+        scheme: "basic",
+        description: "Send HTTP Basic credentials as `Authorization: Basic <base64(user:password)>`. Use BASIC_AUTH_USER and BASIC_AUTH_PASSWORD, or `curl -u user:password`."
+      };
+      security.basicAuth = [];
     }
     if (Object.keys(security).length) {
       operation.security = [security];
@@ -963,5 +1036,6 @@ module.exports = {
   titleCase,
   slugify,
   splitList,
-  WEBAPPS_INFO_DESCRIPTION
+  WEBAPPS_INFO_DESCRIPTION,
+  SYNC_INFO_DESCRIPTION
 };

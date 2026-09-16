@@ -23,6 +23,13 @@ const webappsInventoryRows = parse(fs.readFileSync("data/webapps-api-inventory.c
   columns: true,
   skip_empty_lines: true
 }).filter((row) => row.path);
+const syncOpenapiSource = fs.readFileSync("openapi/sync-process.yaml", "utf8");
+const syncOpenapiDocument = YAML.parse(syncOpenapiSource);
+const syncInventoryRows = parse(fs.readFileSync("data/syncprocess-api-inventory.csv", "utf8"), {
+  bom: true,
+  columns: true,
+  skip_empty_lines: true
+}).filter((row) => row.path);
 
 test("title-cases category and endpoint names", () => {
   assert.equal(titleCase("VoucherB2BCMSController"), "Voucher B2B CMS");
@@ -31,6 +38,9 @@ test("title-cases category and endpoint names", () => {
   assert.equal(titleCase("AccountAuthController"), "Account Auth");
   assert.equal(titleCase("ITChecklist"), "IT Checklist");
   assert.equal(titleCase("MRPTicketing"), "MRP Ticketing");
+  assert.equal(titleCase("Run Item SO Sync"), "Run Item SO Sync");
+  assert.equal(titleCase("Run Item HPP Sync"), "Run Item HPP Sync");
+  assert.equal(titleCase("Run MSDB Mail Maintenance"), "Run MSDB Mail Maintenance");
 });
 
 test("includes every API inventory operation", () => {
@@ -131,6 +141,57 @@ test("builds a category catalog with authentication first", () => {
   assert.match(accountAuth.operations.find((operation) => operation.title === "Login").copy.curl, /curl -X POST/);
 });
 
+test("includes every Sync Process inventory operation", () => {
+  const operationCount = Object.values(syncOpenapiDocument.paths).reduce(
+    (count, pathItem) => count + Object.keys(pathItem).filter((key) => methods.has(key)).length,
+    0
+  );
+  assert.equal(operationCount, syncInventoryRows.length);
+  assert.equal(syncInventoryRows.length, 14);
+
+  const operationIds = new Set();
+  for (const raw of syncInventoryRows) {
+    const row = normalizeInventoryRow(raw);
+    const method = row.http_method.toLowerCase();
+    const operation = syncOpenapiDocument.paths[row.path]?.[method];
+    assert.ok(operation, `Missing generated Sync Process operation: ${row.http_method} ${row.path}`);
+    assert.equal(operation["x-source-location"], row.source);
+    assert.equal(operation["x-source-http-method"], row.http_method);
+    assert.equal(operation["x-app-area"], row.app_area);
+    assert.match(operation.summary, /^[A-Z0-9]/);
+    assert.match(operation["x-auth"].type, /HTTP Basic/);
+    assert.ok(operation["x-copy"]?.all);
+    assert.ok(!operationIds.has(operation.operationId), `Duplicate operationId: ${operation.operationId}`);
+    operationIds.add(operation.operationId);
+  }
+
+  assert.equal(syncOpenapiDocument.info.title, "Sync Process API Documentation");
+  assert.equal(syncOpenapiDocument.paths["/healthz"].get.summary, "Health Check");
+  assert.equal(syncOpenapiDocument.paths["/healthz"].get["x-auth"].type, "HTTP Basic");
+  assert.deepEqual(syncOpenapiDocument.paths["/healthz"].get.security, [{ basicAuth: [] }]);
+  assert.equal(syncOpenapiDocument.paths["/api/v1/sync/item-so/run"].post.summary, "Run Item SO Sync");
+  assert.deepEqual(
+    Object.keys(syncOpenapiDocument.paths["/api/v1/sync/item-so/run"].post.requestBody.content["application/json"].schema.properties),
+    ["CompanyID", "BrandID", "OutletID"]
+  );
+  assert.deepEqual(
+    syncOpenapiDocument.paths["/api/v1/sync/esb-bom/run"].post.requestBody.content["application/json"].schema.required,
+    ["company_id"]
+  );
+  assert.equal(
+    syncOpenapiDocument.paths["/api/v1/admin/audit/request-logs/purge"].post["x-auth"].type,
+    "HTTP Basic + API Key"
+  );
+  assert.ok(
+    syncOpenapiDocument.paths["/api/v1/admin/audit/request-logs/purge"].post.security[0].headerXAuditAdminKey
+  );
+  assert.ok(
+    syncOpenapiDocument.paths["/api/v1/admin/audit/request-logs/purge"].post.security[0].basicAuth
+  );
+  assert.equal(syncOpenapiDocument.paths["/api/v1/sync/item/run"].post.tags[0], "Sync");
+  assert.equal(syncOpenapiDocument.paths["/api/v1/admin/msdb-mail/maintenance/run"].post.tags[0], "Admin");
+});
+
 test("lists the four application menu options", () => {
   assert.deepEqual(apps.map((app) => app.id), ["boga-app", "webapps", "budgeting", "sync-process"]);
   assert.equal(apps[0].name, "Boga APP API");
@@ -139,8 +200,9 @@ test("lists the four application menu options", () => {
   assert.equal(apps[1].subtitle, "MyBoga, VMS, ATS, BogaBOT");
   assert.equal(apps[1].hasCatalog, true);
   assert.equal(apps[2].name, "Budgeting API");
+  assert.equal(apps[2].hasCatalog, false);
   assert.equal(apps[3].name, "Sync Process API");
-  assert.ok(apps.slice(2).every((app) => app.hasCatalog === false));
+  assert.equal(apps[3].hasCatalog, true);
 });
 
 test("normalizes deployment base paths", () => {
@@ -201,6 +263,20 @@ test("serves the reader portal, catalog, and Swagger UI", async (context) => {
   assert.equal(webappsSpecResponse.status, 200);
   assert.match(await webappsSpecResponse.text(), /WebApps API Documentation/);
 
+  const syncCatalogResponse = await fetch(`${origin}/portal/docs/apps/sync-process/catalog.json`);
+  assert.equal(syncCatalogResponse.status, 200);
+  const syncCatalog = await syncCatalogResponse.json();
+  assert.equal(syncCatalog.info.title, "Sync Process API Documentation");
+  const syncCount = syncCatalog.categories.reduce((count, category) => count + category.operations.length, 0);
+  assert.equal(syncCount, 14);
+  assert.ok(syncCatalog.categories.some((category) => category.name === "Health"));
+  assert.ok(syncCatalog.categories.some((category) => category.name === "Sync"));
+  assert.ok(syncCatalog.categories.some((category) => category.name === "Admin"));
+
+  const syncSpecResponse = await fetch(`${origin}/portal/openapi/sync-process.yaml`);
+  assert.equal(syncSpecResponse.status, 200);
+  assert.match(await syncSpecResponse.text(), /Sync Process API Documentation/);
+
   const logoResponse = await fetch(`${origin}/portal/assets/boga-logo.webp`);
   assert.equal(logoResponse.status, 200);
   assert.match(logoResponse.headers.get("content-type"), /^image\/webp/);
@@ -214,6 +290,7 @@ test("serves the reader portal, catalog, and Swagger UI", async (context) => {
   const swaggerConfig = await swaggerConfigResponse.text();
   assert.match(swaggerConfig, /\/portal\/openapi\.yaml/);
   assert.match(swaggerConfig, /\/portal\/openapi\/webapps\.yaml/);
+  assert.match(swaggerConfig, /\/portal\/openapi\/sync-process\.yaml/);
 });
 
 test("exports an Express handler for Vercel without opening a listener", () => {

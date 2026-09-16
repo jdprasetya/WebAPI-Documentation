@@ -27,9 +27,9 @@ const FALLBACK_APPS = [
   {
     id: "sync-process",
     name: "Sync Process API",
-    description: "Synchronization APIs between Boga systems, partners, and downstream services.",
+    description: "Scheduled and on-demand sync jobs for item, BOM, employee, sales, and related SQL Server data.",
     accent: "sand",
-    hasCatalog: false
+    hasCatalog: true
   }
 ];
 

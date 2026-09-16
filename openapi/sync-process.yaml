@@ -1,0 +1,2237 @@
+openapi: 3.0.3
+info:
+  title: Sync Process API Documentation
+  version: 1.0.0
+  description: >-
+    This documentation is written for **developers**, **System Analysts**, and **Support**.
+
+
+    Sync Process API is the Go service that runs scheduled and on-demand data-sync jobs against SQL Server, with HTTP
+    request audit logging in PostgreSQL.
+
+
+
+    ## How To Use This Documentation
+
+
+    1. Open a category from the sidebar. Start with **Health**, then the **Sync** job you need, then **Admin** for
+    maintenance.
+
+    2. Read **Authentication** at the top of that category before you test anything. Every protected route uses HTTP
+    Basic.
+
+    3. Copy the sample request, replace placeholders, and send it from Postman, curl, or PowerShell.
+
+
+
+    Placeholders look like `<base64(user:password)>` or `<audit_admin_key>`. Sample body values such as `1` are safe
+    fixtures, not real company codes.
+
+
+    Most sync POST calls have no request body. A successful sync returns `{"status":"ok"}`. Jobs can run up to
+    `SYNC_RUN_TIMEOUT_SEC` (default 3600 seconds).
+
+
+
+    ## Authentication
+
+
+    - **HTTP Basic** — `Authorization: Basic <base64(user:password)>` with `BASIC_AUTH_USER` and `BASIC_AUTH_PASSWORD`.
+    `curl -u user:password` sends the same header.
+
+    - **Admin API key** — purge of request logs also requires `X-Audit-Admin-Key: <audit_admin_key>`
+    (`AUDIT_ADMIN_KEY`).
+
+
+    Missing or invalid Basic credentials return **401** with `WWW-Authenticate: Basic realm="restricted"`. An invalid
+    admin key returns **401** without a token flow.
+
+
+    Never put production secrets, customer personal data, or live credentials into examples or tickets.
+
+
+    A reader-friendly portal with a category sidebar is available at `/docs/`. Swagger UI remains at `/swagger/`.
+  contact:
+    name: API Platform Team
+servers:
+  - url: "{scheme}://{host}"
+    description: Replace host with the API environment you are testing (local, staging, or production).
+    variables:
+      scheme:
+        default: https
+        enum:
+          - https
+          - http
+      host:
+        default: localhost:8080
+        description: API hostname and optional port
+tags:
+  - name: Health
+    description: >-
+      **Authentication:** Every endpoint in this category requires authentication (HTTP Basic). Read the sample headers
+      before testing.
+
+
+      **Who uses this:** Anyone checking whether the Sync Process API is up.
+
+
+      Handled by `HealthHandler`.
+  - name: Sync
+    description: >-
+      **Authentication:** Every endpoint in this category requires authentication (HTTP Basic). Read the sample headers
+      before testing.
+
+
+      **Who uses this:** Operations and Support when replaying a scheduled sync job.
+
+
+      Handled by `SyncSupplierHandler`.
+  - name: Admin
+    description: >-
+      **Authentication:** Every endpoint in this category requires authentication (HTTP Basic + API Key, HTTP Basic).
+      Read the sample headers before testing.
+
+
+      **Who uses this:** Operations, DBAs, System Analysts, and Support.
+
+
+      Handled by `MsdbMailHandler`.
+paths:
+  /api/v1/admin/audit/request-logs/purge:
+    post:
+      tags:
+        - Admin
+      summary: Purge Request Logs
+      operationId: auditLogHandlerPurgeRequestLogs
+      responses:
+        "200":
+          description: Successful response. The live JSON shape can vary; compare it with this sample.
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+              example:
+                status: success
+                message: Request completed
+                data: {}
+          x-java-response-type: Object
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 401
+                message: Unauthorized
+          x-java-response-type: Object
+        "500":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 500
+                message: Unauthorized
+          x-java-response-type: Object
+      x-source-controller: AuditLogHandler
+      x-source-location: internal/modules/audit_log/handler.go:18
+      x-source-http-method: POST
+      x-audience: Operations, DBAs, System Analysts, and Support
+      x-auth:
+        type: HTTP Basic + API Key
+        required: true
+        summary: "Requires HTTP Basic authentication and an admin API key. Send `Authorization: Basic <base64(user:password)>`
+          plus the extra header below. You can also use `curl -u user:password`."
+        headers:
+          - name: Authorization
+            example: Basic <base64(user:password)>
+            note: Replace with base64 of BASIC_AUTH_USER:BASIC_AUTH_PASSWORD, or use curl -u.
+          - name: X-Audit-Admin-Key
+            example: <audit_admin_key>
+            note: ""
+        raw: "HTTP Basic (Authorization: Basic <base64(user:password)>) + API/client/secret key (handler-level)"
+      x-validation: []
+      x-error-messages:
+        - Unauthorized
+      x-app-area: Admin
+      security:
+        - headerXAuditAdminKey: []
+          basicAuth: []
+      x-copy:
+        curl: |-
+          curl -X POST "{baseUrl}/api/v1/admin/audit/request-logs/purge" \
+            -H "Authorization: Basic <base64(user:password)>" \
+            -H "X-Audit-Admin-Key: <audit_admin_key>" \
+            -H "Accept: application/json"
+        powershell: |-
+          $headers = @{
+            "Authorization" = "Basic <base64(user:password)>"
+            "X-Audit-Admin-Key" = "<audit_admin_key>"
+            "Accept" = "application/json"
+          }
+          Invoke-RestMethod -Method POST -Uri "{baseUrl}/api/v1/admin/audit/request-logs/purge" -Headers $headers
+        http: |-
+          POST /api/v1/admin/audit/request-logs/purge HTTP/1.1
+          Host: {host}
+          Authorization: Basic <base64(user:password)>
+          X-Audit-Admin-Key: <audit_admin_key>
+          Accept: application/json
+        url: "{baseUrl}/api/v1/admin/audit/request-logs/purge"
+        all: >-
+          Purge Request Logs
+
+          POST {baseUrl}/api/v1/admin/audit/request-logs/purge
+
+
+          Authentication: Requires HTTP Basic authentication and an admin API key. Send `Authorization: Basic
+          <base64(user:password)>` plus the extra header below. You can also use `curl -u user:password`.
+
+
+          Headers:
+
+          Authorization: Basic <base64(user:password)>
+
+          X-Audit-Admin-Key: <audit_admin_key>
+
+          Accept: application/json
+
+
+          curl:
+
+          curl -X POST "{baseUrl}/api/v1/admin/audit/request-logs/purge" \
+            -H "Authorization: Basic <base64(user:password)>" \
+            -H "X-Audit-Admin-Key: <audit_admin_key>" \
+            -H "Accept: application/json"
+      description: >-
+        Purge Request Logs is part of the Admin category.
+
+
+        **Who this is for:** Operations, DBAs, System Analysts, and Support.
+
+
+        **Authentication:** Requires HTTP Basic authentication and an admin API key. Send `Authorization: Basic
+        <base64(user:password)>` plus the extra header below. You can also use `curl -u user:password`.
+
+
+        **How to test:** Copy the sample request below, replace every placeholder (values in `<angle brackets>` and
+        sample data), then send it from Postman, curl, or PowerShell.
+
+
+        **Known error messages:** Unauthorized
+
+
+        **Copy-ready curl**
+
+
+        ```bash
+
+        curl -X POST "{baseUrl}/api/v1/admin/audit/request-logs/purge" \
+          -H "Authorization: Basic <base64(user:password)>" \
+          -H "X-Audit-Admin-Key: <audit_admin_key>" \
+          -H "Accept: application/json"
+        ```
+
+
+        Technical source notes are omitted from this description so analysts and Support can scan the contract quickly.
+  /api/v1/admin/msdb-mail/maintenance/run:
+    post:
+      tags:
+        - Admin
+      summary: Run MSDB Mail Maintenance
+      operationId: mSDBMailHandlerRunMSDBMailMaintenance
+      responses:
+        "200":
+          description: Successful response. The live JSON shape can vary; compare it with this sample.
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+              example:
+                status: success
+                message: Request completed
+                data: {}
+          x-java-response-type: Object
+        "400":
+          description: invalid JSON body
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 400
+                message: invalid JSON body
+          x-java-response-type: Object
+        "401":
+          description: invalid JSON body
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 401
+                message: invalid JSON body
+          x-java-response-type: Object
+        "500":
+          description: invalid JSON body
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 500
+                message: invalid JSON body
+          x-java-response-type: Object
+      x-source-controller: MsdbMailHandler
+      x-source-location: internal/modules/sync_msdb_mail/handler.go:28
+      x-source-http-method: POST
+      x-audience: Operations, DBAs, System Analysts, and Support
+      x-auth:
+        type: HTTP Basic
+        required: true
+        summary: "Requires HTTP Basic authentication. Send `Authorization: Basic <base64(user:password)>` using BASIC_AUTH_USER
+          and BASIC_AUTH_PASSWORD. You can also use `curl -u user:password`."
+        headers:
+          - name: Authorization
+            example: Basic <base64(user:password)>
+            note: Replace with base64 of BASIC_AUTH_USER:BASIC_AUTH_PASSWORD, or use curl -u.
+        raw: "HTTP Basic (Authorization: Basic <base64(user:password)>) (handler-level)"
+      x-validation: []
+      x-error-messages:
+        - invalid JSON body
+        - request body too large
+      x-app-area: Admin
+      security:
+        - basicAuth: []
+      requestBody:
+        required: true
+        description: Replace sample values before sending this body.
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                retentionDays:
+                  type: integer
+                  format: int32
+                  description: Optional. How many days of history to keep.
+                  example: 30
+                stopMailDuringRun:
+                  type: boolean
+                  description: Optional. When true, Database Mail is stopped during delete and restarted after.
+                  example: true
+              title: MaintenanceRequest
+            example:
+              retentionDays: 30
+              stopMailDuringRun: true
+      x-copy:
+        curl: |-
+          curl -X POST "{baseUrl}/api/v1/admin/msdb-mail/maintenance/run" \
+            -H "Authorization: Basic <base64(user:password)>" \
+            -H "Content-Type: application/json" \
+            -H "Accept: application/json" \
+            -d '{
+            "retentionDays": 30,
+            "stopMailDuringRun": true
+          }'
+        powershell: >-
+          $headers = @{
+            "Authorization" = "Basic <base64(user:password)>"
+            "Content-Type" = "application/json"
+            "Accept" = "application/json"
+          }
+
+          $body = @'
+
+          {
+            "retentionDays": 30,
+            "stopMailDuringRun": true
+          }
+
+          '@
+
+          Invoke-RestMethod -Method POST -Uri "{baseUrl}/api/v1/admin/msdb-mail/maintenance/run" -Headers $headers -Body
+          $body
+        http: |-
+          POST /api/v1/admin/msdb-mail/maintenance/run HTTP/1.1
+          Host: {host}
+          Authorization: Basic <base64(user:password)>
+          Content-Type: application/json
+          Accept: application/json
+
+          {
+            "retentionDays": 30,
+            "stopMailDuringRun": true
+          }
+        url: "{baseUrl}/api/v1/admin/msdb-mail/maintenance/run"
+        all: >-
+          Run MSDB Mail Maintenance
+
+          POST {baseUrl}/api/v1/admin/msdb-mail/maintenance/run
+
+
+          Authentication: Requires HTTP Basic authentication. Send `Authorization: Basic <base64(user:password)>` using
+          BASIC_AUTH_USER and BASIC_AUTH_PASSWORD. You can also use `curl -u user:password`.
+
+
+          Headers:
+
+          Authorization: Basic <base64(user:password)>
+
+          Content-Type: application/json
+
+          Accept: application/json
+
+
+          Body:
+
+          {
+            "retentionDays": 30,
+            "stopMailDuringRun": true
+          }
+
+
+          curl:
+
+          curl -X POST "{baseUrl}/api/v1/admin/msdb-mail/maintenance/run" \
+            -H "Authorization: Basic <base64(user:password)>" \
+            -H "Content-Type: application/json" \
+            -H "Accept: application/json" \
+            -d '{
+            "retentionDays": 30,
+            "stopMailDuringRun": true
+          }'
+      description: >-
+        Run MSDB Mail Maintenance is part of the Admin category.
+
+
+        **Who this is for:** Operations, DBAs, System Analysts, and Support.
+
+
+        **Authentication:** Requires HTTP Basic authentication. Send `Authorization: Basic <base64(user:password)>`
+        using BASIC_AUTH_USER and BASIC_AUTH_PASSWORD. You can also use `curl -u user:password`.
+
+
+        **How to test:** Copy the sample request below, replace every placeholder (values in `<angle brackets>` and
+        sample data), then send it from Postman, curl, or PowerShell.
+
+
+        **Known error messages:** invalid JSON body; request body too large
+
+
+        **Copy-ready curl**
+
+
+        ```bash
+
+        curl -X POST "{baseUrl}/api/v1/admin/msdb-mail/maintenance/run" \
+          -H "Authorization: Basic <base64(user:password)>" \
+          -H "Content-Type: application/json" \
+          -H "Accept: application/json" \
+          -d '{
+          "retentionDays": 30,
+          "stopMailDuringRun": true
+        }'
+
+        ```
+
+
+        Technical source notes are omitted from this description so analysts and Support can scan the contract quickly.
+  /api/v1/sync/applicant/run:
+    post:
+      tags:
+        - Sync
+      summary: Run Applicant Sync
+      operationId: syncApplicantHandlerRunApplicantSync
+      responses:
+        "200":
+          description: Successful response. The live JSON shape can vary; compare it with this sample.
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+              example:
+                status: success
+                message: Request completed
+                data: {}
+          x-java-response-type: Object
+        "401":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 401
+                message: Internal Server Error
+          x-java-response-type: Object
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 500
+                message: Internal Server Error
+          x-java-response-type: Object
+      x-source-controller: SyncApplicantHandler
+      x-source-location: internal/modules/sync_applicant/handler.go:23
+      x-source-http-method: POST
+      x-audience: Operations and Support when replaying a scheduled sync job
+      x-auth:
+        type: HTTP Basic
+        required: true
+        summary: "Requires HTTP Basic authentication. Send `Authorization: Basic <base64(user:password)>` using BASIC_AUTH_USER
+          and BASIC_AUTH_PASSWORD. You can also use `curl -u user:password`."
+        headers:
+          - name: Authorization
+            example: Basic <base64(user:password)>
+            note: Replace with base64 of BASIC_AUTH_USER:BASIC_AUTH_PASSWORD, or use curl -u.
+        raw: "HTTP Basic (Authorization: Basic <base64(user:password)>) (handler-level)"
+      x-validation: []
+      x-error-messages:
+        - Internal Server Error
+      x-app-area: Sync
+      security:
+        - basicAuth: []
+      x-copy:
+        curl: |-
+          curl -X POST "{baseUrl}/api/v1/sync/applicant/run" \
+            -H "Authorization: Basic <base64(user:password)>" \
+            -H "Accept: application/json"
+        powershell: |-
+          $headers = @{
+            "Authorization" = "Basic <base64(user:password)>"
+            "Accept" = "application/json"
+          }
+          Invoke-RestMethod -Method POST -Uri "{baseUrl}/api/v1/sync/applicant/run" -Headers $headers
+        http: |-
+          POST /api/v1/sync/applicant/run HTTP/1.1
+          Host: {host}
+          Authorization: Basic <base64(user:password)>
+          Accept: application/json
+        url: "{baseUrl}/api/v1/sync/applicant/run"
+        all: >-
+          Run Applicant Sync
+
+          POST {baseUrl}/api/v1/sync/applicant/run
+
+
+          Authentication: Requires HTTP Basic authentication. Send `Authorization: Basic <base64(user:password)>` using
+          BASIC_AUTH_USER and BASIC_AUTH_PASSWORD. You can also use `curl -u user:password`.
+
+
+          Headers:
+
+          Authorization: Basic <base64(user:password)>
+
+          Accept: application/json
+
+
+          curl:
+
+          curl -X POST "{baseUrl}/api/v1/sync/applicant/run" \
+            -H "Authorization: Basic <base64(user:password)>" \
+            -H "Accept: application/json"
+      description: >-
+        Run Applicant Sync is part of the Sync category.
+
+
+        **Who this is for:** Operations and Support when replaying a scheduled sync job.
+
+
+        **Authentication:** Requires HTTP Basic authentication. Send `Authorization: Basic <base64(user:password)>`
+        using BASIC_AUTH_USER and BASIC_AUTH_PASSWORD. You can also use `curl -u user:password`.
+
+
+        **How to test:** Copy the sample request below, replace every placeholder (values in `<angle brackets>` and
+        sample data), then send it from Postman, curl, or PowerShell.
+
+
+        **Known error messages:** Internal Server Error
+
+
+        **Copy-ready curl**
+
+
+        ```bash
+
+        curl -X POST "{baseUrl}/api/v1/sync/applicant/run" \
+          -H "Authorization: Basic <base64(user:password)>" \
+          -H "Accept: application/json"
+        ```
+
+
+        Technical source notes are omitted from this description so analysts and Support can scan the contract quickly.
+  /api/v1/sync/asset/run:
+    post:
+      tags:
+        - Sync
+      summary: Run Asset Sync
+      operationId: syncAssetHandlerRunAssetSync
+      responses:
+        "200":
+          description: Successful response. The live JSON shape can vary; compare it with this sample.
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+              example:
+                status: success
+                message: Request completed
+                data: {}
+          x-java-response-type: Object
+        "401":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 401
+                message: Internal Server Error
+          x-java-response-type: Object
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 500
+                message: Internal Server Error
+          x-java-response-type: Object
+      x-source-controller: SyncAssetHandler
+      x-source-location: internal/modules/sync_asset/handler.go:23
+      x-source-http-method: POST
+      x-audience: Operations and Support when replaying a scheduled sync job
+      x-auth:
+        type: HTTP Basic
+        required: true
+        summary: "Requires HTTP Basic authentication. Send `Authorization: Basic <base64(user:password)>` using BASIC_AUTH_USER
+          and BASIC_AUTH_PASSWORD. You can also use `curl -u user:password`."
+        headers:
+          - name: Authorization
+            example: Basic <base64(user:password)>
+            note: Replace with base64 of BASIC_AUTH_USER:BASIC_AUTH_PASSWORD, or use curl -u.
+        raw: "HTTP Basic (Authorization: Basic <base64(user:password)>) (handler-level)"
+      x-validation: []
+      x-error-messages:
+        - Internal Server Error
+      x-app-area: Sync
+      security:
+        - basicAuth: []
+      x-copy:
+        curl: |-
+          curl -X POST "{baseUrl}/api/v1/sync/asset/run" \
+            -H "Authorization: Basic <base64(user:password)>" \
+            -H "Accept: application/json"
+        powershell: |-
+          $headers = @{
+            "Authorization" = "Basic <base64(user:password)>"
+            "Accept" = "application/json"
+          }
+          Invoke-RestMethod -Method POST -Uri "{baseUrl}/api/v1/sync/asset/run" -Headers $headers
+        http: |-
+          POST /api/v1/sync/asset/run HTTP/1.1
+          Host: {host}
+          Authorization: Basic <base64(user:password)>
+          Accept: application/json
+        url: "{baseUrl}/api/v1/sync/asset/run"
+        all: >-
+          Run Asset Sync
+
+          POST {baseUrl}/api/v1/sync/asset/run
+
+
+          Authentication: Requires HTTP Basic authentication. Send `Authorization: Basic <base64(user:password)>` using
+          BASIC_AUTH_USER and BASIC_AUTH_PASSWORD. You can also use `curl -u user:password`.
+
+
+          Headers:
+
+          Authorization: Basic <base64(user:password)>
+
+          Accept: application/json
+
+
+          curl:
+
+          curl -X POST "{baseUrl}/api/v1/sync/asset/run" \
+            -H "Authorization: Basic <base64(user:password)>" \
+            -H "Accept: application/json"
+      description: >-
+        Run Asset Sync is part of the Sync category.
+
+
+        **Who this is for:** Operations and Support when replaying a scheduled sync job.
+
+
+        **Authentication:** Requires HTTP Basic authentication. Send `Authorization: Basic <base64(user:password)>`
+        using BASIC_AUTH_USER and BASIC_AUTH_PASSWORD. You can also use `curl -u user:password`.
+
+
+        **How to test:** Copy the sample request below, replace every placeholder (values in `<angle brackets>` and
+        sample data), then send it from Postman, curl, or PowerShell.
+
+
+        **Known error messages:** Internal Server Error
+
+
+        **Copy-ready curl**
+
+
+        ```bash
+
+        curl -X POST "{baseUrl}/api/v1/sync/asset/run" \
+          -H "Authorization: Basic <base64(user:password)>" \
+          -H "Accept: application/json"
+        ```
+
+
+        Technical source notes are omitted from this description so analysts and Support can scan the contract quickly.
+  /api/v1/sync/bom/run:
+    post:
+      tags:
+        - Sync
+      summary: Run BOM Sync
+      operationId: syncBOMHandlerRunBOMSync
+      responses:
+        "200":
+          description: Successful response. The live JSON shape can vary; compare it with this sample.
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+              example:
+                status: success
+                message: Request completed
+                data: {}
+          x-java-response-type: Object
+        "401":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 401
+                message: Internal Server Error
+          x-java-response-type: Object
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 500
+                message: Internal Server Error
+          x-java-response-type: Object
+      x-source-controller: SyncBOMHandler
+      x-source-location: internal/modules/sync_bom/handler.go:23
+      x-source-http-method: POST
+      x-audience: Operations and Support when replaying a scheduled sync job
+      x-auth:
+        type: HTTP Basic
+        required: true
+        summary: "Requires HTTP Basic authentication. Send `Authorization: Basic <base64(user:password)>` using BASIC_AUTH_USER
+          and BASIC_AUTH_PASSWORD. You can also use `curl -u user:password`."
+        headers:
+          - name: Authorization
+            example: Basic <base64(user:password)>
+            note: Replace with base64 of BASIC_AUTH_USER:BASIC_AUTH_PASSWORD, or use curl -u.
+        raw: "HTTP Basic (Authorization: Basic <base64(user:password)>) (handler-level)"
+      x-validation: []
+      x-error-messages:
+        - Internal Server Error
+      x-app-area: Sync
+      security:
+        - basicAuth: []
+      x-copy:
+        curl: |-
+          curl -X POST "{baseUrl}/api/v1/sync/bom/run" \
+            -H "Authorization: Basic <base64(user:password)>" \
+            -H "Accept: application/json"
+        powershell: |-
+          $headers = @{
+            "Authorization" = "Basic <base64(user:password)>"
+            "Accept" = "application/json"
+          }
+          Invoke-RestMethod -Method POST -Uri "{baseUrl}/api/v1/sync/bom/run" -Headers $headers
+        http: |-
+          POST /api/v1/sync/bom/run HTTP/1.1
+          Host: {host}
+          Authorization: Basic <base64(user:password)>
+          Accept: application/json
+        url: "{baseUrl}/api/v1/sync/bom/run"
+        all: >-
+          Run BOM Sync
+
+          POST {baseUrl}/api/v1/sync/bom/run
+
+
+          Authentication: Requires HTTP Basic authentication. Send `Authorization: Basic <base64(user:password)>` using
+          BASIC_AUTH_USER and BASIC_AUTH_PASSWORD. You can also use `curl -u user:password`.
+
+
+          Headers:
+
+          Authorization: Basic <base64(user:password)>
+
+          Accept: application/json
+
+
+          curl:
+
+          curl -X POST "{baseUrl}/api/v1/sync/bom/run" \
+            -H "Authorization: Basic <base64(user:password)>" \
+            -H "Accept: application/json"
+      description: >-
+        Run BOM Sync is part of the Sync category.
+
+
+        **Who this is for:** Operations and Support when replaying a scheduled sync job.
+
+
+        **Authentication:** Requires HTTP Basic authentication. Send `Authorization: Basic <base64(user:password)>`
+        using BASIC_AUTH_USER and BASIC_AUTH_PASSWORD. You can also use `curl -u user:password`.
+
+
+        **How to test:** Copy the sample request below, replace every placeholder (values in `<angle brackets>` and
+        sample data), then send it from Postman, curl, or PowerShell.
+
+
+        **Known error messages:** Internal Server Error
+
+
+        **Copy-ready curl**
+
+
+        ```bash
+
+        curl -X POST "{baseUrl}/api/v1/sync/bom/run" \
+          -H "Authorization: Basic <base64(user:password)>" \
+          -H "Accept: application/json"
+        ```
+
+
+        Technical source notes are omitted from this description so analysts and Support can scan the contract quickly.
+  /api/v1/sync/employee/run:
+    post:
+      tags:
+        - Sync
+      summary: Run Employee Sync
+      operationId: syncEmployeeHandlerRunEmployeeSync
+      responses:
+        "200":
+          description: Successful response. The live JSON shape can vary; compare it with this sample.
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+              example:
+                status: success
+                message: Request completed
+                data: {}
+          x-java-response-type: Object
+        "401":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 401
+                message: Internal Server Error
+          x-java-response-type: Object
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 500
+                message: Internal Server Error
+          x-java-response-type: Object
+      x-source-controller: SyncEmployeeHandler
+      x-source-location: internal/modules/sync_employee/handler.go:23
+      x-source-http-method: POST
+      x-audience: Operations and Support when replaying a scheduled sync job
+      x-auth:
+        type: HTTP Basic
+        required: true
+        summary: "Requires HTTP Basic authentication. Send `Authorization: Basic <base64(user:password)>` using BASIC_AUTH_USER
+          and BASIC_AUTH_PASSWORD. You can also use `curl -u user:password`."
+        headers:
+          - name: Authorization
+            example: Basic <base64(user:password)>
+            note: Replace with base64 of BASIC_AUTH_USER:BASIC_AUTH_PASSWORD, or use curl -u.
+        raw: "HTTP Basic (Authorization: Basic <base64(user:password)>) (handler-level)"
+      x-validation: []
+      x-error-messages:
+        - Internal Server Error
+      x-app-area: Sync
+      security:
+        - basicAuth: []
+      x-copy:
+        curl: |-
+          curl -X POST "{baseUrl}/api/v1/sync/employee/run" \
+            -H "Authorization: Basic <base64(user:password)>" \
+            -H "Accept: application/json"
+        powershell: |-
+          $headers = @{
+            "Authorization" = "Basic <base64(user:password)>"
+            "Accept" = "application/json"
+          }
+          Invoke-RestMethod -Method POST -Uri "{baseUrl}/api/v1/sync/employee/run" -Headers $headers
+        http: |-
+          POST /api/v1/sync/employee/run HTTP/1.1
+          Host: {host}
+          Authorization: Basic <base64(user:password)>
+          Accept: application/json
+        url: "{baseUrl}/api/v1/sync/employee/run"
+        all: >-
+          Run Employee Sync
+
+          POST {baseUrl}/api/v1/sync/employee/run
+
+
+          Authentication: Requires HTTP Basic authentication. Send `Authorization: Basic <base64(user:password)>` using
+          BASIC_AUTH_USER and BASIC_AUTH_PASSWORD. You can also use `curl -u user:password`.
+
+
+          Headers:
+
+          Authorization: Basic <base64(user:password)>
+
+          Accept: application/json
+
+
+          curl:
+
+          curl -X POST "{baseUrl}/api/v1/sync/employee/run" \
+            -H "Authorization: Basic <base64(user:password)>" \
+            -H "Accept: application/json"
+      description: >-
+        Run Employee Sync is part of the Sync category.
+
+
+        **Who this is for:** Operations and Support when replaying a scheduled sync job.
+
+
+        **Authentication:** Requires HTTP Basic authentication. Send `Authorization: Basic <base64(user:password)>`
+        using BASIC_AUTH_USER and BASIC_AUTH_PASSWORD. You can also use `curl -u user:password`.
+
+
+        **How to test:** Copy the sample request below, replace every placeholder (values in `<angle brackets>` and
+        sample data), then send it from Postman, curl, or PowerShell.
+
+
+        **Known error messages:** Internal Server Error
+
+
+        **Copy-ready curl**
+
+
+        ```bash
+
+        curl -X POST "{baseUrl}/api/v1/sync/employee/run" \
+          -H "Authorization: Basic <base64(user:password)>" \
+          -H "Accept: application/json"
+        ```
+
+
+        Technical source notes are omitted from this description so analysts and Support can scan the contract quickly.
+  /api/v1/sync/esb-bom/run:
+    post:
+      tags:
+        - Sync
+      summary: Run ESB BOM Sync
+      operationId: syncESBBOMHandlerRunESBBOMSync
+      responses:
+        "200":
+          description: Successful response. The live JSON shape can vary; compare it with this sample.
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+              example:
+                status: success
+                message: Request completed
+                data: {}
+          x-java-response-type: Object
+        "400":
+          description: company_id is required
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 400
+                message: company_id is required
+          x-java-response-type: Object
+        "401":
+          description: company_id is required
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 401
+                message: company_id is required
+          x-java-response-type: Object
+        "500":
+          description: company_id is required
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 500
+                message: company_id is required
+          x-java-response-type: Object
+      x-source-controller: SyncESBBOMHandler
+      x-source-location: internal/modules/sync_esb_bom/handler.go:28
+      x-source-http-method: POST
+      x-audience: Operations and Support when replaying a scheduled sync job
+      x-auth:
+        type: HTTP Basic
+        required: true
+        summary: "Requires HTTP Basic authentication. Send `Authorization: Basic <base64(user:password)>` using BASIC_AUTH_USER
+          and BASIC_AUTH_PASSWORD. You can also use `curl -u user:password`."
+        headers:
+          - name: Authorization
+            example: Basic <base64(user:password)>
+            note: Replace with base64 of BASIC_AUTH_USER:BASIC_AUTH_PASSWORD, or use curl -u.
+        raw: "HTTP Basic (Authorization: Basic <base64(user:password)>) (handler-level)"
+      x-validation:
+        - company_id is required and cannot be empty.
+      x-error-messages:
+        - company_id is required
+        - invalid JSON body
+        - request body too large
+      x-app-area: Sync
+      security:
+        - basicAuth: []
+      requestBody:
+        required: true
+        description: Replace sample values before sending this body.
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                company_id:
+                  type: string
+                  description: Required. Company ID (string).
+                  example: "1"
+              title: RunRequest
+              required:
+                - company_id
+            example:
+              company_id: "1"
+      x-copy:
+        curl: |-
+          curl -X POST "{baseUrl}/api/v1/sync/esb-bom/run" \
+            -H "Authorization: Basic <base64(user:password)>" \
+            -H "Content-Type: application/json" \
+            -H "Accept: application/json" \
+            -d '{
+            "company_id": "1"
+          }'
+        powershell: |-
+          $headers = @{
+            "Authorization" = "Basic <base64(user:password)>"
+            "Content-Type" = "application/json"
+            "Accept" = "application/json"
+          }
+          $body = @'
+          {
+            "company_id": "1"
+          }
+          '@
+          Invoke-RestMethod -Method POST -Uri "{baseUrl}/api/v1/sync/esb-bom/run" -Headers $headers -Body $body
+        http: |-
+          POST /api/v1/sync/esb-bom/run HTTP/1.1
+          Host: {host}
+          Authorization: Basic <base64(user:password)>
+          Content-Type: application/json
+          Accept: application/json
+
+          {
+            "company_id": "1"
+          }
+        url: "{baseUrl}/api/v1/sync/esb-bom/run"
+        all: >-
+          Run ESB BOM Sync
+
+          POST {baseUrl}/api/v1/sync/esb-bom/run
+
+
+          Authentication: Requires HTTP Basic authentication. Send `Authorization: Basic <base64(user:password)>` using
+          BASIC_AUTH_USER and BASIC_AUTH_PASSWORD. You can also use `curl -u user:password`.
+
+
+          Headers:
+
+          Authorization: Basic <base64(user:password)>
+
+          Content-Type: application/json
+
+          Accept: application/json
+
+
+          Body:
+
+          {
+            "company_id": "1"
+          }
+
+
+          curl:
+
+          curl -X POST "{baseUrl}/api/v1/sync/esb-bom/run" \
+            -H "Authorization: Basic <base64(user:password)>" \
+            -H "Content-Type: application/json" \
+            -H "Accept: application/json" \
+            -d '{
+            "company_id": "1"
+          }'
+      description: >-
+        Run ESB BOM Sync is part of the Sync category.
+
+
+        **Who this is for:** Operations and Support when replaying a scheduled sync job.
+
+
+        **Authentication:** Requires HTTP Basic authentication. Send `Authorization: Basic <base64(user:password)>`
+        using BASIC_AUTH_USER and BASIC_AUTH_PASSWORD. You can also use `curl -u user:password`.
+
+
+        **How to test:** Copy the sample request below, replace every placeholder (values in `<angle brackets>` and
+        sample data), then send it from Postman, curl, or PowerShell.
+
+
+        **Validation:** company_id is required and cannot be empty.
+
+
+        **Known error messages:** company_id is required; invalid JSON body; request body too large
+
+
+        **Copy-ready curl**
+
+
+        ```bash
+
+        curl -X POST "{baseUrl}/api/v1/sync/esb-bom/run" \
+          -H "Authorization: Basic <base64(user:password)>" \
+          -H "Content-Type: application/json" \
+          -H "Accept: application/json" \
+          -d '{
+          "company_id": "1"
+        }'
+
+        ```
+
+
+        Technical source notes are omitted from this description so analysts and Support can scan the contract quickly.
+  /api/v1/sync/item-hpp/run:
+    post:
+      tags:
+        - Sync
+      summary: Run Item HPP Sync
+      operationId: syncItemHPPHandlerRunItemHPPSync
+      responses:
+        "200":
+          description: Successful response. The live JSON shape can vary; compare it with this sample.
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+              example:
+                status: success
+                message: Request completed
+                data: {}
+          x-java-response-type: Object
+        "401":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 401
+                message: Internal Server Error
+          x-java-response-type: Object
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 500
+                message: Internal Server Error
+          x-java-response-type: Object
+      x-source-controller: SyncItemHPPHandler
+      x-source-location: internal/modules/sync_item_hpp/handler.go:23
+      x-source-http-method: POST
+      x-audience: Operations and Support when replaying a scheduled sync job
+      x-auth:
+        type: HTTP Basic
+        required: true
+        summary: "Requires HTTP Basic authentication. Send `Authorization: Basic <base64(user:password)>` using BASIC_AUTH_USER
+          and BASIC_AUTH_PASSWORD. You can also use `curl -u user:password`."
+        headers:
+          - name: Authorization
+            example: Basic <base64(user:password)>
+            note: Replace with base64 of BASIC_AUTH_USER:BASIC_AUTH_PASSWORD, or use curl -u.
+        raw: "HTTP Basic (Authorization: Basic <base64(user:password)>) (handler-level)"
+      x-validation: []
+      x-error-messages:
+        - Internal Server Error
+      x-app-area: Sync
+      security:
+        - basicAuth: []
+      x-copy:
+        curl: |-
+          curl -X POST "{baseUrl}/api/v1/sync/item-hpp/run" \
+            -H "Authorization: Basic <base64(user:password)>" \
+            -H "Accept: application/json"
+        powershell: |-
+          $headers = @{
+            "Authorization" = "Basic <base64(user:password)>"
+            "Accept" = "application/json"
+          }
+          Invoke-RestMethod -Method POST -Uri "{baseUrl}/api/v1/sync/item-hpp/run" -Headers $headers
+        http: |-
+          POST /api/v1/sync/item-hpp/run HTTP/1.1
+          Host: {host}
+          Authorization: Basic <base64(user:password)>
+          Accept: application/json
+        url: "{baseUrl}/api/v1/sync/item-hpp/run"
+        all: >-
+          Run Item HPP Sync
+
+          POST {baseUrl}/api/v1/sync/item-hpp/run
+
+
+          Authentication: Requires HTTP Basic authentication. Send `Authorization: Basic <base64(user:password)>` using
+          BASIC_AUTH_USER and BASIC_AUTH_PASSWORD. You can also use `curl -u user:password`.
+
+
+          Headers:
+
+          Authorization: Basic <base64(user:password)>
+
+          Accept: application/json
+
+
+          curl:
+
+          curl -X POST "{baseUrl}/api/v1/sync/item-hpp/run" \
+            -H "Authorization: Basic <base64(user:password)>" \
+            -H "Accept: application/json"
+      description: >-
+        Run Item HPP Sync is part of the Sync category.
+
+
+        **Who this is for:** Operations and Support when replaying a scheduled sync job.
+
+
+        **Authentication:** Requires HTTP Basic authentication. Send `Authorization: Basic <base64(user:password)>`
+        using BASIC_AUTH_USER and BASIC_AUTH_PASSWORD. You can also use `curl -u user:password`.
+
+
+        **How to test:** Copy the sample request below, replace every placeholder (values in `<angle brackets>` and
+        sample data), then send it from Postman, curl, or PowerShell.
+
+
+        **Known error messages:** Internal Server Error
+
+
+        **Copy-ready curl**
+
+
+        ```bash
+
+        curl -X POST "{baseUrl}/api/v1/sync/item-hpp/run" \
+          -H "Authorization: Basic <base64(user:password)>" \
+          -H "Accept: application/json"
+        ```
+
+
+        Technical source notes are omitted from this description so analysts and Support can scan the contract quickly.
+  /api/v1/sync/item-so/run:
+    post:
+      tags:
+        - Sync
+      summary: Run Item SO Sync
+      operationId: syncItemSOHandlerRunItemSOSync
+      responses:
+        "200":
+          description: Successful response. The live JSON shape can vary; compare it with this sample.
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+              example:
+                status: success
+                message: Request completed
+                data: {}
+          x-java-response-type: Object
+        "400":
+          description: invalid JSON body
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 400
+                message: invalid JSON body
+          x-java-response-type: Object
+        "401":
+          description: invalid JSON body
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 401
+                message: invalid JSON body
+          x-java-response-type: Object
+        "500":
+          description: invalid JSON body
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 500
+                message: invalid JSON body
+          x-java-response-type: Object
+      x-source-controller: SyncItemSOHandler
+      x-source-location: internal/modules/sync_item_so/handler.go:28
+      x-source-http-method: POST
+      x-audience: Operations and Support when replaying a scheduled sync job
+      x-auth:
+        type: HTTP Basic
+        required: true
+        summary: "Requires HTTP Basic authentication. Send `Authorization: Basic <base64(user:password)>` using BASIC_AUTH_USER
+          and BASIC_AUTH_PASSWORD. You can also use `curl -u user:password`."
+        headers:
+          - name: Authorization
+            example: Basic <base64(user:password)>
+            note: Replace with base64 of BASIC_AUTH_USER:BASIC_AUTH_PASSWORD, or use curl -u.
+        raw: "HTTP Basic (Authorization: Basic <base64(user:password)>) (handler-level)"
+      x-validation: []
+      x-error-messages:
+        - invalid JSON body
+        - request body too large
+        - no matching outlets for the given CompanyID, BrandID, and/or OutletID
+      x-app-area: Sync
+      security:
+        - basicAuth: []
+      requestBody:
+        required: true
+        description: Replace sample values before sending this body.
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                CompanyID:
+                  type: string
+                  description: Optional. Company ID (string).
+                  example: "1"
+                BrandID:
+                  type: string
+                  description: Optional. Brand identifier.
+                  example: "1"
+                OutletID:
+                  type: string
+                  description: Optional. Outlet / branch code.
+                  example: "1"
+              title: SyncFilter
+            example:
+              CompanyID: "1"
+              BrandID: "1"
+              OutletID: "1"
+      x-copy:
+        curl: |-
+          curl -X POST "{baseUrl}/api/v1/sync/item-so/run" \
+            -H "Authorization: Basic <base64(user:password)>" \
+            -H "Content-Type: application/json" \
+            -H "Accept: application/json" \
+            -d '{
+            "CompanyID": "1",
+            "BrandID": "1",
+            "OutletID": "1"
+          }'
+        powershell: |-
+          $headers = @{
+            "Authorization" = "Basic <base64(user:password)>"
+            "Content-Type" = "application/json"
+            "Accept" = "application/json"
+          }
+          $body = @'
+          {
+            "CompanyID": "1",
+            "BrandID": "1",
+            "OutletID": "1"
+          }
+          '@
+          Invoke-RestMethod -Method POST -Uri "{baseUrl}/api/v1/sync/item-so/run" -Headers $headers -Body $body
+        http: |-
+          POST /api/v1/sync/item-so/run HTTP/1.1
+          Host: {host}
+          Authorization: Basic <base64(user:password)>
+          Content-Type: application/json
+          Accept: application/json
+
+          {
+            "CompanyID": "1",
+            "BrandID": "1",
+            "OutletID": "1"
+          }
+        url: "{baseUrl}/api/v1/sync/item-so/run"
+        all: >-
+          Run Item SO Sync
+
+          POST {baseUrl}/api/v1/sync/item-so/run
+
+
+          Authentication: Requires HTTP Basic authentication. Send `Authorization: Basic <base64(user:password)>` using
+          BASIC_AUTH_USER and BASIC_AUTH_PASSWORD. You can also use `curl -u user:password`.
+
+
+          Headers:
+
+          Authorization: Basic <base64(user:password)>
+
+          Content-Type: application/json
+
+          Accept: application/json
+
+
+          Body:
+
+          {
+            "CompanyID": "1",
+            "BrandID": "1",
+            "OutletID": "1"
+          }
+
+
+          curl:
+
+          curl -X POST "{baseUrl}/api/v1/sync/item-so/run" \
+            -H "Authorization: Basic <base64(user:password)>" \
+            -H "Content-Type: application/json" \
+            -H "Accept: application/json" \
+            -d '{
+            "CompanyID": "1",
+            "BrandID": "1",
+            "OutletID": "1"
+          }'
+      description: >-
+        Run Item SO Sync is part of the Sync category.
+
+
+        **Who this is for:** Operations and Support when replaying a scheduled sync job.
+
+
+        **Authentication:** Requires HTTP Basic authentication. Send `Authorization: Basic <base64(user:password)>`
+        using BASIC_AUTH_USER and BASIC_AUTH_PASSWORD. You can also use `curl -u user:password`.
+
+
+        **How to test:** Copy the sample request below, replace every placeholder (values in `<angle brackets>` and
+        sample data), then send it from Postman, curl, or PowerShell.
+
+
+        **Known error messages:** invalid JSON body; request body too large; no matching outlets for the given
+        CompanyID, BrandID, and/or OutletID
+
+
+        **Copy-ready curl**
+
+
+        ```bash
+
+        curl -X POST "{baseUrl}/api/v1/sync/item-so/run" \
+          -H "Authorization: Basic <base64(user:password)>" \
+          -H "Content-Type: application/json" \
+          -H "Accept: application/json" \
+          -d '{
+          "CompanyID": "1",
+          "BrandID": "1",
+          "OutletID": "1"
+        }'
+
+        ```
+
+
+        Technical source notes are omitted from this description so analysts and Support can scan the contract quickly.
+  /api/v1/sync/item/run:
+    post:
+      tags:
+        - Sync
+      summary: Run Item Sync
+      operationId: syncItemHandlerRunItemSync
+      responses:
+        "200":
+          description: Successful response. The live JSON shape can vary; compare it with this sample.
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+              example:
+                status: success
+                message: Request completed
+                data: {}
+          x-java-response-type: Object
+        "401":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 401
+                message: Internal Server Error
+          x-java-response-type: Object
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 500
+                message: Internal Server Error
+          x-java-response-type: Object
+      x-source-controller: SyncItemHandler
+      x-source-location: internal/modules/sync_item/handler.go:23
+      x-source-http-method: POST
+      x-audience: Operations and Support when replaying a scheduled sync job
+      x-auth:
+        type: HTTP Basic
+        required: true
+        summary: "Requires HTTP Basic authentication. Send `Authorization: Basic <base64(user:password)>` using BASIC_AUTH_USER
+          and BASIC_AUTH_PASSWORD. You can also use `curl -u user:password`."
+        headers:
+          - name: Authorization
+            example: Basic <base64(user:password)>
+            note: Replace with base64 of BASIC_AUTH_USER:BASIC_AUTH_PASSWORD, or use curl -u.
+        raw: "HTTP Basic (Authorization: Basic <base64(user:password)>) (handler-level)"
+      x-validation: []
+      x-error-messages:
+        - Internal Server Error
+      x-app-area: Sync
+      security:
+        - basicAuth: []
+      x-copy:
+        curl: |-
+          curl -X POST "{baseUrl}/api/v1/sync/item/run" \
+            -H "Authorization: Basic <base64(user:password)>" \
+            -H "Accept: application/json"
+        powershell: |-
+          $headers = @{
+            "Authorization" = "Basic <base64(user:password)>"
+            "Accept" = "application/json"
+          }
+          Invoke-RestMethod -Method POST -Uri "{baseUrl}/api/v1/sync/item/run" -Headers $headers
+        http: |-
+          POST /api/v1/sync/item/run HTTP/1.1
+          Host: {host}
+          Authorization: Basic <base64(user:password)>
+          Accept: application/json
+        url: "{baseUrl}/api/v1/sync/item/run"
+        all: >-
+          Run Item Sync
+
+          POST {baseUrl}/api/v1/sync/item/run
+
+
+          Authentication: Requires HTTP Basic authentication. Send `Authorization: Basic <base64(user:password)>` using
+          BASIC_AUTH_USER and BASIC_AUTH_PASSWORD. You can also use `curl -u user:password`.
+
+
+          Headers:
+
+          Authorization: Basic <base64(user:password)>
+
+          Accept: application/json
+
+
+          curl:
+
+          curl -X POST "{baseUrl}/api/v1/sync/item/run" \
+            -H "Authorization: Basic <base64(user:password)>" \
+            -H "Accept: application/json"
+      description: >-
+        Run Item Sync is part of the Sync category.
+
+
+        **Who this is for:** Operations and Support when replaying a scheduled sync job.
+
+
+        **Authentication:** Requires HTTP Basic authentication. Send `Authorization: Basic <base64(user:password)>`
+        using BASIC_AUTH_USER and BASIC_AUTH_PASSWORD. You can also use `curl -u user:password`.
+
+
+        **How to test:** Copy the sample request below, replace every placeholder (values in `<angle brackets>` and
+        sample data), then send it from Postman, curl, or PowerShell.
+
+
+        **Known error messages:** Internal Server Error
+
+
+        **Copy-ready curl**
+
+
+        ```bash
+
+        curl -X POST "{baseUrl}/api/v1/sync/item/run" \
+          -H "Authorization: Basic <base64(user:password)>" \
+          -H "Accept: application/json"
+        ```
+
+
+        Technical source notes are omitted from this description so analysts and Support can scan the contract quickly.
+  /api/v1/sync/sales/run:
+    post:
+      tags:
+        - Sync
+      summary: Run Sales Sync
+      operationId: syncSalesHandlerRunSalesSync
+      responses:
+        "200":
+          description: Successful response. The live JSON shape can vary; compare it with this sample.
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+              example:
+                status: success
+                message: Request completed
+                data: {}
+          x-java-response-type: Object
+        "401":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 401
+                message: Internal Server Error
+          x-java-response-type: Object
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 500
+                message: Internal Server Error
+          x-java-response-type: Object
+      x-source-controller: SyncSalesHandler
+      x-source-location: internal/modules/sync_sales/handler.go:23
+      x-source-http-method: POST
+      x-audience: Operations and Support when replaying a scheduled sync job
+      x-auth:
+        type: HTTP Basic
+        required: true
+        summary: "Requires HTTP Basic authentication. Send `Authorization: Basic <base64(user:password)>` using BASIC_AUTH_USER
+          and BASIC_AUTH_PASSWORD. You can also use `curl -u user:password`."
+        headers:
+          - name: Authorization
+            example: Basic <base64(user:password)>
+            note: Replace with base64 of BASIC_AUTH_USER:BASIC_AUTH_PASSWORD, or use curl -u.
+        raw: "HTTP Basic (Authorization: Basic <base64(user:password)>) (handler-level)"
+      x-validation: []
+      x-error-messages:
+        - Internal Server Error
+      x-app-area: Sync
+      security:
+        - basicAuth: []
+      x-copy:
+        curl: |-
+          curl -X POST "{baseUrl}/api/v1/sync/sales/run" \
+            -H "Authorization: Basic <base64(user:password)>" \
+            -H "Accept: application/json"
+        powershell: |-
+          $headers = @{
+            "Authorization" = "Basic <base64(user:password)>"
+            "Accept" = "application/json"
+          }
+          Invoke-RestMethod -Method POST -Uri "{baseUrl}/api/v1/sync/sales/run" -Headers $headers
+        http: |-
+          POST /api/v1/sync/sales/run HTTP/1.1
+          Host: {host}
+          Authorization: Basic <base64(user:password)>
+          Accept: application/json
+        url: "{baseUrl}/api/v1/sync/sales/run"
+        all: >-
+          Run Sales Sync
+
+          POST {baseUrl}/api/v1/sync/sales/run
+
+
+          Authentication: Requires HTTP Basic authentication. Send `Authorization: Basic <base64(user:password)>` using
+          BASIC_AUTH_USER and BASIC_AUTH_PASSWORD. You can also use `curl -u user:password`.
+
+
+          Headers:
+
+          Authorization: Basic <base64(user:password)>
+
+          Accept: application/json
+
+
+          curl:
+
+          curl -X POST "{baseUrl}/api/v1/sync/sales/run" \
+            -H "Authorization: Basic <base64(user:password)>" \
+            -H "Accept: application/json"
+      description: >-
+        Run Sales Sync is part of the Sync category.
+
+
+        **Who this is for:** Operations and Support when replaying a scheduled sync job.
+
+
+        **Authentication:** Requires HTTP Basic authentication. Send `Authorization: Basic <base64(user:password)>`
+        using BASIC_AUTH_USER and BASIC_AUTH_PASSWORD. You can also use `curl -u user:password`.
+
+
+        **How to test:** Copy the sample request below, replace every placeholder (values in `<angle brackets>` and
+        sample data), then send it from Postman, curl, or PowerShell.
+
+
+        **Known error messages:** Internal Server Error
+
+
+        **Copy-ready curl**
+
+
+        ```bash
+
+        curl -X POST "{baseUrl}/api/v1/sync/sales/run" \
+          -H "Authorization: Basic <base64(user:password)>" \
+          -H "Accept: application/json"
+        ```
+
+
+        Technical source notes are omitted from this description so analysts and Support can scan the contract quickly.
+  /api/v1/sync/stockopname-difference/run:
+    post:
+      tags:
+        - Sync
+      summary: Run Stock Opname Difference Sync
+      operationId: syncStockOpnameDifferenceHandlerRunStockOpnameDifferenceSync
+      responses:
+        "200":
+          description: Successful response. The live JSON shape can vary; compare it with this sample.
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+              example:
+                status: success
+                message: Request completed
+                data: {}
+          x-java-response-type: Object
+        "400":
+          description: invalid JSON body
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 400
+                message: invalid JSON body
+          x-java-response-type: Object
+        "401":
+          description: invalid JSON body
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 401
+                message: invalid JSON body
+          x-java-response-type: Object
+        "500":
+          description: invalid JSON body
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 500
+                message: invalid JSON body
+          x-java-response-type: Object
+      x-source-controller: SyncStockOpnameDifferenceHandler
+      x-source-location: internal/modules/sync_stockopname_difference/handler.go:32
+      x-source-http-method: POST
+      x-audience: Operations and Support when replaying a scheduled sync job
+      x-auth:
+        type: HTTP Basic
+        required: true
+        summary: "Requires HTTP Basic authentication. Send `Authorization: Basic <base64(user:password)>` using BASIC_AUTH_USER
+          and BASIC_AUTH_PASSWORD. You can also use `curl -u user:password`."
+        headers:
+          - name: Authorization
+            example: Basic <base64(user:password)>
+            note: Replace with base64 of BASIC_AUTH_USER:BASIC_AUTH_PASSWORD, or use curl -u.
+        raw: "HTTP Basic (Authorization: Basic <base64(user:password)>) (handler-level)"
+      x-validation: []
+      x-error-messages:
+        - invalid JSON body
+        - request body too large
+        - data for this period has already been generated
+      x-app-area: Sync
+      security:
+        - basicAuth: []
+      requestBody:
+        required: true
+        description: Replace sample values before sending this body.
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                BrandID:
+                  type: string
+                  description: Optional. Brand identifier.
+                  example: "1"
+              title: RunRequest
+            example:
+              BrandID: "1"
+      x-copy:
+        curl: |-
+          curl -X POST "{baseUrl}/api/v1/sync/stockopname-difference/run" \
+            -H "Authorization: Basic <base64(user:password)>" \
+            -H "Content-Type: application/json" \
+            -H "Accept: application/json" \
+            -d '{
+            "BrandID": "1"
+          }'
+        powershell: >-
+          $headers = @{
+            "Authorization" = "Basic <base64(user:password)>"
+            "Content-Type" = "application/json"
+            "Accept" = "application/json"
+          }
+
+          $body = @'
+
+          {
+            "BrandID": "1"
+          }
+
+          '@
+
+          Invoke-RestMethod -Method POST -Uri "{baseUrl}/api/v1/sync/stockopname-difference/run" -Headers $headers -Body
+          $body
+        http: |-
+          POST /api/v1/sync/stockopname-difference/run HTTP/1.1
+          Host: {host}
+          Authorization: Basic <base64(user:password)>
+          Content-Type: application/json
+          Accept: application/json
+
+          {
+            "BrandID": "1"
+          }
+        url: "{baseUrl}/api/v1/sync/stockopname-difference/run"
+        all: >-
+          Run Stock Opname Difference Sync
+
+          POST {baseUrl}/api/v1/sync/stockopname-difference/run
+
+
+          Authentication: Requires HTTP Basic authentication. Send `Authorization: Basic <base64(user:password)>` using
+          BASIC_AUTH_USER and BASIC_AUTH_PASSWORD. You can also use `curl -u user:password`.
+
+
+          Headers:
+
+          Authorization: Basic <base64(user:password)>
+
+          Content-Type: application/json
+
+          Accept: application/json
+
+
+          Body:
+
+          {
+            "BrandID": "1"
+          }
+
+
+          curl:
+
+          curl -X POST "{baseUrl}/api/v1/sync/stockopname-difference/run" \
+            -H "Authorization: Basic <base64(user:password)>" \
+            -H "Content-Type: application/json" \
+            -H "Accept: application/json" \
+            -d '{
+            "BrandID": "1"
+          }'
+      description: >-
+        Run Stock Opname Difference Sync is part of the Sync category.
+
+
+        **Who this is for:** Operations and Support when replaying a scheduled sync job.
+
+
+        **Authentication:** Requires HTTP Basic authentication. Send `Authorization: Basic <base64(user:password)>`
+        using BASIC_AUTH_USER and BASIC_AUTH_PASSWORD. You can also use `curl -u user:password`.
+
+
+        **How to test:** Copy the sample request below, replace every placeholder (values in `<angle brackets>` and
+        sample data), then send it from Postman, curl, or PowerShell.
+
+
+        **Known error messages:** invalid JSON body; request body too large; data for this period has already been
+        generated
+
+
+        **Copy-ready curl**
+
+
+        ```bash
+
+        curl -X POST "{baseUrl}/api/v1/sync/stockopname-difference/run" \
+          -H "Authorization: Basic <base64(user:password)>" \
+          -H "Content-Type: application/json" \
+          -H "Accept: application/json" \
+          -d '{
+          "BrandID": "1"
+        }'
+
+        ```
+
+
+        Technical source notes are omitted from this description so analysts and Support can scan the contract quickly.
+  /api/v1/sync/supplier/run:
+    post:
+      tags:
+        - Sync
+      summary: Run Supplier Sync
+      operationId: syncSupplierHandlerRunSupplierSync
+      responses:
+        "200":
+          description: Successful response. The live JSON shape can vary; compare it with this sample.
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+              example:
+                status: success
+                message: Request completed
+                data: {}
+          x-java-response-type: Object
+        "401":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 401
+                message: Internal Server Error
+          x-java-response-type: Object
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 500
+                message: Internal Server Error
+          x-java-response-type: Object
+      x-source-controller: SyncSupplierHandler
+      x-source-location: internal/modules/sync_supplier/handler.go:23
+      x-source-http-method: POST
+      x-audience: Operations and Support when replaying a scheduled sync job
+      x-auth:
+        type: HTTP Basic
+        required: true
+        summary: "Requires HTTP Basic authentication. Send `Authorization: Basic <base64(user:password)>` using BASIC_AUTH_USER
+          and BASIC_AUTH_PASSWORD. You can also use `curl -u user:password`."
+        headers:
+          - name: Authorization
+            example: Basic <base64(user:password)>
+            note: Replace with base64 of BASIC_AUTH_USER:BASIC_AUTH_PASSWORD, or use curl -u.
+        raw: "HTTP Basic (Authorization: Basic <base64(user:password)>) (handler-level)"
+      x-validation: []
+      x-error-messages:
+        - Internal Server Error
+      x-app-area: Sync
+      security:
+        - basicAuth: []
+      x-copy:
+        curl: |-
+          curl -X POST "{baseUrl}/api/v1/sync/supplier/run" \
+            -H "Authorization: Basic <base64(user:password)>" \
+            -H "Accept: application/json"
+        powershell: |-
+          $headers = @{
+            "Authorization" = "Basic <base64(user:password)>"
+            "Accept" = "application/json"
+          }
+          Invoke-RestMethod -Method POST -Uri "{baseUrl}/api/v1/sync/supplier/run" -Headers $headers
+        http: |-
+          POST /api/v1/sync/supplier/run HTTP/1.1
+          Host: {host}
+          Authorization: Basic <base64(user:password)>
+          Accept: application/json
+        url: "{baseUrl}/api/v1/sync/supplier/run"
+        all: >-
+          Run Supplier Sync
+
+          POST {baseUrl}/api/v1/sync/supplier/run
+
+
+          Authentication: Requires HTTP Basic authentication. Send `Authorization: Basic <base64(user:password)>` using
+          BASIC_AUTH_USER and BASIC_AUTH_PASSWORD. You can also use `curl -u user:password`.
+
+
+          Headers:
+
+          Authorization: Basic <base64(user:password)>
+
+          Accept: application/json
+
+
+          curl:
+
+          curl -X POST "{baseUrl}/api/v1/sync/supplier/run" \
+            -H "Authorization: Basic <base64(user:password)>" \
+            -H "Accept: application/json"
+      description: >-
+        Run Supplier Sync is part of the Sync category.
+
+
+        **Who this is for:** Operations and Support when replaying a scheduled sync job.
+
+
+        **Authentication:** Requires HTTP Basic authentication. Send `Authorization: Basic <base64(user:password)>`
+        using BASIC_AUTH_USER and BASIC_AUTH_PASSWORD. You can also use `curl -u user:password`.
+
+
+        **How to test:** Copy the sample request below, replace every placeholder (values in `<angle brackets>` and
+        sample data), then send it from Postman, curl, or PowerShell.
+
+
+        **Known error messages:** Internal Server Error
+
+
+        **Copy-ready curl**
+
+
+        ```bash
+
+        curl -X POST "{baseUrl}/api/v1/sync/supplier/run" \
+          -H "Authorization: Basic <base64(user:password)>" \
+          -H "Accept: application/json"
+        ```
+
+
+        Technical source notes are omitted from this description so analysts and Support can scan the contract quickly.
+  /healthz:
+    get:
+      tags:
+        - Health
+      summary: Health Check
+      operationId: healthHandlerHealthCheck
+      responses:
+        "200":
+          description: Successful response. The live JSON shape can vary; compare it with this sample.
+          content:
+            text/plain:
+              schema:
+                type: string
+              example: OK
+          x-java-response-type: String
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 401
+                message: Unauthorized
+          x-java-response-type: String
+      x-source-controller: HealthHandler
+      x-source-location: internal/auth/handler.go:15
+      x-source-http-method: GET
+      x-audience: Anyone checking whether the Sync Process API is up
+      x-auth:
+        type: HTTP Basic
+        required: true
+        summary: "Requires HTTP Basic authentication. Send `Authorization: Basic <base64(user:password)>` using BASIC_AUTH_USER
+          and BASIC_AUTH_PASSWORD. You can also use `curl -u user:password`."
+        headers:
+          - name: Authorization
+            example: Basic <base64(user:password)>
+            note: Replace with base64 of BASIC_AUTH_USER:BASIC_AUTH_PASSWORD, or use curl -u.
+        raw: "HTTP Basic (Authorization: Basic <base64(user:password)>) (handler-level)"
+      x-validation: []
+      x-error-messages:
+        - Unauthorized
+      x-app-area: Health
+      security:
+        - basicAuth: []
+      x-copy:
+        curl: |-
+          curl -X GET "{baseUrl}/healthz" \
+            -H "Authorization: Basic <base64(user:password)>" \
+            -H "Accept: application/json"
+        powershell: |-
+          $headers = @{
+            "Authorization" = "Basic <base64(user:password)>"
+            "Accept" = "application/json"
+          }
+          Invoke-RestMethod -Method GET -Uri "{baseUrl}/healthz" -Headers $headers
+        http: |-
+          GET /healthz HTTP/1.1
+          Host: {host}
+          Authorization: Basic <base64(user:password)>
+          Accept: application/json
+        url: "{baseUrl}/healthz"
+        all: >-
+          Health Check
+
+          GET {baseUrl}/healthz
+
+
+          Authentication: Requires HTTP Basic authentication. Send `Authorization: Basic <base64(user:password)>` using
+          BASIC_AUTH_USER and BASIC_AUTH_PASSWORD. You can also use `curl -u user:password`.
+
+
+          Headers:
+
+          Authorization: Basic <base64(user:password)>
+
+          Accept: application/json
+
+
+          curl:
+
+          curl -X GET "{baseUrl}/healthz" \
+            -H "Authorization: Basic <base64(user:password)>" \
+            -H "Accept: application/json"
+      description: >-
+        Health Check is part of the Health category.
+
+
+        **Who this is for:** Anyone checking whether the Sync Process API is up.
+
+
+        **Authentication:** Requires HTTP Basic authentication. Send `Authorization: Basic <base64(user:password)>`
+        using BASIC_AUTH_USER and BASIC_AUTH_PASSWORD. You can also use `curl -u user:password`.
+
+
+        **How to test:** Copy the sample request below, replace every placeholder (values in `<angle brackets>` and
+        sample data), then send it from Postman, curl, or PowerShell.
+
+
+        **Known error messages:** Unauthorized
+
+
+        **Copy-ready curl**
+
+
+        ```bash
+
+        curl -X GET "{baseUrl}/healthz" \
+          -H "Authorization: Basic <base64(user:password)>" \
+          -H "Accept: application/json"
+        ```
+
+
+        Technical source notes are omitted from this description so analysts and Support can scan the contract quickly.
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: "Send the access token as `Authorization: Bearer <access_token>`. Copy the token from the Login response."
+    headerXAuditAdminKey:
+      type: apiKey
+      in: header
+      name: X-Audit-Admin-Key
+      description: "Send `X-Audit-Admin-Key: <audit_admin_key>`. Replace the placeholder with the real credential."
+    basicAuth:
+      type: http
+      scheme: basic
+      description: "Send HTTP Basic credentials as `Authorization: Basic <base64(user:password)>`. Use BASIC_AUTH_USER and
+        BASIC_AUTH_PASSWORD, or `curl -u user:password`."
+  schemas:
+    Error:
+      type: object
+      additionalProperties: true
+      description: Error response shape varies by endpoint. Use HTTP status, known error messages, and the sample error JSON
+        as a starting point.
+      example:
+        status: error
+        httpStatus: 400
+        message: Request failed. Check headers, required fields, and authentication.

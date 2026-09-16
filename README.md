@@ -24,9 +24,11 @@ Useful endpoints:
 | `/docs/` | Application menu: Boga APP API, WebApps API, Budgeting API, Sync Process API |
 | `/docs/#app/boga-app` | Boga APP API reader portal with category sidebar and copy-ready requests |
 | `/docs/#app/webapps` | WebApps API reader portal for MyBoga, VMS, ATS, and BogaBOT |
+| `/docs/#app/sync-process` | Sync Process API reader portal for health, sync jobs, and admin maintenance |
 | `/swagger/` | Swagger UI for schema exploration |
 | `/openapi.yaml` | Raw OpenAPI contract for Boga APP API |
 | `/openapi/webapps.yaml` | Raw OpenAPI contract for WebApps API |
+| `/openapi/sync-process.yaml` | Raw OpenAPI contract for Sync Process API |
 | `/health` | Deployment health check |
 
 Run all checks with `npm run check`.
@@ -35,7 +37,7 @@ Run all checks with `npm run check`.
 
 The portal is written so non-developers can test an API without guessing headers or payloads.
 
-1. Choose an application from the main menu. **Boga APP API** and **WebApps API** are published catalogs. Budgeting API and Sync Process API are listed and will receive endpoint docs when their inventories are published.
+1. Choose an application from the main menu. **Boga APP API**, **WebApps API**, and **Sync Process API** are published catalogs. Budgeting API is listed and will receive endpoint docs when its inventory is published.
 2. Search or scan the **left sidebar** by category.
 3. Open the category and read **Authentication** at the top.
 4. Open an endpoint. Titles are **Title Case** and bold.
@@ -63,6 +65,7 @@ The API catalog is generated from inventory CSV files:
 | --- | --- |
 | `data/api_documentation_inventory.csv` | Boga APP API |
 | `data/webapps-api-inventory.csv` | WebApps API (MyBoga, VMS, ATS, BogaBOT) |
+| `data/syncprocess-api-inventory.csv` | Sync Process API |
 
 After replacing or editing an inventory, rebuild and validate the documentation:
 
@@ -71,7 +74,7 @@ npm run generate
 npm run validate
 ```
 
-`openapi/openapi.yaml` and `openapi/webapps.yaml` are generated output and should not be edited by hand. Update `scripts/generate-openapi.js` and `scripts/lib/docs-model.js` when the inventory format or shared documentation metadata changes.
+`openapi/openapi.yaml`, `openapi/webapps.yaml`, and `openapi/sync-process.yaml` are generated output and should not be edited by hand. Update `scripts/generate-openapi.js` and `scripts/lib/docs-model.js` when the inventory format or shared documentation metadata changes.
 
 Each operation should normally include:
 

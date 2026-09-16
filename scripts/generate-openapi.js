@@ -2,7 +2,7 @@ const fs = require("node:fs");
 const path = require("node:path");
 const { parse } = require("csv-parse/sync");
 const YAML = require("yaml");
-const { allowedMethods, buildDocument, WEBAPPS_INFO_DESCRIPTION } = require("./lib/docs-model");
+const { allowedMethods, buildDocument, WEBAPPS_INFO_DESCRIPTION, SYNC_INFO_DESCRIPTION } = require("./lib/docs-model");
 
 const targets = [
   {
@@ -17,6 +17,13 @@ const targets = [
     output: process.env.WEBAPPS_OPENAPI_FILE || "openapi/webapps.yaml",
     title: "WebApps API Documentation",
     description: WEBAPPS_INFO_DESCRIPTION
+  },
+  {
+    id: "sync-process",
+    inventory: process.env.SYNCPROCESS_INVENTORY_FILE || "data/syncprocess-api-inventory.csv",
+    output: process.env.SYNCPROCESS_OPENAPI_FILE || "openapi/sync-process.yaml",
+    title: "Sync Process API Documentation",
+    description: SYNC_INFO_DESCRIPTION
   }
 ];
 

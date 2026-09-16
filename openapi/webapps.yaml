@@ -23458,8 +23458,8 @@ paths:
     post:
       tags:
         - MyBoga Production
-      summary: List Bom
-      operationId: productionControllerListBom
+      summary: List BOM
+      operationId: productionControllerListBOM
       responses:
         "200":
           description: Successful response. The live JSON shape can vary; compare it with this sample.
@@ -23521,7 +23521,7 @@ paths:
           {}
         url: "{baseUrl}/api/Production/ListBOM"
         all: |-
-          List Bom
+          List BOM
           POST {baseUrl}/api/Production/ListBOM
 
           Authentication: Public endpoint. You can call this without a login token or API key.
@@ -23539,7 +23539,7 @@ paths:
             -H "Accept: application/json" \
             -d '{}'
       description: >-
-        List Bom is part of the MyBoga Production category.
+        List BOM is part of the MyBoga Production category.
 
 
         **Who this is for:** MyBoga, System Analysts, and Support.
@@ -23569,8 +23569,8 @@ paths:
     post:
       tags:
         - MyBoga Production
-      summary: List Bom Detail
-      operationId: productionControllerListBomDetail
+      summary: List BOM Detail
+      operationId: productionControllerListBOMDetail
       responses:
         "200":
           description: Successful response. The live JSON shape can vary; compare it with this sample.
@@ -23632,7 +23632,7 @@ paths:
           {}
         url: "{baseUrl}/api/Production/ListBOMDetail"
         all: |-
-          List Bom Detail
+          List BOM Detail
           POST {baseUrl}/api/Production/ListBOMDetail
 
           Authentication: Public endpoint. You can call this without a login token or API key.
@@ -23650,7 +23650,7 @@ paths:
             -H "Accept: application/json" \
             -d '{}'
       description: >-
-        List Bom Detail is part of the MyBoga Production category.
+        List BOM Detail is part of the MyBoga Production category.
 
 
         **Who this is for:** MyBoga, System Analysts, and Support.
