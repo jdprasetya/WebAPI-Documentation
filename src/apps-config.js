@@ -4,7 +4,8 @@ const apps = [
     name: "Boga APP API",
     description: "Customer-facing Boga mobile app APIs. Covers account, catalog, orders, payments, vouchers, and related services.",
     accent: "orange",
-    hasCatalog: true
+    hasCatalog: true,
+    openapiFile: "openapi/openapi.yaml"
   },
   {
     id: "webapps",
@@ -12,7 +13,8 @@ const apps = [
     subtitle: "MyBoga, VMS, ATS, BogaBOT",
     description: "APIs for Boga web applications, including MyBoga, VMS, ATS, and BogaBOT.",
     accent: "slate",
-    hasCatalog: false
+    hasCatalog: true,
+    openapiFile: "openapi/webapps.yaml"
   },
   {
     id: "budgeting",
@@ -38,8 +40,20 @@ function getApp(id) {
   return apps.find((app) => app.id === id) || null;
 }
 
+function publicApp(app) {
+  return {
+    id: app.id,
+    name: app.name,
+    subtitle: app.subtitle || "",
+    description: app.description,
+    accent: app.accent,
+    hasCatalog: Boolean(app.hasCatalog)
+  };
+}
+
 module.exports = {
   apps,
   getApps,
-  getApp
+  getApp,
+  publicApp
 };

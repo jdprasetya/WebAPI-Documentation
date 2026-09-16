@@ -15,7 +15,7 @@ const FALLBACK_APPS = [
     subtitle: "MyBoga, VMS, ATS, BogaBOT",
     description: "APIs for Boga web applications, including MyBoga, VMS, ATS, and BogaBOT.",
     accent: "slate",
-    hasCatalog: false
+    hasCatalog: true
   },
   {
     id: "budgeting",
@@ -297,18 +297,23 @@ function filterCatalog(catalog, query) {
   }).filter(Boolean);
 }
 
+function hashFor(appId, suffix) {
+  return `#app/${appId}/${suffix}`;
+}
+
 function renderSidenav(filtered, route) {
+  const appId = route.app?.id || DEFAULT_APP_ID;
   const homeActive = route.type === "home" ? "active" : "";
   const items = filtered.map((category) => {
     const authActive = route.categoryId === category.id && (route.focus === "authentication" || !route.operationId) ? "active" : "";
     return `
       <div class="nav-category" data-category="${escapeHtml(category.id)}">
-        <a class="nav-category-toggle" href="#api-${escapeHtml(category.id)}-authentication">${escapeHtml(category.name)}</a>
+        <a class="nav-category-toggle" href="${hashFor(appId, `api-${escapeHtml(category.id)}-authentication`)}">${escapeHtml(category.name)}</a>
         <div class="nav-children">
-          <a class="nav-link nav-auth ${authActive}" href="#api-${escapeHtml(category.id)}-authentication">Authentication</a>
+          <a class="nav-link nav-auth ${authActive}" href="${hashFor(appId, `api-${escapeHtml(category.id)}-authentication`)}">Authentication</a>
           ${category.operations.map((operation) => {
             const active = route.categoryId === category.id && route.operationId === operation.id ? "active" : "";
-            return `<a class="nav-link ${active}" href="#api-${escapeHtml(category.id)}-${escapeHtml(operation.id)}"><span class="${methodClass(operation.method)}">${escapeHtml(operation.method)}</span><span class="nav-title">${escapeHtml(operation.title)}</span></a>`;
+            return `<a class="nav-link ${active}" href="${hashFor(appId, `api-${escapeHtml(category.id)}-${escapeHtml(operation.id)}`)}"><span class="${methodClass(operation.method)}">${escapeHtml(operation.method)}</span><span class="nav-title">${escapeHtml(operation.title)}</span></a>`;
           }).join("")}
         </div>
       </div>
@@ -316,35 +321,66 @@ function renderSidenav(filtered, route) {
   }).join("");
   return `
     <a class="nav-home nav-apps" href="#apps">All applications</a>
-    <a class="nav-home ${homeActive}" href="#app/${DEFAULT_APP_ID}">Overview</a>
+    <a class="nav-home ${homeActive}" href="#app/${escapeHtml(appId)}">Overview</a>
     ${items || `<p class="nav-empty">No matching endpoints.</p>`}
   `;
 }
 
-function parseRoute(catalog) {
+function parseHashParts() {
   const hash = decodeURIComponent((location.hash || "").replace(/^#/, ""));
-  const defaultApp = findApp(DEFAULT_APP_ID);
   if (!hash || hash === "apps") return { type: "apps" };
   if (hash.startsWith("app/")) {
-    const app = findApp(hash.slice(4).split("/")[0]);
+    const rest = hash.slice(4);
+    const slash = rest.indexOf("/");
+    const appId = slash === -1 ? rest : rest.slice(0, slash);
+    const inner = slash === -1 ? "" : rest.slice(slash + 1);
+    const app = findApp(appId);
     if (!app) return { type: "apps" };
     if (!app.hasCatalog) return { type: "placeholder", app };
-    return { type: "home", app };
+    return { type: "inner", app, inner };
   }
-  if (hash === "getting-started") return { type: "home", app: defaultApp };
-  if (!hash.startsWith("api-")) return { type: "apps" };
-  const rest = hash.slice(4);
-  const categories = [...catalog.categories].sort((left, right) => right.id.length - left.id.length);
+  if (hash === "getting-started" || hash.startsWith("api-")) {
+    return { type: "inner", app: findApp(DEFAULT_APP_ID), inner: hash };
+  }
+  return { type: "apps" };
+}
+
+function parseRoute(catalog) {
+  const parts = parseHashParts();
+  if (parts.type !== "inner") return parts;
+  const { app, inner } = parts;
+  if (!inner || inner === "getting-started") return { type: "home", app };
+  if (!inner.startsWith("api-")) return { type: "home", app };
+  const rest = inner.slice(4);
+  const categories = [...(catalog?.categories || [])].sort((left, right) => right.id.length - left.id.length);
   for (const category of categories) {
     if (rest === category.id || rest === `${category.id}-authentication`) {
-      return { type: "category", app: defaultApp, categoryId: category.id, focus: "authentication" };
+      return { type: "category", app, categoryId: category.id, focus: "authentication" };
     }
     const prefix = `${category.id}-`;
     if (rest.startsWith(prefix)) {
-      return { type: "category", app: defaultApp, categoryId: category.id, operationId: rest.slice(prefix.length) };
+      return { type: "category", app, categoryId: category.id, operationId: rest.slice(prefix.length) };
     }
   }
-  return { type: "home", app: defaultApp };
+  return { type: "home", app };
+}
+
+function focusIdFromHash() {
+  const hash = decodeURIComponent((location.hash || "").replace(/^#/, ""));
+  if (hash.startsWith("app/")) {
+    const slash = hash.indexOf("/", 4);
+    return slash === -1 ? "getting-started" : hash.slice(slash + 1);
+  }
+  return hash || "getting-started";
+}
+
+function catalogUrlFor(appId) {
+  const base = config.basePath || "";
+  const urls = [`${base}/docs/apps/${encodeURIComponent(appId)}/catalog.json`];
+  if (appId === DEFAULT_APP_ID && config.catalogUrl) {
+    urls.push(config.catalogUrl);
+  }
+  return urls;
 }
 
 function closeMobileNav() {
@@ -385,55 +421,75 @@ async function main() {
   const search = document.getElementById("nav-search");
   const toggle = document.querySelector(".nav-toggle");
   const backdrop = document.querySelector(".sidebar-backdrop");
-  let catalog = { info: { title: document.title }, categories: [], authTypes: [] };
+  const catalogs = {};
+  let renderSeq = 0;
 
-  function setChrome(route) {
+  function setChrome(route, catalog) {
     const hideSidebar = route.type === "apps" || route.type === "placeholder";
     document.body.classList.toggle("landing-mode", hideSidebar);
     if (toggle) toggle.hidden = hideSidebar;
     const brandTitle = document.getElementById("brand-title");
     if (brandTitle) {
-      brandTitle.textContent = route.app?.name || catalog.info?.title || "Boga API Documentation";
+      brandTitle.textContent = route.app?.name || catalog?.info?.title || "Boga API Documentation";
     }
     if (hideSidebar) closeMobileNav();
   }
 
-  function render() {
-    const query = search.value || "";
-    const route = parseRoute(catalog);
-    const filtered = filterCatalog(catalog, query);
-    setChrome(route);
-    if (route.type === "apps") {
-      sidenav.innerHTML = "";
-      content.innerHTML = renderApps();
-    } else if (route.type === "placeholder") {
-      sidenav.innerHTML = "";
-      content.innerHTML = renderPlaceholder(route.app);
-    } else {
-      sidenav.innerHTML = renderSidenav(filtered, route);
-      if (catalog.loadError) {
-        content.innerHTML = `<p class="error">Could not load the API catalog. ${escapeHtml(catalog.loadError)}</p>`;
-      } else if (route.type === "home") {
-        content.innerHTML = renderHome(catalog, route.app);
-      } else {
-        const category = catalog.categories.find((item) => item.id === route.categoryId);
-        content.innerHTML = category ? renderCategory(category) : renderHome(catalog, route.app);
+  async function loadCatalog(appId) {
+    if (catalogs[appId]) return catalogs[appId];
+    let lastError = null;
+    for (const url of catalogUrlFor(appId)) {
+      try {
+        const response = await fetch(url);
+        if (!response.ok) throw new Error("Could not load catalog");
+        catalogs[appId] = await response.json();
+        return catalogs[appId];
+      } catch (error) {
+        lastError = error;
       }
     }
-    bindCopyButtons(document);
-    const hash = location.hash.replace(/^#/, "");
-    if (route.type === "apps") {
+    catalogs[appId] = {
+      info: { title: document.title },
+      categories: [],
+      authTypes: [],
+      loadError: lastError?.message || "Could not load catalog"
+    };
+    return catalogs[appId];
+  }
+
+  async function render() {
+    const seq = ++renderSeq;
+    const query = search.value || "";
+    const peek = parseHashParts();
+    if (peek.type === "apps" || peek.type === "placeholder") {
+      setChrome(peek);
+      sidenav.innerHTML = "";
+      content.innerHTML = peek.type === "apps" ? renderApps() : renderPlaceholder(peek.app);
       content.scrollTo({ top: 0 });
+      return;
+    }
+
+    const catalog = await loadCatalog(peek.app?.id || DEFAULT_APP_ID);
+    if (seq !== renderSeq) return;
+    const route = parseRoute(catalog);
+    const filtered = filterCatalog(catalog, query);
+    setChrome(route, catalog);
+    sidenav.innerHTML = renderSidenav(filtered, route);
+    if (catalog.loadError) {
+      content.innerHTML = `<p class="error">Could not load the API catalog. ${escapeHtml(catalog.loadError)}</p>`;
+    } else if (route.type === "home") {
+      content.innerHTML = renderHome(catalog, route.app);
     } else {
-      const focusId = !hash || hash.startsWith("app/")
-        ? (route.type === "placeholder" ? "app-overview" : "getting-started")
-        : hash;
-      const focusNode = document.getElementById(focusId);
-      if (focusNode) {
-        focusNode.scrollIntoView({ block: "start" });
-      } else {
-        content.scrollTo({ top: 0 });
-      }
+      const category = catalog.categories.find((item) => item.id === route.categoryId);
+      content.innerHTML = category ? renderCategory(category) : renderHome(catalog, route.app);
+    }
+    bindCopyButtons(document);
+    const focusId = route.type === "home" ? "getting-started" : focusIdFromHash();
+    const focusNode = document.getElementById(focusId);
+    if (focusNode) {
+      focusNode.scrollIntoView({ block: "start" });
+    } else {
+      content.scrollTo({ top: 0 });
     }
     sidenav.querySelectorAll("a").forEach((link) => {
       link.addEventListener("click", () => closeMobileNav());
@@ -446,26 +502,19 @@ async function main() {
     if (backdrop) backdrop.hidden = !open;
   });
   backdrop?.addEventListener("click", closeMobileNav);
-  search.addEventListener("input", render);
-  window.addEventListener("hashchange", render);
+  search.addEventListener("input", () => {
+    render();
+  });
+  window.addEventListener("hashchange", () => {
+    render();
+  });
   document.addEventListener("keydown", (event) => {
     if (event.key === "/" && document.activeElement !== search && !document.body.classList.contains("landing-mode")) {
       event.preventDefault();
       search.focus();
     }
   });
-  render();
-
-  try {
-    const response = await fetch(config.catalogUrl);
-    if (!response.ok) throw new Error("Could not load catalog");
-    catalog = await response.json();
-  } catch (error) {
-    catalog = { ...catalog, loadError: error.message };
-  }
-  if (parseRoute(catalog).type !== "apps") {
-    render();
-  }
+  await render();
 }
 
 main();

@@ -17,9 +17,20 @@ const ACRONYMS = new Map([
   ["pt", "PT"],
   ["qr", "QR"],
   ["sms", "SMS"],
+  ["ats", "ATS"],
+  ["ba", "BA"],
+  ["ca", "CA"],
+  ["it", "IT"],
+  ["kpi", "KPI"],
+  ["mrp", "MRP"],
+  ["ocr", "OCR"],
+  ["ods", "ODS"],
+  ["pod", "POD"],
+  ["spv", "SPV"],
   ["url", "URL"],
   ["uuid", "UUID"],
-  ["va", "VA"]
+  ["va", "VA"],
+  ["vms", "VMS"]
 ]);
 
 const FIELD_HINTS = [
@@ -75,6 +86,13 @@ function tokenizeName(value) {
   protect(/OTP/gi, "OTP");
   protect(/JWT/g, "JWT");
   protect(/UUID/gi, "UUID");
+  protect(/OCR/g, "OCR");
+  protect(/MRP/g, "MRP");
+  protect(/KPI/g, "KPI");
+  protect(/ODS/gi, "ODS");
+  protect(/ATS/g, "ATS");
+  protect(/VMS/g, "VMS");
+  protect(/POD/g, "POD");
 
   text = text
     .replace(/([a-z0-9])([A-Z])/g, "$1 $2")
@@ -289,7 +307,10 @@ function classifyAuth(row) {
       ? "A Bearer JWT is typically required by the API security filter. Send the access token in the Authorization header."
       : "Requires a Bearer JWT. Call Login first, copy the token from the response, then send it here.";
     addHeader("Authorization", "Bearer <access_token>", "Replace <access_token> with the token from Login.");
-  } else if (/permitAll|None declared/i.test(authorization) && declaredHeaders.length === 0) {
+  } else if (
+    /permitAll|None declared|No visible handler-level auth/i.test(authorization) &&
+    declaredHeaders.length === 0
+  ) {
     type = "Public";
     required = false;
     summary = "Public endpoint. You can call this without a login token or API key.";
@@ -324,7 +345,12 @@ function classifyAuth(row) {
   };
 }
 
-function audienceFor(controller, path) {
+function audienceFor(controller, path, row = {}) {
+  const area = String(row.app_area || "").trim();
+  if (area === "ATS") return "ATS, HR, System Analysts, and Support";
+  if (area === "VMS") return "VMS, procurement, System Analysts, and Support";
+  if (area === "BogaBOT") return "BogaBOT, operations, System Analysts, and Support";
+  if (area === "MyBoga") return "MyBoga, System Analysts, and Support";
   if (/CMS|Cms/.test(controller) || /\/cms\//.test(path)) return "CMS, System Analysts, and Support";
   if (/Task$/.test(controller) || /\/task\//.test(path)) return "Operations and Support when replaying a scheduled job";
   if (/BogaBot/.test(controller)) return "BogaBot and integration partners";
@@ -332,6 +358,49 @@ function audienceFor(controller, path) {
   if (/Bca|Mandiri|Va/.test(controller)) return "Bank virtual-account integration and Support when tracing payments";
   if (/Auth|Authentication/.test(controller)) return "Anyone who needs a session token before calling protected APIs";
   return "Application, integration, System Analysts, and Support";
+}
+
+function mapAuthGroup(value) {
+  if (!value || /no visible handler-level auth/i.test(value)) {
+    return "None declared at handler; method is permitAll in SecurityConfig";
+  }
+  return String(value).trim();
+}
+
+function tagFor(row) {
+  const area = String(row.app_area || "").trim();
+  if (area) {
+    const section = String(row.section || row.controller || "")
+      .replace(/Controller$/, "")
+      .trim();
+    if (!section || section === area) return area;
+    return `${area} ${titleCase(section)}`;
+  }
+  return titleCase(row.controller) || "Other";
+}
+
+function normalizeInventoryRow(row) {
+  const httpMethod = String(row.http_method || "GET").toUpperCase();
+  const source = String(row.source || "").trim();
+  const line = String(row.line || "").trim();
+  const sourceWithLine = source && line && !/:\d+$/.test(source) ? `${source}:${line}` : source;
+  const isWebapps = Boolean(String(row.app_area || "").trim());
+  const isPost = httpMethod === "POST";
+
+  return {
+    ...row,
+    http_method: httpMethod,
+    operation: row.operation || row.method,
+    source: sourceWithLine,
+    authorization: row.authorization || mapAuthGroup(row.auth_group),
+    auth_headers: row.auth_headers || row.headers || "",
+    content_type: row.content_type || (isWebapps && isPost ? "application/json" : row.content_type),
+    body_type: row.body_type || (isWebapps && isPost ? "Object (schema not statically declared)" : row.body_type),
+    success_http_codes: row.success_http_codes || (isWebapps ? "200" : row.success_http_codes),
+    documentation_notes: row.documentation_notes || (isWebapps
+      ? "Static source scan of Boga.WebAPI. Handler-level authentication, request body schema, and runtime-only errors were not declared in this inventory."
+      : row.documentation_notes)
+  };
 }
 
 function friendlyValidation(rules) {
@@ -370,7 +439,15 @@ function requestExample(row, fieldsInfo) {
       note: "The source code does not declare a fixed JSON schema. Start from a small JSON object and adjust fields based on what the caller actually sends."
     };
   }
-  if (!fieldsInfo.fields.length) return null;
+  if (!fieldsInfo.fields.length) {
+    if (String(row.app_area || "").trim()) {
+      return {
+        example: {},
+        note: "The source scan did not declare a JSON schema. Start with this object and add the fields the WebApps caller actually sends."
+      };
+    }
+    return null;
+  }
   const example = {};
   for (const field of fieldsInfo.fields) {
     example[field.name] = exampleValue(field.name, field.type);
@@ -558,8 +635,9 @@ function createParameter(name, location, required, type = "String") {
 
 function descriptionFor(row, sourceMethod, auth, copy, audience) {
   const title = titleCase(row.operation) || `${sourceMethod} ${row.path}`;
+  const category = tagFor(row);
   const sections = [
-    `${title} is part of the ${titleCase(row.controller)} category.`,
+    `${title} is part of the ${category} category.`,
     `**Who this is for:** ${audience}.`,
     `**Authentication:** ${auth.summary}`,
     "**How to test:** Copy the sample request below, replace every placeholder (values in `<angle brackets>` and sample data), then send it from Postman, curl, or PowerShell."
@@ -606,7 +684,40 @@ Never put production secrets, customer personal data, or live credentials into e
 
 A reader-friendly portal with a category sidebar is available at \`/docs/\`. Swagger UI remains at \`/swagger/\`.`;
 
-function buildDocument(rows) {
+const WEBAPPS_INFO_DESCRIPTION = `This documentation is written for **developers**, **System Analysts**, and **Support**.
+
+WebApps API covers **MyBoga**, **VMS**, **ATS**, and **BogaBOT**.
+
+
+## How To Use This Documentation
+
+1. Open a category from the sidebar. Categories are grouped by product, for example **MyBoga Production** or **VMS Vendor Request**.
+2. Read **Authentication** at the top of that category before you test anything.
+3. Copy the sample request, replace placeholders, and send it from Postman, curl, or PowerShell.
+
+
+Placeholders look like \`<access_token>\` or \`<api_key>\`. Sample values such as \`analyst@example.com\` are safe fixtures, not real accounts.
+
+
+## Authentication
+
+This inventory is a static source scan of Boga.WebAPI. Most handlers do not declare authentication in code, so they are documented as **public**. Confirm the real login or API-key requirement with the WebApps team before testing against a live environment.
+
+POST samples use an empty JSON object as a starting point because request body schemas were not declared in the scan.
+
+
+Never put production secrets, customer personal data, or live credentials into examples or tickets.
+
+A reader-friendly portal with a category sidebar is available at \`/docs/\`. Swagger UI remains at \`/swagger/\`.`;
+
+const AREA_ORDER = {
+  ATS: 1,
+  BogaBOT: 2,
+  MyBoga: 3,
+  VMS: 4
+};
+
+function buildDocument(rows, options = {}) {
   const usedOperationIds = new Set();
   const tagMap = new Map();
   const securitySchemes = {
@@ -620,9 +731,9 @@ function buildDocument(rows) {
   const document = {
     openapi: "3.0.3",
     info: {
-      title: "Boga API Documentation",
+      title: options.title || "Boga API Documentation",
       version: "1.0.0",
-      description: INFO_DESCRIPTION,
+      description: options.description || INFO_DESCRIPTION,
       contact: { name: "API Platform Team" }
     },
     servers: [
@@ -654,9 +765,11 @@ function buildDocument(rows) {
     }
   };
 
-  const sortedRows = [...rows].sort((left, right) =>
-    left.path.localeCompare(right.path) || left.http_method.localeCompare(right.http_method)
-  );
+  const sortedRows = [...rows]
+    .map((row) => normalizeInventoryRow(row))
+    .sort((left, right) =>
+      left.path.localeCompare(right.path) || left.http_method.localeCompare(right.http_method)
+    );
 
   for (const row of sortedRows) {
     if (!row.path) continue;
@@ -666,13 +779,14 @@ function buildDocument(rows) {
       throw new Error(`Unsupported HTTP method ${sourceMethod} for ${row.path}`);
     }
 
-    const tag = titleCase(row.controller) || "Other";
+    const tag = tagFor(row);
     const title = titleCase(row.operation) || `${sourceMethod} ${row.path}`;
     const auth = classifyAuth(row);
-    const audience = audienceFor(row.controller, row.path);
+    const audience = audienceFor(row.controller, row.path, row);
     const fieldsInfo = requestFields(row);
     tagMap.set(tag, {
       controller: row.controller,
+      area: String(row.app_area || "").trim(),
       audience,
       auths: [...(tagMap.get(tag)?.auths || []), auth]
     });
@@ -691,6 +805,7 @@ function buildDocument(rows) {
       "x-validation": friendlyValidation(row.validation_rules),
       "x-error-messages": splitList(row.error_messages)
     };
+    if (row.app_area) operation["x-app-area"] = row.app_area;
 
     const pathParameters = [];
     for (const item of splitList(row.path_parameters)) {
@@ -734,7 +849,7 @@ function buildDocument(rows) {
       operation.security = [security];
     } else if (/Bearer JWT/i.test(row.authorization || "")) {
       operation.security = [{ bearerAuth: [] }];
-    } else if (/permitAll|None declared/i.test(row.authorization || "")) {
+    } else if (/permitAll|None declared|No visible handler-level auth/i.test(row.authorization || "")) {
       operation.security = [];
     }
 
@@ -809,10 +924,12 @@ function buildDocument(rows) {
   }
 
   document.tags = [...tagMap.entries()]
-    .sort(([left], [right]) => {
+    .sort(([left, leftMeta], [right, rightMeta]) => {
+      const leftArea = AREA_ORDER[leftMeta.area] || 0;
+      const rightArea = AREA_ORDER[rightMeta.area] || 0;
       const leftAuth = /auth/i.test(left) ? 0 : 1;
       const rightAuth = /auth/i.test(right) ? 0 : 1;
-      return leftAuth - rightAuth || left.localeCompare(right);
+      return leftArea - rightArea || leftAuth - rightAuth || left.localeCompare(right);
     })
     .map(([name, meta]) => {
       const types = [...new Set(meta.auths.map((item) => item.type))];
@@ -842,7 +959,9 @@ module.exports = {
   buildDocument,
   classifyAuth,
   humanize,
+  normalizeInventoryRow,
   titleCase,
   slugify,
-  splitList
+  splitList,
+  WEBAPPS_INFO_DESCRIPTION
 };

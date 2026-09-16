@@ -23,8 +23,10 @@ Useful endpoints:
 | --- | --- |
 | `/docs/` | Application menu: Boga APP API, WebApps API, Budgeting API, Sync Process API |
 | `/docs/#app/boga-app` | Boga APP API reader portal with category sidebar and copy-ready requests |
+| `/docs/#app/webapps` | WebApps API reader portal for MyBoga, VMS, ATS, and BogaBOT |
 | `/swagger/` | Swagger UI for schema exploration |
-| `/openapi.yaml` | Raw OpenAPI contract |
+| `/openapi.yaml` | Raw OpenAPI contract for Boga APP API |
+| `/openapi/webapps.yaml` | Raw OpenAPI contract for WebApps API |
 | `/health` | Deployment health check |
 
 Run all checks with `npm run check`.
@@ -33,7 +35,7 @@ Run all checks with `npm run check`.
 
 The portal is written so non-developers can test an API without guessing headers or payloads.
 
-1. Choose an application from the main menu. **Boga APP API** is the published catalog. WebApps API (MyBoga, VMS, ATS, BogaBOT), Budgeting API, and Sync Process API are listed and will receive endpoint docs when their inventories are published.
+1. Choose an application from the main menu. **Boga APP API** and **WebApps API** are published catalogs. Budgeting API and Sync Process API are listed and will receive endpoint docs when their inventories are published.
 2. Search or scan the **left sidebar** by category.
 3. Open the category and read **Authentication** at the top.
 4. Open an endpoint. Titles are **Title Case** and bold.
@@ -50,19 +52,26 @@ to `/docs/`, and Vercel invokes the exported Express app in `src/app.js`.
 
 Do not set `PORT`, `HOST`, or `OPENAPI_FILE` in Vercel. Those variables are for
 the long-running local/Docker server; the serverless entry uses the bundled
-`openapi/openapi.yaml` file. `BASE_PATH`, `TRUST_PROXY`, and
+`openapi/*.yaml` files. `BASE_PATH`, `TRUST_PROXY`, and
 `ENABLE_TRY_IT_OUT` remain optional.
 
 ## Write your API contract
 
-The API catalog is generated from `data/api_documentation_inventory.csv`. After replacing or editing that inventory, rebuild and validate the documentation:
+The API catalog is generated from inventory CSV files:
+
+| File | Application |
+| --- | --- |
+| `data/api_documentation_inventory.csv` | Boga APP API |
+| `data/webapps-api-inventory.csv` | WebApps API (MyBoga, VMS, ATS, BogaBOT) |
+
+After replacing or editing an inventory, rebuild and validate the documentation:
 
 ```powershell
 npm run generate
 npm run validate
 ```
 
-`openapi/openapi.yaml` is generated output and should not be edited by hand. Update `scripts/generate-openapi.js` and `scripts/lib/docs-model.js` when the inventory format or shared documentation metadata changes.
+`openapi/openapi.yaml` and `openapi/webapps.yaml` are generated output and should not be edited by hand. Update `scripts/generate-openapi.js` and `scripts/lib/docs-model.js` when the inventory format or shared documentation metadata changes.
 
 Each operation should normally include:
 

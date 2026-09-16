@@ -3,7 +3,7 @@ const fs = require("node:fs");
 const path = require("node:path");
 const swaggerUi = require("swagger-ui-express");
 const YAML = require("yaml");
-const { apps } = require("./apps-config");
+const { apps, publicApp } = require("./apps-config");
 const { buildCatalog } = require("./build-catalog");
 
 function normalizeBasePath(value = "") {
@@ -16,9 +16,50 @@ function normalizeBasePath(value = "") {
   return `/${trimmed.replace(/^\/+|\/+$/g, "")}`;
 }
 
-function createApp({ openapiDocument, openapiSource, basePath = process.env.BASE_PATH } = {}) {
-  if (!openapiDocument || !openapiSource) {
-    throw new Error("openapiDocument and openapiSource are required");
+function readOpenapiFile(relativePath) {
+  const filePath = path.isAbsolute(relativePath)
+    ? relativePath
+    : path.join(__dirname, "..", relativePath);
+  if (!fs.existsSync(filePath)) return null;
+  const openapiSource = fs.readFileSync(filePath, "utf8");
+  return {
+    openapiSource,
+    openapiDocument: YAML.parse(openapiSource)
+  };
+}
+
+function loadRuntimeApps({ openapiDocument, openapiSource } = {}) {
+  return apps.map((app) => {
+    let document = null;
+    let source = null;
+    if (app.id === "boga-app" && openapiDocument && openapiSource) {
+      document = openapiDocument;
+      source = openapiSource;
+    } else if (app.hasCatalog && app.openapiFile) {
+      const loaded = readOpenapiFile(app.openapiFile);
+      if (loaded) {
+        document = loaded.openapiDocument;
+        source = loaded.openapiSource;
+      }
+    }
+
+    const hasCatalog = Boolean(document && source);
+    return {
+      ...app,
+      hasCatalog,
+      openapiDocument: document,
+      openapiSource: source,
+      catalog: hasCatalog ? buildCatalog(document) : null
+    };
+  });
+}
+
+function createApp({ openapiDocument, openapiSource, runtimeApps, basePath = process.env.BASE_PATH } = {}) {
+  const appList = runtimeApps || loadRuntimeApps({ openapiDocument, openapiSource });
+  const published = appList.filter((item) => item.hasCatalog && item.openapiDocument && item.openapiSource);
+  const defaultApp = published.find((item) => item.id === "boga-app") || published[0];
+  if (!defaultApp) {
+    throw new Error("At least one published app with an OpenAPI document is required");
   }
 
   const app = express();
@@ -30,13 +71,19 @@ function createApp({ openapiDocument, openapiSource, basePath = process.env.BASE
   const enableTryItOut = process.env.ENABLE_TRY_IT_OUT === "true";
   const portalDir = path.join(__dirname, "../public/portal");
   const portalTemplate = fs.readFileSync(path.join(portalDir, "index.html"), "utf8");
-  const catalog = buildCatalog(openapiDocument);
-  const catalogSource = JSON.stringify(catalog);
-  const siteTitle = openapiDocument.info?.title || "API Documentation";
+  const siteTitle = "Boga API Documentation";
+  const appsPublic = appList.map((item) => publicApp(item));
+  const catalogs = Object.fromEntries(
+    published.map((item) => [item.id, JSON.stringify(item.catalog)])
+  );
   const portalHtml = portalTemplate
     .replaceAll("{{TITLE}}", siteTitle)
     .replaceAll("{{BASE_PATH}}", mountPath)
-    .replaceAll("{{APPS_JSON}}", JSON.stringify(apps));
+    .replaceAll("{{APPS_JSON}}", JSON.stringify(appsPublic));
+  const swaggerUrls = published.map((item) => ({
+    name: item.name,
+    url: item.id === defaultApp.id ? specPath : `${mountPath}/openapi/${item.id}.yaml`
+  }));
 
   app.disable("x-powered-by");
   app.set("trust proxy", process.env.TRUST_PROXY === "true" ? 1 : false);
@@ -55,7 +102,17 @@ function createApp({ openapiDocument, openapiSource, basePath = process.env.BASE
   });
 
   app.get(specPath, (request, response) => {
-    response.type("application/yaml").send(openapiSource);
+    response.type("application/yaml").send(defaultApp.openapiSource);
+  });
+
+  app.get(`${mountPath}/openapi/:fileName`, (request, response) => {
+    const appId = String(request.params.fileName || "").replace(/\.ya?ml$/i, "");
+    const selected = published.find((item) => item.id === appId);
+    if (!selected) {
+      response.status(404).json({ error: "Not found" });
+      return;
+    }
+    response.type("application/yaml").send(selected.openapiSource);
   });
 
   app.get(`${mountPath}/favicon.ico`, (request, response) => {
@@ -65,6 +122,17 @@ function createApp({ openapiDocument, openapiSource, basePath = process.env.BASE
   app.use(`${mountPath}/assets`, express.static(path.join(__dirname, "../public")));
 
   app.get(`${docsPath}/catalog.json`, (request, response) => {
+    const requested = request.query.app;
+    const catalogSource = catalogs[requested] || catalogs[defaultApp.id];
+    response.type("application/json").send(catalogSource);
+  });
+
+  app.get(`${docsPath}/apps/:appId/catalog.json`, (request, response) => {
+    const catalogSource = catalogs[request.params.appId];
+    if (!catalogSource) {
+      response.status(404).json({ error: "Not found" });
+      return;
+    }
     response.type("application/json").send(catalogSource);
   });
 
@@ -114,7 +182,8 @@ function createApp({ openapiDocument, openapiSource, basePath = process.env.BASE
       customfavIcon: logoPath,
       customSiteTitle: siteTitle,
       swaggerOptions: {
-        url: specPath,
+        urls: swaggerUrls,
+        "urls.primaryName": defaultApp.name,
         deepLinking: true,
         displayRequestDuration: true,
         docExpansion: "list",
@@ -154,4 +223,5 @@ module.exports = app;
 
 // Keep the factory available for isolated tests and custom deployments.
 module.exports.createApp = createApp;
+module.exports.loadRuntimeApps = loadRuntimeApps;
 module.exports.normalizeBasePath = normalizeBasePath;
