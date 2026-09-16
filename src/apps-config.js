@@ -21,7 +21,8 @@ const apps = [
     name: "Budgeting API",
     description: "Budget planning and financial-control APIs. Manage allocations, approvals, and reporting.",
     accent: "teal",
-    hasCatalog: false
+    hasCatalog: true,
+    openapiFile: "openapi/budgeting.yaml"
   },
   {
     id: "sync-process",

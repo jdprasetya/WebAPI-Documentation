@@ -19,12 +19,14 @@ const ACRONYMS = new Map([
   ["sms", "SMS"],
   ["ats", "ATS"],
   ["ba", "BA"],
+  ["bin", "BIN"],
   ["bom", "BOM"],
   ["ca", "CA"],
   ["hpp", "HPP"],
   ["it", "IT"],
   ["kpi", "KPI"],
   ["mrp", "MRP"],
+  ["mpp", "MPP"],
   ["msdb", "MSDB"],
   ["ocr", "OCR"],
   ["ods", "ODS"],
@@ -55,6 +57,8 @@ const FIELD_HINTS = [
   [/brand/, "Brand identifier."],
   [/retention/, "How many days of history to keep."],
   [/stopmail/, "When true, Database Mail is stopped during delete and restarted after."],
+  [/^userad$/, "Active Directory user id stored on the issued JWT."],
+  [/closing[_-]?month/, "Calendar month from 1 to 12 used as the budget closing month."],
   [/country/, "Country identifier."],
   [/user-?agent/, "Client User-Agent string. Some public APIs validate this header."],
   [/content-?type/, "Request body format."],
@@ -103,6 +107,8 @@ function tokenizeName(value) {
   protect(/HPP/g, "HPP");
   protect(/MSDB/g, "MSDB");
   protect(/BOM/g, "BOM");
+  protect(/MPP/g, "MPP");
+  protect(/BIN/g, "BIN");
 
   text = text
     .replace(/([a-z0-9])([A-Z])/g, "$1 $2")
@@ -376,9 +382,14 @@ function audienceFor(controller, path, row = {}) {
   if (area === "VMS") return "VMS, procurement, System Analysts, and Support";
   if (area === "BogaBOT") return "BogaBOT, operations, System Analysts, and Support";
   if (area === "MyBoga") return "MyBoga, System Analysts, and Support";
-  if (area === "Health") return "Anyone checking whether the Sync Process API is up";
+  if (area === "Health") {
+    if (path === "/health" || path === "/") return "Anyone checking whether the Budgeting API is up";
+    return "Anyone checking whether the Sync Process API is up";
+  }
   if (area === "Admin") return "Operations, DBAs, System Analysts, and Support";
   if (area === "Sync") return "Operations and Support when replaying a scheduled sync job";
+  if (area === "Authentication") return "Anyone who needs a session token before calling protected APIs";
+  if (area === "Reports" || area === "Budgeting") return "Budgeting, finance, System Analysts, and Support";
   if (/\/healthz$/.test(path)) return "Anyone checking whether the Sync Process API is up";
   if (/\/api\/v1\/admin\//.test(path)) return "Operations, DBAs, System Analysts, and Support";
   if (/\/api\/v1\/sync\//.test(path)) return "Operations and Support when replaying a scheduled sync job";
@@ -770,14 +781,45 @@ Never put production secrets, customer personal data, or live credentials into e
 
 A reader-friendly portal with a category sidebar is available at \`/docs/\`. Swagger UI remains at \`/swagger/\`.`;
 
+const BUDGETING_INFO_DESCRIPTION = `This documentation is written for **developers**, **System Analysts**, and **Support**.
+
+Budgeting API is the Go service for non-MPP budget reports, actual reports, table loading, master sync, and audit logging.
+
+
+## How To Use This Documentation
+
+1. Open a category from the sidebar. Start with **Authentication**, then **Reports** or **Budgeting**, then **Admin** for maintenance.
+2. Read **Authentication** at the top of that category before you test anything.
+3. Copy the sample request, replace placeholders, and send it from Postman, curl, or PowerShell.
+
+
+Placeholders look like \`<access_token>\`, \`<base64(user:password)>\`, or \`<audit_admin_key>\`. Sample body values such as \`1\` are safe fixtures, not real company codes.
+
+Most report POST calls share the same JSON body: \`period\`, required \`closing_month\` (1-12), and optional \`outlet_id\`, \`company_id\`, \`department_id\`, and \`brand_id\`. Successful report responses use \`{ "IsError": false, "Status": "Success", "Data": ... }\`.
+
+
+## Authentication
+
+- **Public** — the HTML landing page at \`/\` has no login.
+- **HTTP Basic** — \`Authorization: Basic <base64(user:password)>\` with \`API_AUTH_USER_ID\` and \`API_AUTH_PASSWORD\`. Used by \`GET /health\` and \`POST /api/v1/auth/token\`.
+- **Bearer JWT** — \`Authorization: Bearer <access_token>\`. Call **Issue Token** first, then send the token to reports and budgeting routes.
+- **Admin API key** — purge of stale audit rows requires \`X-Admin-Key: <audit_admin_key>\` (\`AUDIT_ADMIN_KEY\`).
+
+Never put production secrets, customer personal data, or live credentials into examples or tickets.
+
+A reader-friendly portal with a category sidebar is available at \`/docs/\`. Swagger UI remains at \`/swagger/\`.`;
+
 const AREA_ORDER = {
   ATS: 1,
   BogaBOT: 2,
   MyBoga: 3,
   VMS: 4,
   Health: 1,
-  Sync: 2,
-  Admin: 3
+  Authentication: 2,
+  Reports: 3,
+  Budgeting: 4,
+  Admin: 5,
+  Sync: 2
 };
 
 function buildDocument(rows, options = {}) {
@@ -1037,5 +1079,6 @@ module.exports = {
   slugify,
   splitList,
   WEBAPPS_INFO_DESCRIPTION,
-  SYNC_INFO_DESCRIPTION
+  SYNC_INFO_DESCRIPTION,
+  BUDGETING_INFO_DESCRIPTION
 };

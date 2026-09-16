@@ -2,7 +2,7 @@ const fs = require("node:fs");
 const path = require("node:path");
 const { parse } = require("csv-parse/sync");
 const YAML = require("yaml");
-const { allowedMethods, buildDocument, WEBAPPS_INFO_DESCRIPTION, SYNC_INFO_DESCRIPTION } = require("./lib/docs-model");
+const { allowedMethods, buildDocument, WEBAPPS_INFO_DESCRIPTION, SYNC_INFO_DESCRIPTION, BUDGETING_INFO_DESCRIPTION } = require("./lib/docs-model");
 
 const targets = [
   {
@@ -17,6 +17,13 @@ const targets = [
     output: process.env.WEBAPPS_OPENAPI_FILE || "openapi/webapps.yaml",
     title: "WebApps API Documentation",
     description: WEBAPPS_INFO_DESCRIPTION
+  },
+  {
+    id: "budgeting",
+    inventory: process.env.BUDGETING_INVENTORY_FILE || "data/budgeting-api-inventory.csv",
+    output: process.env.BUDGETING_OPENAPI_FILE || "openapi/budgeting.yaml",
+    title: "Budgeting API Documentation",
+    description: BUDGETING_INFO_DESCRIPTION
   },
   {
     id: "sync-process",

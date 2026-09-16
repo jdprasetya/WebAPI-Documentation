@@ -5,6 +5,7 @@ const SwaggerParser = require("@apidevtools/swagger-parser");
 const files = [
   process.env.OPENAPI_FILE || "openapi/openapi.yaml",
   process.env.WEBAPPS_OPENAPI_FILE || "openapi/webapps.yaml",
+  process.env.BUDGETING_OPENAPI_FILE || "openapi/budgeting.yaml",
   process.env.SYNCPROCESS_OPENAPI_FILE || "openapi/sync-process.yaml"
 ];
 

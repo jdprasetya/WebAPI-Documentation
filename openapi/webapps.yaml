@@ -6019,8 +6019,8 @@ paths:
     post:
       tags:
         - MyBoga Budgeting
-      summary: Syncronize Non Mpp Data Scheduler
-      operationId: budgetingControllerSyncronizeNonMppDataScheduler
+      summary: Syncronize Non MPP Data Scheduler
+      operationId: budgetingControllerSyncronizeNonMPPDataScheduler
       responses:
         "200":
           description: Successful response. The live JSON shape can vary; compare it with this sample.
@@ -6087,7 +6087,7 @@ paths:
           {}
         url: "{baseUrl}/api/Budgeting/Syncronize_Non_MPP_Data_Scheduler"
         all: |-
-          Syncronize Non Mpp Data Scheduler
+          Syncronize Non MPP Data Scheduler
           POST {baseUrl}/api/Budgeting/Syncronize_Non_MPP_Data_Scheduler
 
           Authentication: Public endpoint. You can call this without a login token or API key.
@@ -6105,7 +6105,7 @@ paths:
             -H "Accept: application/json" \
             -d '{}'
       description: >-
-        Syncronize Non Mpp Data Scheduler is part of the MyBoga Budgeting category.
+        Syncronize Non MPP Data Scheduler is part of the MyBoga Budgeting category.
 
 
         **Who this is for:** MyBoga, System Analysts, and Support.

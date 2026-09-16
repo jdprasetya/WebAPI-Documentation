@@ -22,7 +22,7 @@ const FALLBACK_APPS = [
     name: "Budgeting API",
     description: "Budget planning and financial-control APIs. Manage allocations, approvals, and reporting.",
     accent: "teal",
-    hasCatalog: false
+    hasCatalog: true
   },
   {
     id: "sync-process",

@@ -1,0 +1,4525 @@
+openapi: 3.0.3
+info:
+  title: Budgeting API Documentation
+  version: 1.0.0
+  description: >-
+    This documentation is written for **developers**, **System Analysts**, and **Support**.
+
+
+    Budgeting API is the Go service for non-MPP budget reports, actual reports, table loading, master sync, and audit
+    logging.
+
+
+
+    ## How To Use This Documentation
+
+
+    1. Open a category from the sidebar. Start with **Authentication**, then **Reports** or **Budgeting**, then
+    **Admin** for maintenance.
+
+    2. Read **Authentication** at the top of that category before you test anything.
+
+    3. Copy the sample request, replace placeholders, and send it from Postman, curl, or PowerShell.
+
+
+
+    Placeholders look like `<access_token>`, `<base64(user:password)>`, or `<audit_admin_key>`. Sample body values such
+    as `1` are safe fixtures, not real company codes.
+
+
+    Most report POST calls share the same JSON body: `period`, required `closing_month` (1-12), and optional
+    `outlet_id`, `company_id`, `department_id`, and `brand_id`. Successful report responses use `{ "IsError": false,
+    "Status": "Success", "Data": ... }`.
+
+
+
+    ## Authentication
+
+
+    - **Public** — the HTML landing page at `/` has no login.
+
+    - **HTTP Basic** — `Authorization: Basic <base64(user:password)>` with `API_AUTH_USER_ID` and `API_AUTH_PASSWORD`.
+    Used by `GET /health` and `POST /api/v1/auth/token`.
+
+    - **Bearer JWT** — `Authorization: Bearer <access_token>`. Call **Issue Token** first, then send the token to
+    reports and budgeting routes.
+
+    - **Admin API key** — purge of stale audit rows requires `X-Admin-Key: <audit_admin_key>` (`AUDIT_ADMIN_KEY`).
+
+
+    Never put production secrets, customer personal data, or live credentials into examples or tickets.
+
+
+    A reader-friendly portal with a category sidebar is available at `/docs/`. Swagger UI remains at `/swagger/`.
+  contact:
+    name: API Platform Team
+servers:
+  - url: "{scheme}://{host}"
+    description: Replace host with the API environment you are testing (local, staging, or production).
+    variables:
+      scheme:
+        default: https
+        enum:
+          - https
+          - http
+      host:
+        default: localhost:8080
+        description: API hostname and optional port
+tags:
+  - name: Health
+    description: >-
+      **Authentication:** This category mixes public and protected endpoints (Public, HTTP Basic). Check Authentication
+      at the top of the category, then the endpoint you are testing.
+
+
+      **Who uses this:** Anyone checking whether the Budgeting API is up.
+
+
+      Handled by `HealthHandler`.
+  - name: Authentication
+    description: >-
+      **Authentication:** Every endpoint in this category requires authentication (Bearer JWT, HTTP Basic). Read the
+      sample headers before testing.
+
+
+      **Who uses this:** Anyone who needs a session token before calling protected APIs.
+
+
+      Handled by `AuthHandler`.
+  - name: Reports
+    description: >-
+      **Authentication:** Every endpoint in this category requires authentication (Bearer JWT). Read the sample headers
+      before testing.
+
+
+      **Who uses this:** Budgeting, finance, System Analysts, and Support.
+
+
+      Handled by `ReportNonMPPPTHandler`.
+  - name: Budgeting
+    description: >-
+      **Authentication:** Every endpoint in this category requires authentication (Bearer JWT). Read the sample headers
+      before testing.
+
+
+      **Who uses this:** Budgeting, finance, System Analysts, and Support.
+
+
+      Handled by `BudgetingNonMPPHandler`.
+  - name: Admin
+    description: >-
+      **Authentication:** Every endpoint in this category requires authentication (API Key). Read the sample headers
+      before testing.
+
+
+      **Who uses this:** Operations, DBAs, System Analysts, and Support.
+
+
+      Handled by `AuditAdminHandler`.
+paths:
+  /:
+    get:
+      tags:
+        - Health
+      summary: Landing Page
+      operationId: landingHandlerLandingPage
+      responses:
+        "200":
+          description: Successful response. The live JSON shape can vary; compare it with this sample.
+          content:
+            text/plain:
+              schema:
+                type: string
+              example: OK
+          x-java-response-type: String
+      x-source-controller: LandingHandler
+      x-source-location: internal/httpserver/router.go:30
+      x-source-http-method: GET
+      x-audience: Anyone checking whether the Budgeting API is up
+      x-auth:
+        type: Public
+        required: false
+        summary: Public endpoint. You can call this without a login token or API key.
+        headers: []
+        raw: None declared at handler; method is permitAll in SecurityConfig
+      x-validation: []
+      x-error-messages: []
+      x-app-area: Health
+      security: []
+      x-copy:
+        curl: |-
+          curl -X GET "{baseUrl}/" \
+            -H "Accept: application/json"
+        powershell: |-
+          $headers = @{
+            "Accept" = "application/json"
+          }
+          Invoke-RestMethod -Method GET -Uri "{baseUrl}/" -Headers $headers
+        http: |-
+          GET / HTTP/1.1
+          Host: {host}
+          Accept: application/json
+        url: "{baseUrl}/"
+        all: |-
+          Landing Page
+          GET {baseUrl}/
+
+          Authentication: Public endpoint. You can call this without a login token or API key.
+
+          Headers:
+          Accept: application/json
+
+          curl:
+          curl -X GET "{baseUrl}/" \
+            -H "Accept: application/json"
+      description: >-
+        Landing Page is part of the Health category.
+
+
+        **Who this is for:** Anyone checking whether the Budgeting API is up.
+
+
+        **Authentication:** Public endpoint. You can call this without a login token or API key.
+
+
+        **How to test:** Copy the sample request below, replace every placeholder (values in `<angle brackets>` and
+        sample data), then send it from Postman, curl, or PowerShell.
+
+
+        **Copy-ready curl**
+
+
+        ```bash
+
+        curl -X GET "{baseUrl}/" \
+          -H "Accept: application/json"
+        ```
+
+
+        Technical source notes are omitted from this description so analysts and Support can scan the contract quickly.
+  /api/v1/admin/audit-log/purge-stale:
+    post:
+      tags:
+        - Admin
+      summary: Purge Stale Audit Logs
+      operationId: auditAdminHandlerPurgeStaleAuditLogs
+      responses:
+        "200":
+          description: Successful response. The live JSON shape can vary; compare it with this sample.
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+              example:
+                status: success
+                message: Request completed
+                data: {}
+          x-java-response-type: Object
+        "401":
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 401
+                message: unauthorized
+          x-java-response-type: Object
+        "500":
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 500
+                message: unauthorized
+          x-java-response-type: Object
+        "503":
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 503
+                message: unauthorized
+          x-java-response-type: Object
+      x-source-controller: AuditAdminHandler
+      x-source-location: internal/audit/admin.go:12
+      x-source-http-method: POST
+      x-audience: Operations, DBAs, System Analysts, and Support
+      x-auth:
+        type: API Key
+        required: true
+        summary: Requires an API key. Copy the headers below and replace every placeholder before testing.
+        headers:
+          - name: X-Admin-Key
+            example: <audit_admin_key>
+            note: ""
+        raw: API/client/secret key (handler-level)
+      x-validation: []
+      x-error-messages:
+        - unauthorized
+        - audit admin not configured
+        - purge failed
+      x-app-area: Admin
+      security:
+        - headerXAdminKey: []
+      x-copy:
+        curl: |-
+          curl -X POST "{baseUrl}/api/v1/admin/audit-log/purge-stale" \
+            -H "X-Admin-Key: <audit_admin_key>" \
+            -H "Accept: application/json"
+        powershell: |-
+          $headers = @{
+            "X-Admin-Key" = "<audit_admin_key>"
+            "Accept" = "application/json"
+          }
+          Invoke-RestMethod -Method POST -Uri "{baseUrl}/api/v1/admin/audit-log/purge-stale" -Headers $headers
+        http: |-
+          POST /api/v1/admin/audit-log/purge-stale HTTP/1.1
+          Host: {host}
+          X-Admin-Key: <audit_admin_key>
+          Accept: application/json
+        url: "{baseUrl}/api/v1/admin/audit-log/purge-stale"
+        all: |-
+          Purge Stale Audit Logs
+          POST {baseUrl}/api/v1/admin/audit-log/purge-stale
+
+          Authentication: Requires an API key. Copy the headers below and replace every placeholder before testing.
+
+          Headers:
+          X-Admin-Key: <audit_admin_key>
+          Accept: application/json
+
+          curl:
+          curl -X POST "{baseUrl}/api/v1/admin/audit-log/purge-stale" \
+            -H "X-Admin-Key: <audit_admin_key>" \
+            -H "Accept: application/json"
+      description: >-
+        Purge Stale Audit Logs is part of the Admin category.
+
+
+        **Who this is for:** Operations, DBAs, System Analysts, and Support.
+
+
+        **Authentication:** Requires an API key. Copy the headers below and replace every placeholder before testing.
+
+
+        **How to test:** Copy the sample request below, replace every placeholder (values in `<angle brackets>` and
+        sample data), then send it from Postman, curl, or PowerShell.
+
+
+        **Known error messages:** unauthorized; audit admin not configured; purge failed
+
+
+        **Copy-ready curl**
+
+
+        ```bash
+
+        curl -X POST "{baseUrl}/api/v1/admin/audit-log/purge-stale" \
+          -H "X-Admin-Key: <audit_admin_key>" \
+          -H "Accept: application/json"
+        ```
+
+
+        Technical source notes are omitted from this description so analysts and Support can scan the contract quickly.
+  /api/v1/auth/check:
+    get:
+      tags:
+        - Authentication
+      summary: Check Token
+      operationId: authHandlerCheckToken
+      responses:
+        "200":
+          description: Successful response. The live JSON shape can vary; compare it with this sample.
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+              example:
+                status: success
+                message: Request completed
+                data: {}
+          x-java-response-type: Object
+        "401":
+          description: invalid or expired token
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 401
+                message: invalid or expired token
+          x-java-response-type: Object
+      x-source-controller: AuthHandler
+      x-source-location: internal/auth/handler.go:83
+      x-source-http-method: GET
+      x-audience: Anyone who needs a session token before calling protected APIs
+      x-auth:
+        type: Bearer JWT
+        required: true
+        summary: Requires a Bearer JWT. Call Login first, copy the token from the response, then send it here.
+        headers:
+          - name: Authorization
+            example: Bearer <access_token>
+            note: Replace <access_token> with the token from Login.
+        raw: "Bearer JWT (Authorization: Bearer <token>) (handler-level)"
+      x-validation: []
+      x-error-messages:
+        - invalid or expired token
+      x-app-area: Authentication
+      security:
+        - bearerAuth: []
+      x-copy:
+        curl: |-
+          curl -X GET "{baseUrl}/api/v1/auth/check" \
+            -H "Authorization: Bearer <access_token>" \
+            -H "Accept: application/json"
+        powershell: |-
+          $headers = @{
+            "Authorization" = "Bearer <access_token>"
+            "Accept" = "application/json"
+          }
+          Invoke-RestMethod -Method GET -Uri "{baseUrl}/api/v1/auth/check" -Headers $headers
+        http: |-
+          GET /api/v1/auth/check HTTP/1.1
+          Host: {host}
+          Authorization: Bearer <access_token>
+          Accept: application/json
+        url: "{baseUrl}/api/v1/auth/check"
+        all: |-
+          Check Token
+          GET {baseUrl}/api/v1/auth/check
+
+          Authentication: Requires a Bearer JWT. Call Login first, copy the token from the response, then send it here.
+
+          Headers:
+          Authorization: Bearer <access_token>
+          Accept: application/json
+
+          curl:
+          curl -X GET "{baseUrl}/api/v1/auth/check" \
+            -H "Authorization: Bearer <access_token>" \
+            -H "Accept: application/json"
+      description: >-
+        Check Token is part of the Authentication category.
+
+
+        **Who this is for:** Anyone who needs a session token before calling protected APIs.
+
+
+        **Authentication:** Requires a Bearer JWT. Call Login first, copy the token from the response, then send it
+        here.
+
+
+        **How to test:** Copy the sample request below, replace every placeholder (values in `<angle brackets>` and
+        sample data), then send it from Postman, curl, or PowerShell.
+
+
+        **Known error messages:** invalid or expired token
+
+
+        **Copy-ready curl**
+
+
+        ```bash
+
+        curl -X GET "{baseUrl}/api/v1/auth/check" \
+          -H "Authorization: Bearer <access_token>" \
+          -H "Accept: application/json"
+        ```
+
+
+        Technical source notes are omitted from this description so analysts and Support can scan the contract quickly.
+  /api/v1/auth/token:
+    post:
+      tags:
+        - Authentication
+      summary: Issue Token
+      operationId: authHandlerIssueToken
+      responses:
+        "200":
+          description: Successful response. The live JSON shape can vary; compare it with this sample.
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+              example:
+                status: success
+                message: Request completed
+                data: {}
+          x-java-response-type: Object
+        "400":
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 400
+                message: unauthorized
+          x-java-response-type: Object
+        "401":
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 401
+                message: unauthorized
+          x-java-response-type: Object
+        "413":
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 413
+                message: unauthorized
+          x-java-response-type: Object
+        "500":
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 500
+                message: unauthorized
+          x-java-response-type: Object
+      x-source-controller: AuthHandler
+      x-source-location: internal/auth/handler.go:37
+      x-source-http-method: POST
+      x-audience: Anyone who needs a session token before calling protected APIs
+      x-auth:
+        type: HTTP Basic
+        required: true
+        summary: "Requires HTTP Basic authentication. Send `Authorization: Basic <base64(user:password)>` using BASIC_AUTH_USER
+          and BASIC_AUTH_PASSWORD. You can also use `curl -u user:password`."
+        headers:
+          - name: Authorization
+            example: Basic <base64(user:password)>
+            note: Replace with base64 of BASIC_AUTH_USER:BASIC_AUTH_PASSWORD, or use curl -u.
+        raw: "HTTP Basic (Authorization: Basic <base64(user:password)>) (handler-level)"
+      x-validation: []
+      x-error-messages:
+        - unauthorized
+        - invalid json
+        - body too large
+        - token error
+      x-app-area: Authentication
+      security:
+        - basicAuth: []
+      requestBody:
+        required: true
+        description: Replace sample values before sending this body.
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                UserAD:
+                  type: string
+                  description: Optional. Active Directory user id stored on the issued JWT.
+                  example: sample-value
+              title: tokenRequest
+            example:
+              UserAD: sample-value
+      x-copy:
+        curl: |-
+          curl -X POST "{baseUrl}/api/v1/auth/token" \
+            -H "Authorization: Basic <base64(user:password)>" \
+            -H "Content-Type: application/json" \
+            -H "Accept: application/json" \
+            -d '{
+            "UserAD": "sample-value"
+          }'
+        powershell: |-
+          $headers = @{
+            "Authorization" = "Basic <base64(user:password)>"
+            "Content-Type" = "application/json"
+            "Accept" = "application/json"
+          }
+          $body = @'
+          {
+            "UserAD": "sample-value"
+          }
+          '@
+          Invoke-RestMethod -Method POST -Uri "{baseUrl}/api/v1/auth/token" -Headers $headers -Body $body
+        http: |-
+          POST /api/v1/auth/token HTTP/1.1
+          Host: {host}
+          Authorization: Basic <base64(user:password)>
+          Content-Type: application/json
+          Accept: application/json
+
+          {
+            "UserAD": "sample-value"
+          }
+        url: "{baseUrl}/api/v1/auth/token"
+        all: >-
+          Issue Token
+
+          POST {baseUrl}/api/v1/auth/token
+
+
+          Authentication: Requires HTTP Basic authentication. Send `Authorization: Basic <base64(user:password)>` using
+          BASIC_AUTH_USER and BASIC_AUTH_PASSWORD. You can also use `curl -u user:password`.
+
+
+          Headers:
+
+          Authorization: Basic <base64(user:password)>
+
+          Content-Type: application/json
+
+          Accept: application/json
+
+
+          Body:
+
+          {
+            "UserAD": "sample-value"
+          }
+
+
+          curl:
+
+          curl -X POST "{baseUrl}/api/v1/auth/token" \
+            -H "Authorization: Basic <base64(user:password)>" \
+            -H "Content-Type: application/json" \
+            -H "Accept: application/json" \
+            -d '{
+            "UserAD": "sample-value"
+          }'
+      description: >-
+        Issue Token is part of the Authentication category.
+
+
+        **Who this is for:** Anyone who needs a session token before calling protected APIs.
+
+
+        **Authentication:** Requires HTTP Basic authentication. Send `Authorization: Basic <base64(user:password)>`
+        using BASIC_AUTH_USER and BASIC_AUTH_PASSWORD. You can also use `curl -u user:password`.
+
+
+        **How to test:** Copy the sample request below, replace every placeholder (values in `<angle brackets>` and
+        sample data), then send it from Postman, curl, or PowerShell.
+
+
+        **Known error messages:** unauthorized; invalid json; body too large; token error
+
+
+        **Copy-ready curl**
+
+
+        ```bash
+
+        curl -X POST "{baseUrl}/api/v1/auth/token" \
+          -H "Authorization: Basic <base64(user:password)>" \
+          -H "Content-Type: application/json" \
+          -H "Accept: application/json" \
+          -d '{
+          "UserAD": "sample-value"
+        }'
+
+        ```
+
+
+        Technical source notes are omitted from this description so analysts and Support can scan the contract quickly.
+  /api/v1/budgeting/master-sync:
+    post:
+      tags:
+        - Budgeting
+      summary: Run Budgeting Master Sync
+      operationId: budgetingMasterSyncHandlerRunBudgetingMasterSync
+      responses:
+        "200":
+          description: Successful response. The live JSON shape can vary; compare it with this sample.
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+              example:
+                status: success
+                message: Request completed
+                data: {}
+          x-java-response-type: Object
+        "400":
+          description: invalid json
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 400
+                message: invalid json
+          x-java-response-type: Object
+        "401":
+          description: invalid json
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 401
+                message: invalid json
+          x-java-response-type: Object
+        "413":
+          description: invalid json
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 413
+                message: invalid json
+          x-java-response-type: Object
+        "500":
+          description: invalid json
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 500
+                message: invalid json
+          x-java-response-type: Object
+      x-source-controller: BudgetingMasterSyncHandler
+      x-source-location: internal/modules/budgeting_master_sync/handler.go:13
+      x-source-http-method: POST
+      x-audience: Budgeting, finance, System Analysts, and Support
+      x-auth:
+        type: Bearer JWT
+        required: true
+        summary: Requires a Bearer JWT. Call Login first, copy the token from the response, then send it here.
+        headers:
+          - name: Authorization
+            example: Bearer <access_token>
+            note: Replace <access_token> with the token from Login.
+        raw: "Bearer JWT (Authorization: Bearer <token>) (handler-level)"
+      x-validation:
+        - period is required and cannot be empty.
+      x-error-messages:
+        - invalid json
+        - body too large
+        - missing bearer token
+        - invalid token
+      x-app-area: Budgeting
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        description: Replace sample values before sending this body.
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                period:
+                  type: string
+                  description: Required. Period (string).
+                  example: sample-value
+              title: SyncRequest
+              required:
+                - period
+            example:
+              period: sample-value
+      x-copy:
+        curl: |-
+          curl -X POST "{baseUrl}/api/v1/budgeting/master-sync" \
+            -H "Authorization: Bearer <access_token>" \
+            -H "Content-Type: application/json" \
+            -H "Accept: application/json" \
+            -d '{
+            "period": "sample-value"
+          }'
+        powershell: |-
+          $headers = @{
+            "Authorization" = "Bearer <access_token>"
+            "Content-Type" = "application/json"
+            "Accept" = "application/json"
+          }
+          $body = @'
+          {
+            "period": "sample-value"
+          }
+          '@
+          Invoke-RestMethod -Method POST -Uri "{baseUrl}/api/v1/budgeting/master-sync" -Headers $headers -Body $body
+        http: |-
+          POST /api/v1/budgeting/master-sync HTTP/1.1
+          Host: {host}
+          Authorization: Bearer <access_token>
+          Content-Type: application/json
+          Accept: application/json
+
+          {
+            "period": "sample-value"
+          }
+        url: "{baseUrl}/api/v1/budgeting/master-sync"
+        all: |-
+          Run Budgeting Master Sync
+          POST {baseUrl}/api/v1/budgeting/master-sync
+
+          Authentication: Requires a Bearer JWT. Call Login first, copy the token from the response, then send it here.
+
+          Headers:
+          Authorization: Bearer <access_token>
+          Content-Type: application/json
+          Accept: application/json
+
+          Body:
+          {
+            "period": "sample-value"
+          }
+
+          curl:
+          curl -X POST "{baseUrl}/api/v1/budgeting/master-sync" \
+            -H "Authorization: Bearer <access_token>" \
+            -H "Content-Type: application/json" \
+            -H "Accept: application/json" \
+            -d '{
+            "period": "sample-value"
+          }'
+      description: >-
+        Run Budgeting Master Sync is part of the Budgeting category.
+
+
+        **Who this is for:** Budgeting, finance, System Analysts, and Support.
+
+
+        **Authentication:** Requires a Bearer JWT. Call Login first, copy the token from the response, then send it
+        here.
+
+
+        **How to test:** Copy the sample request below, replace every placeholder (values in `<angle brackets>` and
+        sample data), then send it from Postman, curl, or PowerShell.
+
+
+        **Validation:** period is required and cannot be empty.
+
+
+        **Known error messages:** invalid json; body too large; missing bearer token; invalid token
+
+
+        **Copy-ready curl**
+
+
+        ```bash
+
+        curl -X POST "{baseUrl}/api/v1/budgeting/master-sync" \
+          -H "Authorization: Bearer <access_token>" \
+          -H "Content-Type: application/json" \
+          -H "Accept: application/json" \
+          -d '{
+          "period": "sample-value"
+        }'
+
+        ```
+
+
+        Technical source notes are omitted from this description so analysts and Support can scan the contract quickly.
+  /api/v1/LoadBudgetingTable:
+    post:
+      tags:
+        - Budgeting
+      summary: Load Budgeting Table
+      operationId: budgetingNonMPPHandlerLoadBudgetingTable
+      responses:
+        "200":
+          description: Successful response. The live JSON shape can vary; compare it with this sample.
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+              example:
+                status: success
+                message: Request completed
+                data: {}
+          x-java-response-type: Object
+        "400":
+          description: period required
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 400
+                message: period required
+          x-java-response-type: Object
+        "401":
+          description: period required
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 401
+                message: period required
+          x-java-response-type: Object
+        "413":
+          description: period required
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 413
+                message: period required
+          x-java-response-type: Object
+        "500":
+          description: period required
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 500
+                message: period required
+          x-java-response-type: Object
+      x-source-controller: BudgetingNonMPPHandler
+      x-source-location: internal/modules/budgeting_non_mpp/handler.go:33
+      x-source-http-method: POST
+      x-audience: Budgeting, finance, System Analysts, and Support
+      x-auth:
+        type: Bearer JWT
+        required: true
+        summary: Requires a Bearer JWT. Call Login first, copy the token from the response, then send it here.
+        headers:
+          - name: Authorization
+            example: Bearer <access_token>
+            note: Replace <access_token> with the token from Login.
+        raw: "Bearer JWT (Authorization: Bearer <token>) (handler-level)"
+      x-validation:
+        - period is required and cannot be empty.
+        - closing_month is required and cannot be empty.
+      x-error-messages:
+        - period required
+        - closing_month must be 1..12
+        - invalid json
+        - body too large
+        - missing bearer token
+        - invalid token
+      x-app-area: Budgeting
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        description: Replace sample values before sending this body.
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                period:
+                  type: string
+                  description: Required. Period (string).
+                  example: sample-value
+                closing_month:
+                  type: integer
+                  format: int32
+                  description: Required. Calendar month from 1 to 12 used as the budget closing month.
+                  example: 1
+                company_id:
+                  type: string
+                  description: Optional. Company ID (string).
+                  example: "1"
+                user_id:
+                  type: string
+                  description: Optional. User ID (string).
+                  example: "1"
+                outlet_id:
+                  type: string
+                  description: Optional. Outlet / branch code.
+                  example: "1"
+                department_id:
+                  type: string
+                  description: Optional. Department ID (string).
+                  example: "1"
+                brand_id:
+                  type: string
+                  description: Optional. Brand identifier.
+                  example: "1"
+                outlet_ids:
+                  type: array
+                  items:
+                    type: string
+                  description: Optional. Outlet / branch code.
+                  example:
+                    - "1"
+                department_ids:
+                  type: array
+                  items:
+                    type: string
+                  description: Optional. Department Ids (array).
+                  example:
+                    - "1"
+                brand_ids:
+                  type: array
+                  items:
+                    type: string
+                  description: Optional. Brand identifier.
+                  example:
+                    - "1"
+                categories:
+                  type: array
+                  items:
+                    type: string
+                  description: Optional. Categories (array).
+                  example:
+                    - sample-value
+                accounts:
+                  type: array
+                  items:
+                    type: string
+                  description: Optional. Accounts (array).
+                  example:
+                    - sample-value
+                loaded_rows:
+                  type: integer
+                  format: int32
+                  description: Optional. Loaded Rows (int32).
+                  example: 1
+                page:
+                  type: integer
+                  format: int32
+                  description: Optional. Page (int32).
+                  example: 1
+                page_size:
+                  type: integer
+                  format: int32
+                  description: Optional. Page Size (int32).
+                  example: 1
+                action_source:
+                  type: string
+                  description: Optional. Action Source (string).
+                  example: sample-value
+                include_mpp:
+                  type: boolean
+                  description: Optional. Include MPP (boolean).
+                  example: true
+              title: LoadBudgetingParams
+              required:
+                - period
+                - closing_month
+            example:
+              period: sample-value
+              closing_month: 1
+              company_id: "1"
+              user_id: "1"
+              outlet_id: "1"
+              department_id: "1"
+              brand_id: "1"
+              outlet_ids:
+                - "1"
+              department_ids:
+                - "1"
+              brand_ids:
+                - "1"
+              categories:
+                - sample-value
+              accounts:
+                - sample-value
+              loaded_rows: 1
+              page: 1
+              page_size: 1
+              action_source: sample-value
+              include_mpp: true
+      x-copy:
+        curl: |-
+          curl -X POST "{baseUrl}/api/v1/LoadBudgetingTable" \
+            -H "Authorization: Bearer <access_token>" \
+            -H "Content-Type: application/json" \
+            -H "Accept: application/json" \
+            -d '{
+            "period": "sample-value",
+            "closing_month": 1,
+            "company_id": "1",
+            "user_id": "1",
+            "outlet_id": "1",
+            "department_id": "1",
+            "brand_id": "1",
+            "outlet_ids": [
+              "1"
+            ],
+            "department_ids": [
+              "1"
+            ],
+            "brand_ids": [
+              "1"
+            ],
+            "categories": [
+              "sample-value"
+            ],
+            "accounts": [
+              "sample-value"
+            ],
+            "loaded_rows": 1,
+            "page": 1,
+            "page_size": 1,
+            "action_source": "sample-value",
+            "include_mpp": true
+          }'
+        powershell: |-
+          $headers = @{
+            "Authorization" = "Bearer <access_token>"
+            "Content-Type" = "application/json"
+            "Accept" = "application/json"
+          }
+          $body = @'
+          {
+            "period": "sample-value",
+            "closing_month": 1,
+            "company_id": "1",
+            "user_id": "1",
+            "outlet_id": "1",
+            "department_id": "1",
+            "brand_id": "1",
+            "outlet_ids": [
+              "1"
+            ],
+            "department_ids": [
+              "1"
+            ],
+            "brand_ids": [
+              "1"
+            ],
+            "categories": [
+              "sample-value"
+            ],
+            "accounts": [
+              "sample-value"
+            ],
+            "loaded_rows": 1,
+            "page": 1,
+            "page_size": 1,
+            "action_source": "sample-value",
+            "include_mpp": true
+          }
+          '@
+          Invoke-RestMethod -Method POST -Uri "{baseUrl}/api/v1/LoadBudgetingTable" -Headers $headers -Body $body
+        http: |-
+          POST /api/v1/LoadBudgetingTable HTTP/1.1
+          Host: {host}
+          Authorization: Bearer <access_token>
+          Content-Type: application/json
+          Accept: application/json
+
+          {
+            "period": "sample-value",
+            "closing_month": 1,
+            "company_id": "1",
+            "user_id": "1",
+            "outlet_id": "1",
+            "department_id": "1",
+            "brand_id": "1",
+            "outlet_ids": [
+              "1"
+            ],
+            "department_ids": [
+              "1"
+            ],
+            "brand_ids": [
+              "1"
+            ],
+            "categories": [
+              "sample-value"
+            ],
+            "accounts": [
+              "sample-value"
+            ],
+            "loaded_rows": 1,
+            "page": 1,
+            "page_size": 1,
+            "action_source": "sample-value",
+            "include_mpp": true
+          }
+        url: "{baseUrl}/api/v1/LoadBudgetingTable"
+        all: |-
+          Load Budgeting Table
+          POST {baseUrl}/api/v1/LoadBudgetingTable
+
+          Authentication: Requires a Bearer JWT. Call Login first, copy the token from the response, then send it here.
+
+          Headers:
+          Authorization: Bearer <access_token>
+          Content-Type: application/json
+          Accept: application/json
+
+          Body:
+          {
+            "period": "sample-value",
+            "closing_month": 1,
+            "company_id": "1",
+            "user_id": "1",
+            "outlet_id": "1",
+            "department_id": "1",
+            "brand_id": "1",
+            "outlet_ids": [
+              "1"
+            ],
+            "department_ids": [
+              "1"
+            ],
+            "brand_ids": [
+              "1"
+            ],
+            "categories": [
+              "sample-value"
+            ],
+            "accounts": [
+              "sample-value"
+            ],
+            "loaded_rows": 1,
+            "page": 1,
+            "page_size": 1,
+            "action_source": "sample-value",
+            "include_mpp": true
+          }
+
+          curl:
+          curl -X POST "{baseUrl}/api/v1/LoadBudgetingTable" \
+            -H "Authorization: Bearer <access_token>" \
+            -H "Content-Type: application/json" \
+            -H "Accept: application/json" \
+            -d '{
+            "period": "sample-value",
+            "closing_month": 1,
+            "company_id": "1",
+            "user_id": "1",
+            "outlet_id": "1",
+            "department_id": "1",
+            "brand_id": "1",
+            "outlet_ids": [
+              "1"
+            ],
+            "department_ids": [
+              "1"
+            ],
+            "brand_ids": [
+              "1"
+            ],
+            "categories": [
+              "sample-value"
+            ],
+            "accounts": [
+              "sample-value"
+            ],
+            "loaded_rows": 1,
+            "page": 1,
+            "page_size": 1,
+            "action_source": "sample-value",
+            "include_mpp": true
+          }'
+      description: >-
+        Load Budgeting Table is part of the Budgeting category.
+
+
+        **Who this is for:** Budgeting, finance, System Analysts, and Support.
+
+
+        **Authentication:** Requires a Bearer JWT. Call Login first, copy the token from the response, then send it
+        here.
+
+
+        **How to test:** Copy the sample request below, replace every placeholder (values in `<angle brackets>` and
+        sample data), then send it from Postman, curl, or PowerShell.
+
+
+        **Validation:** period is required and cannot be empty. closing_month is required and cannot be empty.
+
+
+        **Known error messages:** period required; closing_month must be 1..12; invalid json; body too large; missing
+        bearer token; invalid token
+
+
+        **Copy-ready curl**
+
+
+        ```bash
+
+        curl -X POST "{baseUrl}/api/v1/LoadBudgetingTable" \
+          -H "Authorization: Bearer <access_token>" \
+          -H "Content-Type: application/json" \
+          -H "Accept: application/json" \
+          -d '{
+          "period": "sample-value",
+          "closing_month": 1,
+          "company_id": "1",
+          "user_id": "1",
+          "outlet_id": "1",
+          "department_id": "1",
+          "brand_id": "1",
+          "outlet_ids": [
+            "1"
+          ],
+          "department_ids": [
+            "1"
+          ],
+          "brand_ids": [
+            "1"
+          ],
+          "categories": [
+            "sample-value"
+          ],
+          "accounts": [
+            "sample-value"
+          ],
+          "loaded_rows": 1,
+          "page": 1,
+          "page_size": 1,
+          "action_source": "sample-value",
+          "include_mpp": true
+        }'
+
+        ```
+
+
+        Technical source notes are omitted from this description so analysts and Support can scan the contract quickly.
+  /api/v1/reports/non-mpp:
+    post:
+      tags:
+        - Reports
+      summary: Generate Non MPP Report
+      operationId: reportNonMPPHandlerGenerateNonMPPReport
+      responses:
+        "200":
+          description: Successful response. The live JSON shape can vary; compare it with this sample.
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+              example:
+                status: success
+                message: Request completed
+                data: {}
+          x-java-response-type: Object
+        "400":
+          description: closing_month required
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 400
+                message: closing_month required
+          x-java-response-type: Object
+        "401":
+          description: closing_month required
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 401
+                message: closing_month required
+          x-java-response-type: Object
+        "413":
+          description: closing_month required
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 413
+                message: closing_month required
+          x-java-response-type: Object
+        "500":
+          description: closing_month required
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 500
+                message: closing_month required
+          x-java-response-type: Object
+      x-source-controller: ReportNonMPPHandler
+      x-source-location: internal/modules/report_non_mpp/process/handler.go:23
+      x-source-http-method: POST
+      x-audience: Budgeting, finance, System Analysts, and Support
+      x-auth:
+        type: Bearer JWT
+        required: true
+        summary: Requires a Bearer JWT. Call Login first, copy the token from the response, then send it here.
+        headers:
+          - name: Authorization
+            example: Bearer <access_token>
+            note: Replace <access_token> with the token from Login.
+        raw: "Bearer JWT (Authorization: Bearer <token>) (handler-level)"
+      x-validation:
+        - closing_month is required and cannot be empty.
+      x-error-messages:
+        - closing_month required
+        - invalid json
+        - body too large
+        - missing bearer token
+        - invalid token
+      x-app-area: Reports
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        description: Replace sample values before sending this body.
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                period:
+                  type: string
+                  description: Optional. Period (string).
+                  example: sample-value
+                closing_month:
+                  type: integer
+                  format: int32
+                  description: Required. Calendar month from 1 to 12 used as the budget closing month.
+                  example: 1
+                outlet_id:
+                  type: string
+                  description: Optional. Outlet / branch code.
+                  example: "1"
+                company_id:
+                  type: string
+                  description: Optional. Company ID (string).
+                  example: "1"
+                department_id:
+                  type: string
+                  description: Optional. Department ID (string).
+                  example: "1"
+                brand_id:
+                  type: string
+                  description: Optional. Brand identifier.
+                  example: "1"
+              title: reportRequestJSON
+              required:
+                - closing_month
+            example:
+              period: sample-value
+              closing_month: 1
+              outlet_id: "1"
+              company_id: "1"
+              department_id: "1"
+              brand_id: "1"
+      x-copy:
+        curl: |-
+          curl -X POST "{baseUrl}/api/v1/reports/non-mpp" \
+            -H "Authorization: Bearer <access_token>" \
+            -H "Content-Type: application/json" \
+            -H "Accept: application/json" \
+            -d '{
+            "period": "sample-value",
+            "closing_month": 1,
+            "outlet_id": "1",
+            "company_id": "1",
+            "department_id": "1",
+            "brand_id": "1"
+          }'
+        powershell: |-
+          $headers = @{
+            "Authorization" = "Bearer <access_token>"
+            "Content-Type" = "application/json"
+            "Accept" = "application/json"
+          }
+          $body = @'
+          {
+            "period": "sample-value",
+            "closing_month": 1,
+            "outlet_id": "1",
+            "company_id": "1",
+            "department_id": "1",
+            "brand_id": "1"
+          }
+          '@
+          Invoke-RestMethod -Method POST -Uri "{baseUrl}/api/v1/reports/non-mpp" -Headers $headers -Body $body
+        http: |-
+          POST /api/v1/reports/non-mpp HTTP/1.1
+          Host: {host}
+          Authorization: Bearer <access_token>
+          Content-Type: application/json
+          Accept: application/json
+
+          {
+            "period": "sample-value",
+            "closing_month": 1,
+            "outlet_id": "1",
+            "company_id": "1",
+            "department_id": "1",
+            "brand_id": "1"
+          }
+        url: "{baseUrl}/api/v1/reports/non-mpp"
+        all: |-
+          Generate Non MPP Report
+          POST {baseUrl}/api/v1/reports/non-mpp
+
+          Authentication: Requires a Bearer JWT. Call Login first, copy the token from the response, then send it here.
+
+          Headers:
+          Authorization: Bearer <access_token>
+          Content-Type: application/json
+          Accept: application/json
+
+          Body:
+          {
+            "period": "sample-value",
+            "closing_month": 1,
+            "outlet_id": "1",
+            "company_id": "1",
+            "department_id": "1",
+            "brand_id": "1"
+          }
+
+          curl:
+          curl -X POST "{baseUrl}/api/v1/reports/non-mpp" \
+            -H "Authorization: Bearer <access_token>" \
+            -H "Content-Type: application/json" \
+            -H "Accept: application/json" \
+            -d '{
+            "period": "sample-value",
+            "closing_month": 1,
+            "outlet_id": "1",
+            "company_id": "1",
+            "department_id": "1",
+            "brand_id": "1"
+          }'
+      description: >-
+        Generate Non MPP Report is part of the Reports category.
+
+
+        **Who this is for:** Budgeting, finance, System Analysts, and Support.
+
+
+        **Authentication:** Requires a Bearer JWT. Call Login first, copy the token from the response, then send it
+        here.
+
+
+        **How to test:** Copy the sample request below, replace every placeholder (values in `<angle brackets>` and
+        sample data), then send it from Postman, curl, or PowerShell.
+
+
+        **Validation:** closing_month is required and cannot be empty.
+
+
+        **Known error messages:** closing_month required; invalid json; body too large; missing bearer token; invalid
+        token
+
+
+        **Copy-ready curl**
+
+
+        ```bash
+
+        curl -X POST "{baseUrl}/api/v1/reports/non-mpp" \
+          -H "Authorization: Bearer <access_token>" \
+          -H "Content-Type: application/json" \
+          -H "Accept: application/json" \
+          -d '{
+          "period": "sample-value",
+          "closing_month": 1,
+          "outlet_id": "1",
+          "company_id": "1",
+          "department_id": "1",
+          "brand_id": "1"
+        }'
+
+        ```
+
+
+        Technical source notes are omitted from this description so analysts and Support can scan the contract quickly.
+  /api/v1/reports/non-mpp-actual:
+    post:
+      tags:
+        - Reports
+      summary: Generate Non MPP Actual Report
+      operationId: reportNonMPPActualHandlerGenerateNonMPPActualReport
+      responses:
+        "200":
+          description: Successful response. The live JSON shape can vary; compare it with this sample.
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+              example:
+                status: success
+                message: Request completed
+                data: {}
+          x-java-response-type: Object
+        "400":
+          description: closing_month required
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 400
+                message: closing_month required
+          x-java-response-type: Object
+        "401":
+          description: closing_month required
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 401
+                message: closing_month required
+          x-java-response-type: Object
+        "413":
+          description: closing_month required
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 413
+                message: closing_month required
+          x-java-response-type: Object
+        "500":
+          description: closing_month required
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 500
+                message: closing_month required
+          x-java-response-type: Object
+      x-source-controller: ReportNonMPPActualHandler
+      x-source-location: internal/modules/report_non_mpp_actual/handler.go:24
+      x-source-http-method: POST
+      x-audience: Budgeting, finance, System Analysts, and Support
+      x-auth:
+        type: Bearer JWT
+        required: true
+        summary: Requires a Bearer JWT. Call Login first, copy the token from the response, then send it here.
+        headers:
+          - name: Authorization
+            example: Bearer <access_token>
+            note: Replace <access_token> with the token from Login.
+        raw: "Bearer JWT (Authorization: Bearer <token>) (handler-level)"
+      x-validation:
+        - closing_month is required and cannot be empty.
+      x-error-messages:
+        - closing_month required
+        - invalid json
+        - body too large
+        - missing bearer token
+        - invalid token
+      x-app-area: Reports
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        description: Replace sample values before sending this body.
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                period:
+                  type: string
+                  description: Optional. Period (string).
+                  example: sample-value
+                closing_month:
+                  type: integer
+                  format: int32
+                  description: Required. Calendar month from 1 to 12 used as the budget closing month.
+                  example: 1
+                outlet_id:
+                  type: string
+                  description: Optional. Outlet / branch code.
+                  example: "1"
+                company_id:
+                  type: string
+                  description: Optional. Company ID (string).
+                  example: "1"
+                department_id:
+                  type: string
+                  description: Optional. Department ID (string).
+                  example: "1"
+                brand_id:
+                  type: string
+                  description: Optional. Brand identifier.
+                  example: "1"
+              title: reportRequestJSON
+              required:
+                - closing_month
+            example:
+              period: sample-value
+              closing_month: 1
+              outlet_id: "1"
+              company_id: "1"
+              department_id: "1"
+              brand_id: "1"
+      x-copy:
+        curl: |-
+          curl -X POST "{baseUrl}/api/v1/reports/non-mpp-actual" \
+            -H "Authorization: Bearer <access_token>" \
+            -H "Content-Type: application/json" \
+            -H "Accept: application/json" \
+            -d '{
+            "period": "sample-value",
+            "closing_month": 1,
+            "outlet_id": "1",
+            "company_id": "1",
+            "department_id": "1",
+            "brand_id": "1"
+          }'
+        powershell: |-
+          $headers = @{
+            "Authorization" = "Bearer <access_token>"
+            "Content-Type" = "application/json"
+            "Accept" = "application/json"
+          }
+          $body = @'
+          {
+            "period": "sample-value",
+            "closing_month": 1,
+            "outlet_id": "1",
+            "company_id": "1",
+            "department_id": "1",
+            "brand_id": "1"
+          }
+          '@
+          Invoke-RestMethod -Method POST -Uri "{baseUrl}/api/v1/reports/non-mpp-actual" -Headers $headers -Body $body
+        http: |-
+          POST /api/v1/reports/non-mpp-actual HTTP/1.1
+          Host: {host}
+          Authorization: Bearer <access_token>
+          Content-Type: application/json
+          Accept: application/json
+
+          {
+            "period": "sample-value",
+            "closing_month": 1,
+            "outlet_id": "1",
+            "company_id": "1",
+            "department_id": "1",
+            "brand_id": "1"
+          }
+        url: "{baseUrl}/api/v1/reports/non-mpp-actual"
+        all: |-
+          Generate Non MPP Actual Report
+          POST {baseUrl}/api/v1/reports/non-mpp-actual
+
+          Authentication: Requires a Bearer JWT. Call Login first, copy the token from the response, then send it here.
+
+          Headers:
+          Authorization: Bearer <access_token>
+          Content-Type: application/json
+          Accept: application/json
+
+          Body:
+          {
+            "period": "sample-value",
+            "closing_month": 1,
+            "outlet_id": "1",
+            "company_id": "1",
+            "department_id": "1",
+            "brand_id": "1"
+          }
+
+          curl:
+          curl -X POST "{baseUrl}/api/v1/reports/non-mpp-actual" \
+            -H "Authorization: Bearer <access_token>" \
+            -H "Content-Type: application/json" \
+            -H "Accept: application/json" \
+            -d '{
+            "period": "sample-value",
+            "closing_month": 1,
+            "outlet_id": "1",
+            "company_id": "1",
+            "department_id": "1",
+            "brand_id": "1"
+          }'
+      description: >-
+        Generate Non MPP Actual Report is part of the Reports category.
+
+
+        **Who this is for:** Budgeting, finance, System Analysts, and Support.
+
+
+        **Authentication:** Requires a Bearer JWT. Call Login first, copy the token from the response, then send it
+        here.
+
+
+        **How to test:** Copy the sample request below, replace every placeholder (values in `<angle brackets>` and
+        sample data), then send it from Postman, curl, or PowerShell.
+
+
+        **Validation:** closing_month is required and cannot be empty.
+
+
+        **Known error messages:** closing_month required; invalid json; body too large; missing bearer token; invalid
+        token
+
+
+        **Copy-ready curl**
+
+
+        ```bash
+
+        curl -X POST "{baseUrl}/api/v1/reports/non-mpp-actual" \
+          -H "Authorization: Bearer <access_token>" \
+          -H "Content-Type: application/json" \
+          -H "Accept: application/json" \
+          -d '{
+          "period": "sample-value",
+          "closing_month": 1,
+          "outlet_id": "1",
+          "company_id": "1",
+          "department_id": "1",
+          "brand_id": "1"
+        }'
+
+        ```
+
+
+        Technical source notes are omitted from this description so analysts and Support can scan the contract quickly.
+  /api/v1/reports/non-mpp-actual-all:
+    post:
+      tags:
+        - Reports
+      summary: Generate Non MPP Actual All Report
+      operationId: reportNonMPPActualAllHandlerGenerateNonMPPActualAllReport
+      responses:
+        "200":
+          description: Successful response. The live JSON shape can vary; compare it with this sample.
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+              example:
+                status: success
+                message: Request completed
+                data: {}
+          x-java-response-type: Object
+        "400":
+          description: closing_month required
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 400
+                message: closing_month required
+          x-java-response-type: Object
+        "401":
+          description: closing_month required
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 401
+                message: closing_month required
+          x-java-response-type: Object
+        "413":
+          description: closing_month required
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 413
+                message: closing_month required
+          x-java-response-type: Object
+        "500":
+          description: closing_month required
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 500
+                message: closing_month required
+          x-java-response-type: Object
+      x-source-controller: ReportNonMPPActualAllHandler
+      x-source-location: internal/modules/report_non_mpp_actual_all/handler.go:24
+      x-source-http-method: POST
+      x-audience: Budgeting, finance, System Analysts, and Support
+      x-auth:
+        type: Bearer JWT
+        required: true
+        summary: Requires a Bearer JWT. Call Login first, copy the token from the response, then send it here.
+        headers:
+          - name: Authorization
+            example: Bearer <access_token>
+            note: Replace <access_token> with the token from Login.
+        raw: "Bearer JWT (Authorization: Bearer <token>) (handler-level)"
+      x-validation:
+        - closing_month is required and cannot be empty.
+      x-error-messages:
+        - closing_month required
+        - invalid json
+        - body too large
+        - missing bearer token
+        - invalid token
+      x-app-area: Reports
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        description: Replace sample values before sending this body.
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                period:
+                  type: string
+                  description: Optional. Period (string).
+                  example: sample-value
+                closing_month:
+                  type: integer
+                  format: int32
+                  description: Required. Calendar month from 1 to 12 used as the budget closing month.
+                  example: 1
+                outlet_id:
+                  type: string
+                  description: Optional. Outlet / branch code.
+                  example: "1"
+                company_id:
+                  type: string
+                  description: Optional. Company ID (string).
+                  example: "1"
+                department_id:
+                  type: string
+                  description: Optional. Department ID (string).
+                  example: "1"
+                brand_id:
+                  type: string
+                  description: Optional. Brand identifier.
+                  example: "1"
+              title: reportRequestJSON
+              required:
+                - closing_month
+            example:
+              period: sample-value
+              closing_month: 1
+              outlet_id: "1"
+              company_id: "1"
+              department_id: "1"
+              brand_id: "1"
+      x-copy:
+        curl: |-
+          curl -X POST "{baseUrl}/api/v1/reports/non-mpp-actual-all" \
+            -H "Authorization: Bearer <access_token>" \
+            -H "Content-Type: application/json" \
+            -H "Accept: application/json" \
+            -d '{
+            "period": "sample-value",
+            "closing_month": 1,
+            "outlet_id": "1",
+            "company_id": "1",
+            "department_id": "1",
+            "brand_id": "1"
+          }'
+        powershell: >-
+          $headers = @{
+            "Authorization" = "Bearer <access_token>"
+            "Content-Type" = "application/json"
+            "Accept" = "application/json"
+          }
+
+          $body = @'
+
+          {
+            "period": "sample-value",
+            "closing_month": 1,
+            "outlet_id": "1",
+            "company_id": "1",
+            "department_id": "1",
+            "brand_id": "1"
+          }
+
+          '@
+
+          Invoke-RestMethod -Method POST -Uri "{baseUrl}/api/v1/reports/non-mpp-actual-all" -Headers $headers -Body
+          $body
+        http: |-
+          POST /api/v1/reports/non-mpp-actual-all HTTP/1.1
+          Host: {host}
+          Authorization: Bearer <access_token>
+          Content-Type: application/json
+          Accept: application/json
+
+          {
+            "period": "sample-value",
+            "closing_month": 1,
+            "outlet_id": "1",
+            "company_id": "1",
+            "department_id": "1",
+            "brand_id": "1"
+          }
+        url: "{baseUrl}/api/v1/reports/non-mpp-actual-all"
+        all: |-
+          Generate Non MPP Actual All Report
+          POST {baseUrl}/api/v1/reports/non-mpp-actual-all
+
+          Authentication: Requires a Bearer JWT. Call Login first, copy the token from the response, then send it here.
+
+          Headers:
+          Authorization: Bearer <access_token>
+          Content-Type: application/json
+          Accept: application/json
+
+          Body:
+          {
+            "period": "sample-value",
+            "closing_month": 1,
+            "outlet_id": "1",
+            "company_id": "1",
+            "department_id": "1",
+            "brand_id": "1"
+          }
+
+          curl:
+          curl -X POST "{baseUrl}/api/v1/reports/non-mpp-actual-all" \
+            -H "Authorization: Bearer <access_token>" \
+            -H "Content-Type: application/json" \
+            -H "Accept: application/json" \
+            -d '{
+            "period": "sample-value",
+            "closing_month": 1,
+            "outlet_id": "1",
+            "company_id": "1",
+            "department_id": "1",
+            "brand_id": "1"
+          }'
+      description: >-
+        Generate Non MPP Actual All Report is part of the Reports category.
+
+
+        **Who this is for:** Budgeting, finance, System Analysts, and Support.
+
+
+        **Authentication:** Requires a Bearer JWT. Call Login first, copy the token from the response, then send it
+        here.
+
+
+        **How to test:** Copy the sample request below, replace every placeholder (values in `<angle brackets>` and
+        sample data), then send it from Postman, curl, or PowerShell.
+
+
+        **Validation:** closing_month is required and cannot be empty.
+
+
+        **Known error messages:** closing_month required; invalid json; body too large; missing bearer token; invalid
+        token
+
+
+        **Copy-ready curl**
+
+
+        ```bash
+
+        curl -X POST "{baseUrl}/api/v1/reports/non-mpp-actual-all" \
+          -H "Authorization: Bearer <access_token>" \
+          -H "Content-Type: application/json" \
+          -H "Accept: application/json" \
+          -d '{
+          "period": "sample-value",
+          "closing_month": 1,
+          "outlet_id": "1",
+          "company_id": "1",
+          "department_id": "1",
+          "brand_id": "1"
+        }'
+
+        ```
+
+
+        Technical source notes are omitted from this description so analysts and Support can scan the contract quickly.
+  /api/v1/reports/non-mpp-actual-bin:
+    post:
+      tags:
+        - Reports
+      summary: Generate Non MPP Actual BIN Report
+      operationId: reportNonMPPActualBINHandlerGenerateNonMPPActualBINReport
+      responses:
+        "200":
+          description: Successful response. The live JSON shape can vary; compare it with this sample.
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+              example:
+                status: success
+                message: Request completed
+                data: {}
+          x-java-response-type: Object
+        "400":
+          description: closing_month required
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 400
+                message: closing_month required
+          x-java-response-type: Object
+        "401":
+          description: closing_month required
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 401
+                message: closing_month required
+          x-java-response-type: Object
+        "413":
+          description: closing_month required
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 413
+                message: closing_month required
+          x-java-response-type: Object
+        "500":
+          description: closing_month required
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 500
+                message: closing_month required
+          x-java-response-type: Object
+      x-source-controller: ReportNonMPPActualBINHandler
+      x-source-location: internal/modules/report_non_mpp_actual_bin/handler.go:24
+      x-source-http-method: POST
+      x-audience: Budgeting, finance, System Analysts, and Support
+      x-auth:
+        type: Bearer JWT
+        required: true
+        summary: Requires a Bearer JWT. Call Login first, copy the token from the response, then send it here.
+        headers:
+          - name: Authorization
+            example: Bearer <access_token>
+            note: Replace <access_token> with the token from Login.
+        raw: "Bearer JWT (Authorization: Bearer <token>) (handler-level)"
+      x-validation:
+        - closing_month is required and cannot be empty.
+      x-error-messages:
+        - closing_month required
+        - invalid json
+        - body too large
+        - missing bearer token
+        - invalid token
+      x-app-area: Reports
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        description: Replace sample values before sending this body.
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                period:
+                  type: string
+                  description: Optional. Period (string).
+                  example: sample-value
+                closing_month:
+                  type: integer
+                  format: int32
+                  description: Required. Calendar month from 1 to 12 used as the budget closing month.
+                  example: 1
+                outlet_id:
+                  type: string
+                  description: Optional. Outlet / branch code.
+                  example: "1"
+                company_id:
+                  type: string
+                  description: Optional. Company ID (string).
+                  example: "1"
+                department_id:
+                  type: string
+                  description: Optional. Department ID (string).
+                  example: "1"
+                brand_id:
+                  type: string
+                  description: Optional. Brand identifier.
+                  example: "1"
+              title: reportRequestJSON
+              required:
+                - closing_month
+            example:
+              period: sample-value
+              closing_month: 1
+              outlet_id: "1"
+              company_id: "1"
+              department_id: "1"
+              brand_id: "1"
+      x-copy:
+        curl: |-
+          curl -X POST "{baseUrl}/api/v1/reports/non-mpp-actual-bin" \
+            -H "Authorization: Bearer <access_token>" \
+            -H "Content-Type: application/json" \
+            -H "Accept: application/json" \
+            -d '{
+            "period": "sample-value",
+            "closing_month": 1,
+            "outlet_id": "1",
+            "company_id": "1",
+            "department_id": "1",
+            "brand_id": "1"
+          }'
+        powershell: >-
+          $headers = @{
+            "Authorization" = "Bearer <access_token>"
+            "Content-Type" = "application/json"
+            "Accept" = "application/json"
+          }
+
+          $body = @'
+
+          {
+            "period": "sample-value",
+            "closing_month": 1,
+            "outlet_id": "1",
+            "company_id": "1",
+            "department_id": "1",
+            "brand_id": "1"
+          }
+
+          '@
+
+          Invoke-RestMethod -Method POST -Uri "{baseUrl}/api/v1/reports/non-mpp-actual-bin" -Headers $headers -Body
+          $body
+        http: |-
+          POST /api/v1/reports/non-mpp-actual-bin HTTP/1.1
+          Host: {host}
+          Authorization: Bearer <access_token>
+          Content-Type: application/json
+          Accept: application/json
+
+          {
+            "period": "sample-value",
+            "closing_month": 1,
+            "outlet_id": "1",
+            "company_id": "1",
+            "department_id": "1",
+            "brand_id": "1"
+          }
+        url: "{baseUrl}/api/v1/reports/non-mpp-actual-bin"
+        all: |-
+          Generate Non MPP Actual BIN Report
+          POST {baseUrl}/api/v1/reports/non-mpp-actual-bin
+
+          Authentication: Requires a Bearer JWT. Call Login first, copy the token from the response, then send it here.
+
+          Headers:
+          Authorization: Bearer <access_token>
+          Content-Type: application/json
+          Accept: application/json
+
+          Body:
+          {
+            "period": "sample-value",
+            "closing_month": 1,
+            "outlet_id": "1",
+            "company_id": "1",
+            "department_id": "1",
+            "brand_id": "1"
+          }
+
+          curl:
+          curl -X POST "{baseUrl}/api/v1/reports/non-mpp-actual-bin" \
+            -H "Authorization: Bearer <access_token>" \
+            -H "Content-Type: application/json" \
+            -H "Accept: application/json" \
+            -d '{
+            "period": "sample-value",
+            "closing_month": 1,
+            "outlet_id": "1",
+            "company_id": "1",
+            "department_id": "1",
+            "brand_id": "1"
+          }'
+      description: >-
+        Generate Non MPP Actual BIN Report is part of the Reports category.
+
+
+        **Who this is for:** Budgeting, finance, System Analysts, and Support.
+
+
+        **Authentication:** Requires a Bearer JWT. Call Login first, copy the token from the response, then send it
+        here.
+
+
+        **How to test:** Copy the sample request below, replace every placeholder (values in `<angle brackets>` and
+        sample data), then send it from Postman, curl, or PowerShell.
+
+
+        **Validation:** closing_month is required and cannot be empty.
+
+
+        **Known error messages:** closing_month required; invalid json; body too large; missing bearer token; invalid
+        token
+
+
+        **Copy-ready curl**
+
+
+        ```bash
+
+        curl -X POST "{baseUrl}/api/v1/reports/non-mpp-actual-bin" \
+          -H "Authorization: Bearer <access_token>" \
+          -H "Content-Type: application/json" \
+          -H "Accept: application/json" \
+          -d '{
+          "period": "sample-value",
+          "closing_month": 1,
+          "outlet_id": "1",
+          "company_id": "1",
+          "department_id": "1",
+          "brand_id": "1"
+        }'
+
+        ```
+
+
+        Technical source notes are omitted from this description so analysts and Support can scan the contract quickly.
+  /api/v1/reports/non-mpp-actual-dept:
+    post:
+      tags:
+        - Reports
+      summary: Generate Non MPP Actual Department Report
+      operationId: reportNonMPPActualDeptHandlerGenerateNonMPPActualDepartmentReport
+      responses:
+        "200":
+          description: Successful response. The live JSON shape can vary; compare it with this sample.
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+              example:
+                status: success
+                message: Request completed
+                data: {}
+          x-java-response-type: Object
+        "400":
+          description: closing_month required
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 400
+                message: closing_month required
+          x-java-response-type: Object
+        "401":
+          description: closing_month required
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 401
+                message: closing_month required
+          x-java-response-type: Object
+        "413":
+          description: closing_month required
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 413
+                message: closing_month required
+          x-java-response-type: Object
+        "500":
+          description: closing_month required
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 500
+                message: closing_month required
+          x-java-response-type: Object
+      x-source-controller: ReportNonMPPActualDeptHandler
+      x-source-location: internal/modules/report_non_mpp_actual_dept/handler.go:24
+      x-source-http-method: POST
+      x-audience: Budgeting, finance, System Analysts, and Support
+      x-auth:
+        type: Bearer JWT
+        required: true
+        summary: Requires a Bearer JWT. Call Login first, copy the token from the response, then send it here.
+        headers:
+          - name: Authorization
+            example: Bearer <access_token>
+            note: Replace <access_token> with the token from Login.
+        raw: "Bearer JWT (Authorization: Bearer <token>) (handler-level)"
+      x-validation:
+        - closing_month is required and cannot be empty.
+      x-error-messages:
+        - closing_month required
+        - invalid json
+        - body too large
+        - missing bearer token
+        - invalid token
+      x-app-area: Reports
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        description: Replace sample values before sending this body.
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                period:
+                  type: string
+                  description: Optional. Period (string).
+                  example: sample-value
+                closing_month:
+                  type: integer
+                  format: int32
+                  description: Required. Calendar month from 1 to 12 used as the budget closing month.
+                  example: 1
+                outlet_id:
+                  type: string
+                  description: Optional. Outlet / branch code.
+                  example: "1"
+                company_id:
+                  type: string
+                  description: Optional. Company ID (string).
+                  example: "1"
+                department_id:
+                  type: string
+                  description: Optional. Department ID (string).
+                  example: "1"
+                brand_id:
+                  type: string
+                  description: Optional. Brand identifier.
+                  example: "1"
+              title: reportRequestJSON
+              required:
+                - closing_month
+            example:
+              period: sample-value
+              closing_month: 1
+              outlet_id: "1"
+              company_id: "1"
+              department_id: "1"
+              brand_id: "1"
+      x-copy:
+        curl: |-
+          curl -X POST "{baseUrl}/api/v1/reports/non-mpp-actual-dept" \
+            -H "Authorization: Bearer <access_token>" \
+            -H "Content-Type: application/json" \
+            -H "Accept: application/json" \
+            -d '{
+            "period": "sample-value",
+            "closing_month": 1,
+            "outlet_id": "1",
+            "company_id": "1",
+            "department_id": "1",
+            "brand_id": "1"
+          }'
+        powershell: >-
+          $headers = @{
+            "Authorization" = "Bearer <access_token>"
+            "Content-Type" = "application/json"
+            "Accept" = "application/json"
+          }
+
+          $body = @'
+
+          {
+            "period": "sample-value",
+            "closing_month": 1,
+            "outlet_id": "1",
+            "company_id": "1",
+            "department_id": "1",
+            "brand_id": "1"
+          }
+
+          '@
+
+          Invoke-RestMethod -Method POST -Uri "{baseUrl}/api/v1/reports/non-mpp-actual-dept" -Headers $headers -Body
+          $body
+        http: |-
+          POST /api/v1/reports/non-mpp-actual-dept HTTP/1.1
+          Host: {host}
+          Authorization: Bearer <access_token>
+          Content-Type: application/json
+          Accept: application/json
+
+          {
+            "period": "sample-value",
+            "closing_month": 1,
+            "outlet_id": "1",
+            "company_id": "1",
+            "department_id": "1",
+            "brand_id": "1"
+          }
+        url: "{baseUrl}/api/v1/reports/non-mpp-actual-dept"
+        all: |-
+          Generate Non MPP Actual Department Report
+          POST {baseUrl}/api/v1/reports/non-mpp-actual-dept
+
+          Authentication: Requires a Bearer JWT. Call Login first, copy the token from the response, then send it here.
+
+          Headers:
+          Authorization: Bearer <access_token>
+          Content-Type: application/json
+          Accept: application/json
+
+          Body:
+          {
+            "period": "sample-value",
+            "closing_month": 1,
+            "outlet_id": "1",
+            "company_id": "1",
+            "department_id": "1",
+            "brand_id": "1"
+          }
+
+          curl:
+          curl -X POST "{baseUrl}/api/v1/reports/non-mpp-actual-dept" \
+            -H "Authorization: Bearer <access_token>" \
+            -H "Content-Type: application/json" \
+            -H "Accept: application/json" \
+            -d '{
+            "period": "sample-value",
+            "closing_month": 1,
+            "outlet_id": "1",
+            "company_id": "1",
+            "department_id": "1",
+            "brand_id": "1"
+          }'
+      description: >-
+        Generate Non MPP Actual Department Report is part of the Reports category.
+
+
+        **Who this is for:** Budgeting, finance, System Analysts, and Support.
+
+
+        **Authentication:** Requires a Bearer JWT. Call Login first, copy the token from the response, then send it
+        here.
+
+
+        **How to test:** Copy the sample request below, replace every placeholder (values in `<angle brackets>` and
+        sample data), then send it from Postman, curl, or PowerShell.
+
+
+        **Validation:** closing_month is required and cannot be empty.
+
+
+        **Known error messages:** closing_month required; invalid json; body too large; missing bearer token; invalid
+        token
+
+
+        **Copy-ready curl**
+
+
+        ```bash
+
+        curl -X POST "{baseUrl}/api/v1/reports/non-mpp-actual-dept" \
+          -H "Authorization: Bearer <access_token>" \
+          -H "Content-Type: application/json" \
+          -H "Accept: application/json" \
+          -d '{
+          "period": "sample-value",
+          "closing_month": 1,
+          "outlet_id": "1",
+          "company_id": "1",
+          "department_id": "1",
+          "brand_id": "1"
+        }'
+
+        ```
+
+
+        Technical source notes are omitted from this description so analysts and Support can scan the contract quickly.
+  /api/v1/reports/non-mpp-actual-pt:
+    post:
+      tags:
+        - Reports
+      summary: Generate Non MPP Actual PT Report
+      operationId: reportNonMPPActualPTHandlerGenerateNonMPPActualPTReport
+      responses:
+        "200":
+          description: Successful response. The live JSON shape can vary; compare it with this sample.
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+              example:
+                status: success
+                message: Request completed
+                data: {}
+          x-java-response-type: Object
+        "400":
+          description: closing_month required
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 400
+                message: closing_month required
+          x-java-response-type: Object
+        "401":
+          description: closing_month required
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 401
+                message: closing_month required
+          x-java-response-type: Object
+        "413":
+          description: closing_month required
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 413
+                message: closing_month required
+          x-java-response-type: Object
+        "500":
+          description: closing_month required
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 500
+                message: closing_month required
+          x-java-response-type: Object
+      x-source-controller: ReportNonMPPActualPTHandler
+      x-source-location: internal/modules/report_non_mpp_actual_PT/handler.go:23
+      x-source-http-method: POST
+      x-audience: Budgeting, finance, System Analysts, and Support
+      x-auth:
+        type: Bearer JWT
+        required: true
+        summary: Requires a Bearer JWT. Call Login first, copy the token from the response, then send it here.
+        headers:
+          - name: Authorization
+            example: Bearer <access_token>
+            note: Replace <access_token> with the token from Login.
+        raw: "Bearer JWT (Authorization: Bearer <token>) (handler-level)"
+      x-validation:
+        - closing_month is required and cannot be empty.
+      x-error-messages:
+        - closing_month required
+        - invalid json
+        - body too large
+        - missing bearer token
+        - invalid token
+      x-app-area: Reports
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        description: Replace sample values before sending this body.
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                period:
+                  type: string
+                  description: Optional. Period (string).
+                  example: sample-value
+                closing_month:
+                  type: integer
+                  format: int32
+                  description: Required. Calendar month from 1 to 12 used as the budget closing month.
+                  example: 1
+                outlet_id:
+                  type: string
+                  description: Optional. Outlet / branch code.
+                  example: "1"
+                company_id:
+                  type: string
+                  description: Optional. Company ID (string).
+                  example: "1"
+                department_id:
+                  type: string
+                  description: Optional. Department ID (string).
+                  example: "1"
+                brand_id:
+                  type: string
+                  description: Optional. Brand identifier.
+                  example: "1"
+              title: reportRequestJSON
+              required:
+                - closing_month
+            example:
+              period: sample-value
+              closing_month: 1
+              outlet_id: "1"
+              company_id: "1"
+              department_id: "1"
+              brand_id: "1"
+      x-copy:
+        curl: |-
+          curl -X POST "{baseUrl}/api/v1/reports/non-mpp-actual-pt" \
+            -H "Authorization: Bearer <access_token>" \
+            -H "Content-Type: application/json" \
+            -H "Accept: application/json" \
+            -d '{
+            "period": "sample-value",
+            "closing_month": 1,
+            "outlet_id": "1",
+            "company_id": "1",
+            "department_id": "1",
+            "brand_id": "1"
+          }'
+        powershell: |-
+          $headers = @{
+            "Authorization" = "Bearer <access_token>"
+            "Content-Type" = "application/json"
+            "Accept" = "application/json"
+          }
+          $body = @'
+          {
+            "period": "sample-value",
+            "closing_month": 1,
+            "outlet_id": "1",
+            "company_id": "1",
+            "department_id": "1",
+            "brand_id": "1"
+          }
+          '@
+          Invoke-RestMethod -Method POST -Uri "{baseUrl}/api/v1/reports/non-mpp-actual-pt" -Headers $headers -Body $body
+        http: |-
+          POST /api/v1/reports/non-mpp-actual-pt HTTP/1.1
+          Host: {host}
+          Authorization: Bearer <access_token>
+          Content-Type: application/json
+          Accept: application/json
+
+          {
+            "period": "sample-value",
+            "closing_month": 1,
+            "outlet_id": "1",
+            "company_id": "1",
+            "department_id": "1",
+            "brand_id": "1"
+          }
+        url: "{baseUrl}/api/v1/reports/non-mpp-actual-pt"
+        all: |-
+          Generate Non MPP Actual PT Report
+          POST {baseUrl}/api/v1/reports/non-mpp-actual-pt
+
+          Authentication: Requires a Bearer JWT. Call Login first, copy the token from the response, then send it here.
+
+          Headers:
+          Authorization: Bearer <access_token>
+          Content-Type: application/json
+          Accept: application/json
+
+          Body:
+          {
+            "period": "sample-value",
+            "closing_month": 1,
+            "outlet_id": "1",
+            "company_id": "1",
+            "department_id": "1",
+            "brand_id": "1"
+          }
+
+          curl:
+          curl -X POST "{baseUrl}/api/v1/reports/non-mpp-actual-pt" \
+            -H "Authorization: Bearer <access_token>" \
+            -H "Content-Type: application/json" \
+            -H "Accept: application/json" \
+            -d '{
+            "period": "sample-value",
+            "closing_month": 1,
+            "outlet_id": "1",
+            "company_id": "1",
+            "department_id": "1",
+            "brand_id": "1"
+          }'
+      description: >-
+        Generate Non MPP Actual PT Report is part of the Reports category.
+
+
+        **Who this is for:** Budgeting, finance, System Analysts, and Support.
+
+
+        **Authentication:** Requires a Bearer JWT. Call Login first, copy the token from the response, then send it
+        here.
+
+
+        **How to test:** Copy the sample request below, replace every placeholder (values in `<angle brackets>` and
+        sample data), then send it from Postman, curl, or PowerShell.
+
+
+        **Validation:** closing_month is required and cannot be empty.
+
+
+        **Known error messages:** closing_month required; invalid json; body too large; missing bearer token; invalid
+        token
+
+
+        **Copy-ready curl**
+
+
+        ```bash
+
+        curl -X POST "{baseUrl}/api/v1/reports/non-mpp-actual-pt" \
+          -H "Authorization: Bearer <access_token>" \
+          -H "Content-Type: application/json" \
+          -H "Accept: application/json" \
+          -d '{
+          "period": "sample-value",
+          "closing_month": 1,
+          "outlet_id": "1",
+          "company_id": "1",
+          "department_id": "1",
+          "brand_id": "1"
+        }'
+
+        ```
+
+
+        Technical source notes are omitted from this description so analysts and Support can scan the contract quickly.
+  /api/v1/reports/non-mpp-actual-PT:
+    post:
+      tags:
+        - Reports
+      summary: Generate Non MPP Actual PT Report Alias
+      operationId: reportNonMPPActualPTHandlerGenerateNonMPPActualPTReportAlias
+      responses:
+        "200":
+          description: Successful response. The live JSON shape can vary; compare it with this sample.
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+              example:
+                status: success
+                message: Request completed
+                data: {}
+          x-java-response-type: Object
+        "400":
+          description: closing_month required
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 400
+                message: closing_month required
+          x-java-response-type: Object
+        "401":
+          description: closing_month required
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 401
+                message: closing_month required
+          x-java-response-type: Object
+        "413":
+          description: closing_month required
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 413
+                message: closing_month required
+          x-java-response-type: Object
+        "500":
+          description: closing_month required
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 500
+                message: closing_month required
+          x-java-response-type: Object
+      x-source-controller: ReportNonMPPActualPTHandler
+      x-source-location: internal/modules/report_non_mpp_actual_PT/handler.go:23
+      x-source-http-method: POST
+      x-audience: Budgeting, finance, System Analysts, and Support
+      x-auth:
+        type: Bearer JWT
+        required: true
+        summary: Requires a Bearer JWT. Call Login first, copy the token from the response, then send it here.
+        headers:
+          - name: Authorization
+            example: Bearer <access_token>
+            note: Replace <access_token> with the token from Login.
+        raw: "Bearer JWT (Authorization: Bearer <token>) (handler-level)"
+      x-validation:
+        - closing_month is required and cannot be empty.
+      x-error-messages:
+        - closing_month required
+        - invalid json
+        - body too large
+        - missing bearer token
+        - invalid token
+      x-app-area: Reports
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        description: Replace sample values before sending this body.
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                period:
+                  type: string
+                  description: Optional. Period (string).
+                  example: sample-value
+                closing_month:
+                  type: integer
+                  format: int32
+                  description: Required. Calendar month from 1 to 12 used as the budget closing month.
+                  example: 1
+                outlet_id:
+                  type: string
+                  description: Optional. Outlet / branch code.
+                  example: "1"
+                company_id:
+                  type: string
+                  description: Optional. Company ID (string).
+                  example: "1"
+                department_id:
+                  type: string
+                  description: Optional. Department ID (string).
+                  example: "1"
+                brand_id:
+                  type: string
+                  description: Optional. Brand identifier.
+                  example: "1"
+              title: reportRequestJSON
+              required:
+                - closing_month
+            example:
+              period: sample-value
+              closing_month: 1
+              outlet_id: "1"
+              company_id: "1"
+              department_id: "1"
+              brand_id: "1"
+      x-copy:
+        curl: |-
+          curl -X POST "{baseUrl}/api/v1/reports/non-mpp-actual-PT" \
+            -H "Authorization: Bearer <access_token>" \
+            -H "Content-Type: application/json" \
+            -H "Accept: application/json" \
+            -d '{
+            "period": "sample-value",
+            "closing_month": 1,
+            "outlet_id": "1",
+            "company_id": "1",
+            "department_id": "1",
+            "brand_id": "1"
+          }'
+        powershell: |-
+          $headers = @{
+            "Authorization" = "Bearer <access_token>"
+            "Content-Type" = "application/json"
+            "Accept" = "application/json"
+          }
+          $body = @'
+          {
+            "period": "sample-value",
+            "closing_month": 1,
+            "outlet_id": "1",
+            "company_id": "1",
+            "department_id": "1",
+            "brand_id": "1"
+          }
+          '@
+          Invoke-RestMethod -Method POST -Uri "{baseUrl}/api/v1/reports/non-mpp-actual-PT" -Headers $headers -Body $body
+        http: |-
+          POST /api/v1/reports/non-mpp-actual-PT HTTP/1.1
+          Host: {host}
+          Authorization: Bearer <access_token>
+          Content-Type: application/json
+          Accept: application/json
+
+          {
+            "period": "sample-value",
+            "closing_month": 1,
+            "outlet_id": "1",
+            "company_id": "1",
+            "department_id": "1",
+            "brand_id": "1"
+          }
+        url: "{baseUrl}/api/v1/reports/non-mpp-actual-PT"
+        all: |-
+          Generate Non MPP Actual PT Report Alias
+          POST {baseUrl}/api/v1/reports/non-mpp-actual-PT
+
+          Authentication: Requires a Bearer JWT. Call Login first, copy the token from the response, then send it here.
+
+          Headers:
+          Authorization: Bearer <access_token>
+          Content-Type: application/json
+          Accept: application/json
+
+          Body:
+          {
+            "period": "sample-value",
+            "closing_month": 1,
+            "outlet_id": "1",
+            "company_id": "1",
+            "department_id": "1",
+            "brand_id": "1"
+          }
+
+          curl:
+          curl -X POST "{baseUrl}/api/v1/reports/non-mpp-actual-PT" \
+            -H "Authorization: Bearer <access_token>" \
+            -H "Content-Type: application/json" \
+            -H "Accept: application/json" \
+            -d '{
+            "period": "sample-value",
+            "closing_month": 1,
+            "outlet_id": "1",
+            "company_id": "1",
+            "department_id": "1",
+            "brand_id": "1"
+          }'
+      description: >-
+        Generate Non MPP Actual PT Report Alias is part of the Reports category.
+
+
+        **Who this is for:** Budgeting, finance, System Analysts, and Support.
+
+
+        **Authentication:** Requires a Bearer JWT. Call Login first, copy the token from the response, then send it
+        here.
+
+
+        **How to test:** Copy the sample request below, replace every placeholder (values in `<angle brackets>` and
+        sample data), then send it from Postman, curl, or PowerShell.
+
+
+        **Validation:** closing_month is required and cannot be empty.
+
+
+        **Known error messages:** closing_month required; invalid json; body too large; missing bearer token; invalid
+        token
+
+
+        **Copy-ready curl**
+
+
+        ```bash
+
+        curl -X POST "{baseUrl}/api/v1/reports/non-mpp-actual-PT" \
+          -H "Authorization: Bearer <access_token>" \
+          -H "Content-Type: application/json" \
+          -H "Accept: application/json" \
+          -d '{
+          "period": "sample-value",
+          "closing_month": 1,
+          "outlet_id": "1",
+          "company_id": "1",
+          "department_id": "1",
+          "brand_id": "1"
+        }'
+
+        ```
+
+
+        Technical source notes are omitted from this description so analysts and Support can scan the contract quickly.
+  /api/v1/reports/non-mpp-all:
+    post:
+      tags:
+        - Reports
+      summary: Generate Non MPP All Report
+      operationId: reportNonMPPAllHandlerGenerateNonMPPAllReport
+      responses:
+        "200":
+          description: Successful response. The live JSON shape can vary; compare it with this sample.
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+              example:
+                status: success
+                message: Request completed
+                data: {}
+          x-java-response-type: Object
+        "400":
+          description: closing_month required
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 400
+                message: closing_month required
+          x-java-response-type: Object
+        "401":
+          description: closing_month required
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 401
+                message: closing_month required
+          x-java-response-type: Object
+        "413":
+          description: closing_month required
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 413
+                message: closing_month required
+          x-java-response-type: Object
+        "500":
+          description: closing_month required
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 500
+                message: closing_month required
+          x-java-response-type: Object
+      x-source-controller: ReportNonMPPAllHandler
+      x-source-location: internal/modules/report_non_mppAll/process/handler.go:23
+      x-source-http-method: POST
+      x-audience: Budgeting, finance, System Analysts, and Support
+      x-auth:
+        type: Bearer JWT
+        required: true
+        summary: Requires a Bearer JWT. Call Login first, copy the token from the response, then send it here.
+        headers:
+          - name: Authorization
+            example: Bearer <access_token>
+            note: Replace <access_token> with the token from Login.
+        raw: "Bearer JWT (Authorization: Bearer <token>) (handler-level)"
+      x-validation:
+        - closing_month is required and cannot be empty.
+      x-error-messages:
+        - closing_month required
+        - invalid json
+        - body too large
+        - missing bearer token
+        - invalid token
+      x-app-area: Reports
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        description: Replace sample values before sending this body.
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                period:
+                  type: string
+                  description: Optional. Period (string).
+                  example: sample-value
+                closing_month:
+                  type: integer
+                  format: int32
+                  description: Required. Calendar month from 1 to 12 used as the budget closing month.
+                  example: 1
+                outlet_id:
+                  type: string
+                  description: Optional. Outlet / branch code.
+                  example: "1"
+                company_id:
+                  type: string
+                  description: Optional. Company ID (string).
+                  example: "1"
+                department_id:
+                  type: string
+                  description: Optional. Department ID (string).
+                  example: "1"
+                brand_id:
+                  type: string
+                  description: Optional. Brand identifier.
+                  example: "1"
+              title: reportRequestJSON
+              required:
+                - closing_month
+            example:
+              period: sample-value
+              closing_month: 1
+              outlet_id: "1"
+              company_id: "1"
+              department_id: "1"
+              brand_id: "1"
+      x-copy:
+        curl: |-
+          curl -X POST "{baseUrl}/api/v1/reports/non-mpp-all" \
+            -H "Authorization: Bearer <access_token>" \
+            -H "Content-Type: application/json" \
+            -H "Accept: application/json" \
+            -d '{
+            "period": "sample-value",
+            "closing_month": 1,
+            "outlet_id": "1",
+            "company_id": "1",
+            "department_id": "1",
+            "brand_id": "1"
+          }'
+        powershell: |-
+          $headers = @{
+            "Authorization" = "Bearer <access_token>"
+            "Content-Type" = "application/json"
+            "Accept" = "application/json"
+          }
+          $body = @'
+          {
+            "period": "sample-value",
+            "closing_month": 1,
+            "outlet_id": "1",
+            "company_id": "1",
+            "department_id": "1",
+            "brand_id": "1"
+          }
+          '@
+          Invoke-RestMethod -Method POST -Uri "{baseUrl}/api/v1/reports/non-mpp-all" -Headers $headers -Body $body
+        http: |-
+          POST /api/v1/reports/non-mpp-all HTTP/1.1
+          Host: {host}
+          Authorization: Bearer <access_token>
+          Content-Type: application/json
+          Accept: application/json
+
+          {
+            "period": "sample-value",
+            "closing_month": 1,
+            "outlet_id": "1",
+            "company_id": "1",
+            "department_id": "1",
+            "brand_id": "1"
+          }
+        url: "{baseUrl}/api/v1/reports/non-mpp-all"
+        all: |-
+          Generate Non MPP All Report
+          POST {baseUrl}/api/v1/reports/non-mpp-all
+
+          Authentication: Requires a Bearer JWT. Call Login first, copy the token from the response, then send it here.
+
+          Headers:
+          Authorization: Bearer <access_token>
+          Content-Type: application/json
+          Accept: application/json
+
+          Body:
+          {
+            "period": "sample-value",
+            "closing_month": 1,
+            "outlet_id": "1",
+            "company_id": "1",
+            "department_id": "1",
+            "brand_id": "1"
+          }
+
+          curl:
+          curl -X POST "{baseUrl}/api/v1/reports/non-mpp-all" \
+            -H "Authorization: Bearer <access_token>" \
+            -H "Content-Type: application/json" \
+            -H "Accept: application/json" \
+            -d '{
+            "period": "sample-value",
+            "closing_month": 1,
+            "outlet_id": "1",
+            "company_id": "1",
+            "department_id": "1",
+            "brand_id": "1"
+          }'
+      description: >-
+        Generate Non MPP All Report is part of the Reports category.
+
+
+        **Who this is for:** Budgeting, finance, System Analysts, and Support.
+
+
+        **Authentication:** Requires a Bearer JWT. Call Login first, copy the token from the response, then send it
+        here.
+
+
+        **How to test:** Copy the sample request below, replace every placeholder (values in `<angle brackets>` and
+        sample data), then send it from Postman, curl, or PowerShell.
+
+
+        **Validation:** closing_month is required and cannot be empty.
+
+
+        **Known error messages:** closing_month required; invalid json; body too large; missing bearer token; invalid
+        token
+
+
+        **Copy-ready curl**
+
+
+        ```bash
+
+        curl -X POST "{baseUrl}/api/v1/reports/non-mpp-all" \
+          -H "Authorization: Bearer <access_token>" \
+          -H "Content-Type: application/json" \
+          -H "Accept: application/json" \
+          -d '{
+          "period": "sample-value",
+          "closing_month": 1,
+          "outlet_id": "1",
+          "company_id": "1",
+          "department_id": "1",
+          "brand_id": "1"
+        }'
+
+        ```
+
+
+        Technical source notes are omitted from this description so analysts and Support can scan the contract quickly.
+  /api/v1/reports/non-mpp-bin:
+    post:
+      tags:
+        - Reports
+      summary: Generate Non MPP BIN Report
+      operationId: reportNonMPPBINHandlerGenerateNonMPPBINReport
+      responses:
+        "200":
+          description: Successful response. The live JSON shape can vary; compare it with this sample.
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+              example:
+                status: success
+                message: Request completed
+                data: {}
+          x-java-response-type: Object
+        "400":
+          description: closing_month required
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 400
+                message: closing_month required
+          x-java-response-type: Object
+        "401":
+          description: closing_month required
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 401
+                message: closing_month required
+          x-java-response-type: Object
+        "413":
+          description: closing_month required
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 413
+                message: closing_month required
+          x-java-response-type: Object
+        "500":
+          description: closing_month required
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 500
+                message: closing_month required
+          x-java-response-type: Object
+      x-source-controller: ReportNonMPPBINHandler
+      x-source-location: internal/modules/report_non_mpp_BIN/process/handler.go:23
+      x-source-http-method: POST
+      x-audience: Budgeting, finance, System Analysts, and Support
+      x-auth:
+        type: Bearer JWT
+        required: true
+        summary: Requires a Bearer JWT. Call Login first, copy the token from the response, then send it here.
+        headers:
+          - name: Authorization
+            example: Bearer <access_token>
+            note: Replace <access_token> with the token from Login.
+        raw: "Bearer JWT (Authorization: Bearer <token>) (handler-level)"
+      x-validation:
+        - closing_month is required and cannot be empty.
+      x-error-messages:
+        - closing_month required
+        - invalid json
+        - body too large
+        - missing bearer token
+        - invalid token
+      x-app-area: Reports
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        description: Replace sample values before sending this body.
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                period:
+                  type: string
+                  description: Optional. Period (string).
+                  example: sample-value
+                closing_month:
+                  type: integer
+                  format: int32
+                  description: Required. Calendar month from 1 to 12 used as the budget closing month.
+                  example: 1
+                outlet_id:
+                  type: string
+                  description: Optional. Outlet / branch code.
+                  example: "1"
+                company_id:
+                  type: string
+                  description: Optional. Company ID (string).
+                  example: "1"
+                department_id:
+                  type: string
+                  description: Optional. Department ID (string).
+                  example: "1"
+                brand_id:
+                  type: string
+                  description: Optional. Brand identifier.
+                  example: "1"
+              title: reportRequestJSON
+              required:
+                - closing_month
+            example:
+              period: sample-value
+              closing_month: 1
+              outlet_id: "1"
+              company_id: "1"
+              department_id: "1"
+              brand_id: "1"
+      x-copy:
+        curl: |-
+          curl -X POST "{baseUrl}/api/v1/reports/non-mpp-bin" \
+            -H "Authorization: Bearer <access_token>" \
+            -H "Content-Type: application/json" \
+            -H "Accept: application/json" \
+            -d '{
+            "period": "sample-value",
+            "closing_month": 1,
+            "outlet_id": "1",
+            "company_id": "1",
+            "department_id": "1",
+            "brand_id": "1"
+          }'
+        powershell: |-
+          $headers = @{
+            "Authorization" = "Bearer <access_token>"
+            "Content-Type" = "application/json"
+            "Accept" = "application/json"
+          }
+          $body = @'
+          {
+            "period": "sample-value",
+            "closing_month": 1,
+            "outlet_id": "1",
+            "company_id": "1",
+            "department_id": "1",
+            "brand_id": "1"
+          }
+          '@
+          Invoke-RestMethod -Method POST -Uri "{baseUrl}/api/v1/reports/non-mpp-bin" -Headers $headers -Body $body
+        http: |-
+          POST /api/v1/reports/non-mpp-bin HTTP/1.1
+          Host: {host}
+          Authorization: Bearer <access_token>
+          Content-Type: application/json
+          Accept: application/json
+
+          {
+            "period": "sample-value",
+            "closing_month": 1,
+            "outlet_id": "1",
+            "company_id": "1",
+            "department_id": "1",
+            "brand_id": "1"
+          }
+        url: "{baseUrl}/api/v1/reports/non-mpp-bin"
+        all: |-
+          Generate Non MPP BIN Report
+          POST {baseUrl}/api/v1/reports/non-mpp-bin
+
+          Authentication: Requires a Bearer JWT. Call Login first, copy the token from the response, then send it here.
+
+          Headers:
+          Authorization: Bearer <access_token>
+          Content-Type: application/json
+          Accept: application/json
+
+          Body:
+          {
+            "period": "sample-value",
+            "closing_month": 1,
+            "outlet_id": "1",
+            "company_id": "1",
+            "department_id": "1",
+            "brand_id": "1"
+          }
+
+          curl:
+          curl -X POST "{baseUrl}/api/v1/reports/non-mpp-bin" \
+            -H "Authorization: Bearer <access_token>" \
+            -H "Content-Type: application/json" \
+            -H "Accept: application/json" \
+            -d '{
+            "period": "sample-value",
+            "closing_month": 1,
+            "outlet_id": "1",
+            "company_id": "1",
+            "department_id": "1",
+            "brand_id": "1"
+          }'
+      description: >-
+        Generate Non MPP BIN Report is part of the Reports category.
+
+
+        **Who this is for:** Budgeting, finance, System Analysts, and Support.
+
+
+        **Authentication:** Requires a Bearer JWT. Call Login first, copy the token from the response, then send it
+        here.
+
+
+        **How to test:** Copy the sample request below, replace every placeholder (values in `<angle brackets>` and
+        sample data), then send it from Postman, curl, or PowerShell.
+
+
+        **Validation:** closing_month is required and cannot be empty.
+
+
+        **Known error messages:** closing_month required; invalid json; body too large; missing bearer token; invalid
+        token
+
+
+        **Copy-ready curl**
+
+
+        ```bash
+
+        curl -X POST "{baseUrl}/api/v1/reports/non-mpp-bin" \
+          -H "Authorization: Bearer <access_token>" \
+          -H "Content-Type: application/json" \
+          -H "Accept: application/json" \
+          -d '{
+          "period": "sample-value",
+          "closing_month": 1,
+          "outlet_id": "1",
+          "company_id": "1",
+          "department_id": "1",
+          "brand_id": "1"
+        }'
+
+        ```
+
+
+        Technical source notes are omitted from this description so analysts and Support can scan the contract quickly.
+  /api/v1/reports/non-mpp-dept:
+    post:
+      tags:
+        - Reports
+      summary: Generate Non MPP Department Report
+      operationId: reportNonMPPDeptHandlerGenerateNonMPPDepartmentReport
+      responses:
+        "200":
+          description: Successful response. The live JSON shape can vary; compare it with this sample.
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+              example:
+                status: success
+                message: Request completed
+                data: {}
+          x-java-response-type: Object
+        "400":
+          description: closing_month required
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 400
+                message: closing_month required
+          x-java-response-type: Object
+        "401":
+          description: closing_month required
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 401
+                message: closing_month required
+          x-java-response-type: Object
+        "413":
+          description: closing_month required
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 413
+                message: closing_month required
+          x-java-response-type: Object
+        "500":
+          description: closing_month required
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 500
+                message: closing_month required
+          x-java-response-type: Object
+      x-source-controller: ReportNonMPPDeptHandler
+      x-source-location: internal/modules/report_non_mpp_dept/process/handler.go:23
+      x-source-http-method: POST
+      x-audience: Budgeting, finance, System Analysts, and Support
+      x-auth:
+        type: Bearer JWT
+        required: true
+        summary: Requires a Bearer JWT. Call Login first, copy the token from the response, then send it here.
+        headers:
+          - name: Authorization
+            example: Bearer <access_token>
+            note: Replace <access_token> with the token from Login.
+        raw: "Bearer JWT (Authorization: Bearer <token>) (handler-level)"
+      x-validation:
+        - closing_month is required and cannot be empty.
+      x-error-messages:
+        - closing_month required
+        - invalid json
+        - body too large
+        - missing bearer token
+        - invalid token
+      x-app-area: Reports
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        description: Replace sample values before sending this body.
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                period:
+                  type: string
+                  description: Optional. Period (string).
+                  example: sample-value
+                closing_month:
+                  type: integer
+                  format: int32
+                  description: Required. Calendar month from 1 to 12 used as the budget closing month.
+                  example: 1
+                outlet_id:
+                  type: string
+                  description: Optional. Outlet / branch code.
+                  example: "1"
+                company_id:
+                  type: string
+                  description: Optional. Company ID (string).
+                  example: "1"
+                department_id:
+                  type: string
+                  description: Optional. Department ID (string).
+                  example: "1"
+                brand_id:
+                  type: string
+                  description: Optional. Brand identifier.
+                  example: "1"
+              title: reportRequestJSON
+              required:
+                - closing_month
+            example:
+              period: sample-value
+              closing_month: 1
+              outlet_id: "1"
+              company_id: "1"
+              department_id: "1"
+              brand_id: "1"
+      x-copy:
+        curl: |-
+          curl -X POST "{baseUrl}/api/v1/reports/non-mpp-dept" \
+            -H "Authorization: Bearer <access_token>" \
+            -H "Content-Type: application/json" \
+            -H "Accept: application/json" \
+            -d '{
+            "period": "sample-value",
+            "closing_month": 1,
+            "outlet_id": "1",
+            "company_id": "1",
+            "department_id": "1",
+            "brand_id": "1"
+          }'
+        powershell: |-
+          $headers = @{
+            "Authorization" = "Bearer <access_token>"
+            "Content-Type" = "application/json"
+            "Accept" = "application/json"
+          }
+          $body = @'
+          {
+            "period": "sample-value",
+            "closing_month": 1,
+            "outlet_id": "1",
+            "company_id": "1",
+            "department_id": "1",
+            "brand_id": "1"
+          }
+          '@
+          Invoke-RestMethod -Method POST -Uri "{baseUrl}/api/v1/reports/non-mpp-dept" -Headers $headers -Body $body
+        http: |-
+          POST /api/v1/reports/non-mpp-dept HTTP/1.1
+          Host: {host}
+          Authorization: Bearer <access_token>
+          Content-Type: application/json
+          Accept: application/json
+
+          {
+            "period": "sample-value",
+            "closing_month": 1,
+            "outlet_id": "1",
+            "company_id": "1",
+            "department_id": "1",
+            "brand_id": "1"
+          }
+        url: "{baseUrl}/api/v1/reports/non-mpp-dept"
+        all: |-
+          Generate Non MPP Department Report
+          POST {baseUrl}/api/v1/reports/non-mpp-dept
+
+          Authentication: Requires a Bearer JWT. Call Login first, copy the token from the response, then send it here.
+
+          Headers:
+          Authorization: Bearer <access_token>
+          Content-Type: application/json
+          Accept: application/json
+
+          Body:
+          {
+            "period": "sample-value",
+            "closing_month": 1,
+            "outlet_id": "1",
+            "company_id": "1",
+            "department_id": "1",
+            "brand_id": "1"
+          }
+
+          curl:
+          curl -X POST "{baseUrl}/api/v1/reports/non-mpp-dept" \
+            -H "Authorization: Bearer <access_token>" \
+            -H "Content-Type: application/json" \
+            -H "Accept: application/json" \
+            -d '{
+            "period": "sample-value",
+            "closing_month": 1,
+            "outlet_id": "1",
+            "company_id": "1",
+            "department_id": "1",
+            "brand_id": "1"
+          }'
+      description: >-
+        Generate Non MPP Department Report is part of the Reports category.
+
+
+        **Who this is for:** Budgeting, finance, System Analysts, and Support.
+
+
+        **Authentication:** Requires a Bearer JWT. Call Login first, copy the token from the response, then send it
+        here.
+
+
+        **How to test:** Copy the sample request below, replace every placeholder (values in `<angle brackets>` and
+        sample data), then send it from Postman, curl, or PowerShell.
+
+
+        **Validation:** closing_month is required and cannot be empty.
+
+
+        **Known error messages:** closing_month required; invalid json; body too large; missing bearer token; invalid
+        token
+
+
+        **Copy-ready curl**
+
+
+        ```bash
+
+        curl -X POST "{baseUrl}/api/v1/reports/non-mpp-dept" \
+          -H "Authorization: Bearer <access_token>" \
+          -H "Content-Type: application/json" \
+          -H "Accept: application/json" \
+          -d '{
+          "period": "sample-value",
+          "closing_month": 1,
+          "outlet_id": "1",
+          "company_id": "1",
+          "department_id": "1",
+          "brand_id": "1"
+        }'
+
+        ```
+
+
+        Technical source notes are omitted from this description so analysts and Support can scan the contract quickly.
+  /api/v1/reports/non-mpp-pt:
+    post:
+      tags:
+        - Reports
+      summary: Generate Non MPP PT Report
+      operationId: reportNonMPPPTHandlerGenerateNonMPPPTReport
+      responses:
+        "200":
+          description: Successful response. The live JSON shape can vary; compare it with this sample.
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+              example:
+                status: success
+                message: Request completed
+                data: {}
+          x-java-response-type: Object
+        "400":
+          description: closing_month required
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 400
+                message: closing_month required
+          x-java-response-type: Object
+        "401":
+          description: closing_month required
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 401
+                message: closing_month required
+          x-java-response-type: Object
+        "413":
+          description: closing_month required
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 413
+                message: closing_month required
+          x-java-response-type: Object
+        "500":
+          description: closing_month required
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 500
+                message: closing_month required
+          x-java-response-type: Object
+      x-source-controller: ReportNonMPPPTHandler
+      x-source-location: internal/modules/report_non_mpp_PT/process/handler.go:23
+      x-source-http-method: POST
+      x-audience: Budgeting, finance, System Analysts, and Support
+      x-auth:
+        type: Bearer JWT
+        required: true
+        summary: Requires a Bearer JWT. Call Login first, copy the token from the response, then send it here.
+        headers:
+          - name: Authorization
+            example: Bearer <access_token>
+            note: Replace <access_token> with the token from Login.
+        raw: "Bearer JWT (Authorization: Bearer <token>) (handler-level)"
+      x-validation:
+        - closing_month is required and cannot be empty.
+      x-error-messages:
+        - closing_month required
+        - invalid json
+        - body too large
+        - missing bearer token
+        - invalid token
+      x-app-area: Reports
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        description: Replace sample values before sending this body.
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                period:
+                  type: string
+                  description: Optional. Period (string).
+                  example: sample-value
+                closing_month:
+                  type: integer
+                  format: int32
+                  description: Required. Calendar month from 1 to 12 used as the budget closing month.
+                  example: 1
+                outlet_id:
+                  type: string
+                  description: Optional. Outlet / branch code.
+                  example: "1"
+                company_id:
+                  type: string
+                  description: Optional. Company ID (string).
+                  example: "1"
+                department_id:
+                  type: string
+                  description: Optional. Department ID (string).
+                  example: "1"
+                brand_id:
+                  type: string
+                  description: Optional. Brand identifier.
+                  example: "1"
+              title: reportRequestJSON
+              required:
+                - closing_month
+            example:
+              period: sample-value
+              closing_month: 1
+              outlet_id: "1"
+              company_id: "1"
+              department_id: "1"
+              brand_id: "1"
+      x-copy:
+        curl: |-
+          curl -X POST "{baseUrl}/api/v1/reports/non-mpp-pt" \
+            -H "Authorization: Bearer <access_token>" \
+            -H "Content-Type: application/json" \
+            -H "Accept: application/json" \
+            -d '{
+            "period": "sample-value",
+            "closing_month": 1,
+            "outlet_id": "1",
+            "company_id": "1",
+            "department_id": "1",
+            "brand_id": "1"
+          }'
+        powershell: |-
+          $headers = @{
+            "Authorization" = "Bearer <access_token>"
+            "Content-Type" = "application/json"
+            "Accept" = "application/json"
+          }
+          $body = @'
+          {
+            "period": "sample-value",
+            "closing_month": 1,
+            "outlet_id": "1",
+            "company_id": "1",
+            "department_id": "1",
+            "brand_id": "1"
+          }
+          '@
+          Invoke-RestMethod -Method POST -Uri "{baseUrl}/api/v1/reports/non-mpp-pt" -Headers $headers -Body $body
+        http: |-
+          POST /api/v1/reports/non-mpp-pt HTTP/1.1
+          Host: {host}
+          Authorization: Bearer <access_token>
+          Content-Type: application/json
+          Accept: application/json
+
+          {
+            "period": "sample-value",
+            "closing_month": 1,
+            "outlet_id": "1",
+            "company_id": "1",
+            "department_id": "1",
+            "brand_id": "1"
+          }
+        url: "{baseUrl}/api/v1/reports/non-mpp-pt"
+        all: |-
+          Generate Non MPP PT Report
+          POST {baseUrl}/api/v1/reports/non-mpp-pt
+
+          Authentication: Requires a Bearer JWT. Call Login first, copy the token from the response, then send it here.
+
+          Headers:
+          Authorization: Bearer <access_token>
+          Content-Type: application/json
+          Accept: application/json
+
+          Body:
+          {
+            "period": "sample-value",
+            "closing_month": 1,
+            "outlet_id": "1",
+            "company_id": "1",
+            "department_id": "1",
+            "brand_id": "1"
+          }
+
+          curl:
+          curl -X POST "{baseUrl}/api/v1/reports/non-mpp-pt" \
+            -H "Authorization: Bearer <access_token>" \
+            -H "Content-Type: application/json" \
+            -H "Accept: application/json" \
+            -d '{
+            "period": "sample-value",
+            "closing_month": 1,
+            "outlet_id": "1",
+            "company_id": "1",
+            "department_id": "1",
+            "brand_id": "1"
+          }'
+      description: >-
+        Generate Non MPP PT Report is part of the Reports category.
+
+
+        **Who this is for:** Budgeting, finance, System Analysts, and Support.
+
+
+        **Authentication:** Requires a Bearer JWT. Call Login first, copy the token from the response, then send it
+        here.
+
+
+        **How to test:** Copy the sample request below, replace every placeholder (values in `<angle brackets>` and
+        sample data), then send it from Postman, curl, or PowerShell.
+
+
+        **Validation:** closing_month is required and cannot be empty.
+
+
+        **Known error messages:** closing_month required; invalid json; body too large; missing bearer token; invalid
+        token
+
+
+        **Copy-ready curl**
+
+
+        ```bash
+
+        curl -X POST "{baseUrl}/api/v1/reports/non-mpp-pt" \
+          -H "Authorization: Bearer <access_token>" \
+          -H "Content-Type: application/json" \
+          -H "Accept: application/json" \
+          -d '{
+          "period": "sample-value",
+          "closing_month": 1,
+          "outlet_id": "1",
+          "company_id": "1",
+          "department_id": "1",
+          "brand_id": "1"
+        }'
+
+        ```
+
+
+        Technical source notes are omitted from this description so analysts and Support can scan the contract quickly.
+  /api/v1/reports/non-mpp-PT:
+    post:
+      tags:
+        - Reports
+      summary: Generate Non MPP PT Report Alias
+      operationId: reportNonMPPPTHandlerGenerateNonMPPPTReportAlias
+      responses:
+        "200":
+          description: Successful response. The live JSON shape can vary; compare it with this sample.
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+              example:
+                status: success
+                message: Request completed
+                data: {}
+          x-java-response-type: Object
+        "400":
+          description: closing_month required
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 400
+                message: closing_month required
+          x-java-response-type: Object
+        "401":
+          description: closing_month required
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 401
+                message: closing_month required
+          x-java-response-type: Object
+        "413":
+          description: closing_month required
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 413
+                message: closing_month required
+          x-java-response-type: Object
+        "500":
+          description: closing_month required
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 500
+                message: closing_month required
+          x-java-response-type: Object
+      x-source-controller: ReportNonMPPPTHandler
+      x-source-location: internal/modules/report_non_mpp_PT/process/handler.go:23
+      x-source-http-method: POST
+      x-audience: Budgeting, finance, System Analysts, and Support
+      x-auth:
+        type: Bearer JWT
+        required: true
+        summary: Requires a Bearer JWT. Call Login first, copy the token from the response, then send it here.
+        headers:
+          - name: Authorization
+            example: Bearer <access_token>
+            note: Replace <access_token> with the token from Login.
+        raw: "Bearer JWT (Authorization: Bearer <token>) (handler-level)"
+      x-validation:
+        - closing_month is required and cannot be empty.
+      x-error-messages:
+        - closing_month required
+        - invalid json
+        - body too large
+        - missing bearer token
+        - invalid token
+      x-app-area: Reports
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        description: Replace sample values before sending this body.
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                period:
+                  type: string
+                  description: Optional. Period (string).
+                  example: sample-value
+                closing_month:
+                  type: integer
+                  format: int32
+                  description: Required. Calendar month from 1 to 12 used as the budget closing month.
+                  example: 1
+                outlet_id:
+                  type: string
+                  description: Optional. Outlet / branch code.
+                  example: "1"
+                company_id:
+                  type: string
+                  description: Optional. Company ID (string).
+                  example: "1"
+                department_id:
+                  type: string
+                  description: Optional. Department ID (string).
+                  example: "1"
+                brand_id:
+                  type: string
+                  description: Optional. Brand identifier.
+                  example: "1"
+              title: reportRequestJSON
+              required:
+                - closing_month
+            example:
+              period: sample-value
+              closing_month: 1
+              outlet_id: "1"
+              company_id: "1"
+              department_id: "1"
+              brand_id: "1"
+      x-copy:
+        curl: |-
+          curl -X POST "{baseUrl}/api/v1/reports/non-mpp-PT" \
+            -H "Authorization: Bearer <access_token>" \
+            -H "Content-Type: application/json" \
+            -H "Accept: application/json" \
+            -d '{
+            "period": "sample-value",
+            "closing_month": 1,
+            "outlet_id": "1",
+            "company_id": "1",
+            "department_id": "1",
+            "brand_id": "1"
+          }'
+        powershell: |-
+          $headers = @{
+            "Authorization" = "Bearer <access_token>"
+            "Content-Type" = "application/json"
+            "Accept" = "application/json"
+          }
+          $body = @'
+          {
+            "period": "sample-value",
+            "closing_month": 1,
+            "outlet_id": "1",
+            "company_id": "1",
+            "department_id": "1",
+            "brand_id": "1"
+          }
+          '@
+          Invoke-RestMethod -Method POST -Uri "{baseUrl}/api/v1/reports/non-mpp-PT" -Headers $headers -Body $body
+        http: |-
+          POST /api/v1/reports/non-mpp-PT HTTP/1.1
+          Host: {host}
+          Authorization: Bearer <access_token>
+          Content-Type: application/json
+          Accept: application/json
+
+          {
+            "period": "sample-value",
+            "closing_month": 1,
+            "outlet_id": "1",
+            "company_id": "1",
+            "department_id": "1",
+            "brand_id": "1"
+          }
+        url: "{baseUrl}/api/v1/reports/non-mpp-PT"
+        all: |-
+          Generate Non MPP PT Report Alias
+          POST {baseUrl}/api/v1/reports/non-mpp-PT
+
+          Authentication: Requires a Bearer JWT. Call Login first, copy the token from the response, then send it here.
+
+          Headers:
+          Authorization: Bearer <access_token>
+          Content-Type: application/json
+          Accept: application/json
+
+          Body:
+          {
+            "period": "sample-value",
+            "closing_month": 1,
+            "outlet_id": "1",
+            "company_id": "1",
+            "department_id": "1",
+            "brand_id": "1"
+          }
+
+          curl:
+          curl -X POST "{baseUrl}/api/v1/reports/non-mpp-PT" \
+            -H "Authorization: Bearer <access_token>" \
+            -H "Content-Type: application/json" \
+            -H "Accept: application/json" \
+            -d '{
+            "period": "sample-value",
+            "closing_month": 1,
+            "outlet_id": "1",
+            "company_id": "1",
+            "department_id": "1",
+            "brand_id": "1"
+          }'
+      description: >-
+        Generate Non MPP PT Report Alias is part of the Reports category.
+
+
+        **Who this is for:** Budgeting, finance, System Analysts, and Support.
+
+
+        **Authentication:** Requires a Bearer JWT. Call Login first, copy the token from the response, then send it
+        here.
+
+
+        **How to test:** Copy the sample request below, replace every placeholder (values in `<angle brackets>` and
+        sample data), then send it from Postman, curl, or PowerShell.
+
+
+        **Validation:** closing_month is required and cannot be empty.
+
+
+        **Known error messages:** closing_month required; invalid json; body too large; missing bearer token; invalid
+        token
+
+
+        **Copy-ready curl**
+
+
+        ```bash
+
+        curl -X POST "{baseUrl}/api/v1/reports/non-mpp-PT" \
+          -H "Authorization: Bearer <access_token>" \
+          -H "Content-Type: application/json" \
+          -H "Accept: application/json" \
+          -d '{
+          "period": "sample-value",
+          "closing_month": 1,
+          "outlet_id": "1",
+          "company_id": "1",
+          "department_id": "1",
+          "brand_id": "1"
+        }'
+
+        ```
+
+
+        Technical source notes are omitted from this description so analysts and Support can scan the contract quickly.
+  /health:
+    get:
+      tags:
+        - Health
+      summary: Health Check
+      operationId: healthHandlerHealthCheck
+      responses:
+        "200":
+          description: Successful response. The live JSON shape can vary; compare it with this sample.
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+              example:
+                status: success
+                message: Request completed
+                data: {}
+          x-java-response-type: Object
+        "401":
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 401
+                message: unauthorized
+          x-java-response-type: Object
+      x-source-controller: HealthHandler
+      x-source-location: internal/httpserver/router.go:60
+      x-source-http-method: GET
+      x-audience: Anyone checking whether the Budgeting API is up
+      x-auth:
+        type: HTTP Basic
+        required: true
+        summary: "Requires HTTP Basic authentication. Send `Authorization: Basic <base64(user:password)>` using BASIC_AUTH_USER
+          and BASIC_AUTH_PASSWORD. You can also use `curl -u user:password`."
+        headers:
+          - name: Authorization
+            example: Basic <base64(user:password)>
+            note: Replace with base64 of BASIC_AUTH_USER:BASIC_AUTH_PASSWORD, or use curl -u.
+        raw: "HTTP Basic (Authorization: Basic <base64(user:password)>) (handler-level)"
+      x-validation: []
+      x-error-messages:
+        - unauthorized
+      x-app-area: Health
+      security:
+        - basicAuth: []
+      x-copy:
+        curl: |-
+          curl -X GET "{baseUrl}/health" \
+            -H "Authorization: Basic <base64(user:password)>" \
+            -H "Accept: application/json"
+        powershell: |-
+          $headers = @{
+            "Authorization" = "Basic <base64(user:password)>"
+            "Accept" = "application/json"
+          }
+          Invoke-RestMethod -Method GET -Uri "{baseUrl}/health" -Headers $headers
+        http: |-
+          GET /health HTTP/1.1
+          Host: {host}
+          Authorization: Basic <base64(user:password)>
+          Accept: application/json
+        url: "{baseUrl}/health"
+        all: >-
+          Health Check
+
+          GET {baseUrl}/health
+
+
+          Authentication: Requires HTTP Basic authentication. Send `Authorization: Basic <base64(user:password)>` using
+          BASIC_AUTH_USER and BASIC_AUTH_PASSWORD. You can also use `curl -u user:password`.
+
+
+          Headers:
+
+          Authorization: Basic <base64(user:password)>
+
+          Accept: application/json
+
+
+          curl:
+
+          curl -X GET "{baseUrl}/health" \
+            -H "Authorization: Basic <base64(user:password)>" \
+            -H "Accept: application/json"
+      description: >-
+        Health Check is part of the Health category.
+
+
+        **Who this is for:** Anyone checking whether the Budgeting API is up.
+
+
+        **Authentication:** Requires HTTP Basic authentication. Send `Authorization: Basic <base64(user:password)>`
+        using BASIC_AUTH_USER and BASIC_AUTH_PASSWORD. You can also use `curl -u user:password`.
+
+
+        **How to test:** Copy the sample request below, replace every placeholder (values in `<angle brackets>` and
+        sample data), then send it from Postman, curl, or PowerShell.
+
+
+        **Known error messages:** unauthorized
+
+
+        **Copy-ready curl**
+
+
+        ```bash
+
+        curl -X GET "{baseUrl}/health" \
+          -H "Authorization: Basic <base64(user:password)>" \
+          -H "Accept: application/json"
+        ```
+
+
+        Technical source notes are omitted from this description so analysts and Support can scan the contract quickly.
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: "Send the access token as `Authorization: Bearer <access_token>`. Copy the token from the Login response."
+    headerXAdminKey:
+      type: apiKey
+      in: header
+      name: X-Admin-Key
+      description: "Send `X-Admin-Key: <audit_admin_key>`. Replace the placeholder with the real credential."
+    basicAuth:
+      type: http
+      scheme: basic
+      description: "Send HTTP Basic credentials as `Authorization: Basic <base64(user:password)>`. Use BASIC_AUTH_USER and
+        BASIC_AUTH_PASSWORD, or `curl -u user:password`."
+  schemas:
+    Error:
+      type: object
+      additionalProperties: true
+      description: Error response shape varies by endpoint. Use HTTP status, known error messages, and the sample error JSON
+        as a starting point.
+      example:
+        status: error
+        httpStatus: 400
+        message: Request failed. Check headers, required fields, and authentication.

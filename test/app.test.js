@@ -30,6 +30,13 @@ const syncInventoryRows = parse(fs.readFileSync("data/syncprocess-api-inventory.
   columns: true,
   skip_empty_lines: true
 }).filter((row) => row.path);
+const budgetingOpenapiSource = fs.readFileSync("openapi/budgeting.yaml", "utf8");
+const budgetingOpenapiDocument = YAML.parse(budgetingOpenapiSource);
+const budgetingInventoryRows = parse(fs.readFileSync("data/budgeting-api-inventory.csv", "utf8"), {
+  bom: true,
+  columns: true,
+  skip_empty_lines: true
+}).filter((row) => row.path);
 
 test("title-cases category and endpoint names", () => {
   assert.equal(titleCase("VoucherB2BCMSController"), "Voucher B2B CMS");
@@ -41,6 +48,8 @@ test("title-cases category and endpoint names", () => {
   assert.equal(titleCase("Run Item SO Sync"), "Run Item SO Sync");
   assert.equal(titleCase("Run Item HPP Sync"), "Run Item HPP Sync");
   assert.equal(titleCase("Run MSDB Mail Maintenance"), "Run MSDB Mail Maintenance");
+  assert.equal(titleCase("Generate Non MPP Report"), "Generate Non MPP Report");
+  assert.equal(titleCase("Generate Non MPP BIN Report"), "Generate Non MPP BIN Report");
 });
 
 test("includes every API inventory operation", () => {
@@ -192,6 +201,46 @@ test("includes every Sync Process inventory operation", () => {
   assert.equal(syncOpenapiDocument.paths["/api/v1/admin/msdb-mail/maintenance/run"].post.tags[0], "Admin");
 });
 
+test("includes every Budgeting inventory operation", () => {
+  const operationCount = Object.values(budgetingOpenapiDocument.paths).reduce(
+    (count, pathItem) => count + Object.keys(pathItem).filter((key) => methods.has(key)).length,
+    0
+  );
+  assert.equal(operationCount, budgetingInventoryRows.length);
+  assert.equal(budgetingInventoryRows.length, 19);
+
+  const operationIds = new Set();
+  for (const raw of budgetingInventoryRows) {
+    const row = normalizeInventoryRow(raw);
+    const method = row.http_method.toLowerCase();
+    const operation = budgetingOpenapiDocument.paths[row.path]?.[method];
+    assert.ok(operation, `Missing generated Budgeting operation: ${row.http_method} ${row.path}`);
+    assert.equal(operation["x-source-location"], row.source);
+    assert.equal(operation["x-source-http-method"], row.http_method);
+    assert.equal(operation["x-app-area"], row.app_area);
+    assert.match(operation.summary, /^[A-Z0-9]/);
+    assert.ok(operation["x-auth"]);
+    assert.ok(operation["x-copy"]?.all);
+    assert.ok(!operationIds.has(operation.operationId), `Duplicate operationId: ${operation.operationId}`);
+    operationIds.add(operation.operationId);
+  }
+
+  assert.equal(budgetingOpenapiDocument.info.title, "Budgeting API Documentation");
+  assert.equal(budgetingOpenapiDocument.paths["/"].get["x-auth"].type, "Public");
+  assert.equal(budgetingOpenapiDocument.paths["/health"].get["x-auth"].type, "HTTP Basic");
+  assert.equal(budgetingOpenapiDocument.paths["/api/v1/auth/token"].post.summary, "Issue Token");
+  assert.equal(budgetingOpenapiDocument.paths["/api/v1/auth/check"].get["x-auth"].type, "Bearer JWT");
+  assert.deepEqual(
+    budgetingOpenapiDocument.paths["/api/v1/reports/non-mpp"].post.requestBody.content["application/json"].schema.required,
+    ["closing_month"]
+  );
+  assert.equal(budgetingOpenapiDocument.paths["/api/v1/reports/non-mpp"].post.tags[0], "Reports");
+  assert.equal(budgetingOpenapiDocument.paths["/api/v1/LoadBudgetingTable"].post.tags[0], "Budgeting");
+  assert.equal(budgetingOpenapiDocument.paths["/api/v1/admin/audit-log/purge-stale"].post["x-auth"].type, "API Key");
+  assert.ok(budgetingOpenapiDocument.paths["/api/v1/reports/non-mpp-PT"].post);
+  assert.ok(budgetingOpenapiDocument.paths["/api/v1/reports/non-mpp-actual-pt"].post);
+});
+
 test("lists the four application menu options", () => {
   assert.deepEqual(apps.map((app) => app.id), ["boga-app", "webapps", "budgeting", "sync-process"]);
   assert.equal(apps[0].name, "Boga APP API");
@@ -200,7 +249,7 @@ test("lists the four application menu options", () => {
   assert.equal(apps[1].subtitle, "MyBoga, VMS, ATS, BogaBOT");
   assert.equal(apps[1].hasCatalog, true);
   assert.equal(apps[2].name, "Budgeting API");
-  assert.equal(apps[2].hasCatalog, false);
+  assert.equal(apps[2].hasCatalog, true);
   assert.equal(apps[3].name, "Sync Process API");
   assert.equal(apps[3].hasCatalog, true);
 });
@@ -277,6 +326,22 @@ test("serves the reader portal, catalog, and Swagger UI", async (context) => {
   assert.equal(syncSpecResponse.status, 200);
   assert.match(await syncSpecResponse.text(), /Sync Process API Documentation/);
 
+  const budgetingCatalogResponse = await fetch(`${origin}/portal/docs/apps/budgeting/catalog.json`);
+  assert.equal(budgetingCatalogResponse.status, 200);
+  const budgetingCatalog = await budgetingCatalogResponse.json();
+  assert.equal(budgetingCatalog.info.title, "Budgeting API Documentation");
+  const budgetingCount = budgetingCatalog.categories.reduce((count, category) => count + category.operations.length, 0);
+  assert.equal(budgetingCount, 19);
+  assert.ok(budgetingCatalog.categories.some((category) => category.name === "Health"));
+  assert.ok(budgetingCatalog.categories.some((category) => category.name === "Authentication"));
+  assert.ok(budgetingCatalog.categories.some((category) => category.name === "Reports"));
+  assert.ok(budgetingCatalog.categories.some((category) => category.name === "Budgeting"));
+  assert.ok(budgetingCatalog.categories.some((category) => category.name === "Admin"));
+
+  const budgetingSpecResponse = await fetch(`${origin}/portal/openapi/budgeting.yaml`);
+  assert.equal(budgetingSpecResponse.status, 200);
+  assert.match(await budgetingSpecResponse.text(), /Budgeting API Documentation/);
+
   const logoResponse = await fetch(`${origin}/portal/assets/boga-logo.webp`);
   assert.equal(logoResponse.status, 200);
   assert.match(logoResponse.headers.get("content-type"), /^image\/webp/);
@@ -290,6 +355,7 @@ test("serves the reader portal, catalog, and Swagger UI", async (context) => {
   const swaggerConfig = await swaggerConfigResponse.text();
   assert.match(swaggerConfig, /\/portal\/openapi\.yaml/);
   assert.match(swaggerConfig, /\/portal\/openapi\/webapps\.yaml/);
+  assert.match(swaggerConfig, /\/portal\/openapi\/budgeting\.yaml/);
   assert.match(swaggerConfig, /\/portal\/openapi\/sync-process\.yaml/);
 });
 
