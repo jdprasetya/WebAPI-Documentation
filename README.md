@@ -59,40 +59,105 @@ the long-running local/Docker server; the serverless entry uses the bundled
 `openapi/*.yaml` files. `BASE_PATH`, `TRUST_PROXY`, and
 `ENABLE_TRY_IT_OUT` remain optional.
 
-## Write your API contract
+## Maintainer guide
 
-The API catalog is generated from inventory CSV files:
+How to keep endpoint docs up to date. This guide lives in the repository only — it is not published on the portal.
 
-| File | Application |
-| --- | --- |
-| `data/api_documentation_inventory.csv` | Boga APP API |
-| `data/webapps-api-inventory.csv` | WebApps API (MyBoga, VMS, ATS, BogaBOT) |
-| `data/budgeting-api-inventory.csv` | Budgeting API |
-| `data/syncprocess-api-inventory.csv` | Sync Process API |
+### Which file to edit
 
-Edit these CSVs in Excel if you prefer. Column headers use short Title Case names such as `Method`, `Path`, `Title`, `Auth Type`, `Request Body`, and `Notes`. WebApps also uses `Handler`, `Category`, and `App Area`. After replacing or editing an inventory, rebuild and validate the documentation:
+Each menu card is backed by one inventory CSV. Edit only that app’s CSV. Do **not** hand-edit the generated OpenAPI YAML files.
+
+| Menu card | Inventory CSV | Generated output |
+| --- | --- | --- |
+| Boga APP API | `data/api_documentation_inventory.csv` | `openapi/openapi.yaml` |
+| WebApps API | `data/webapps-api-inventory.csv` | `openapi/webapps.yaml` |
+| Budgeting API | `data/budgeting-api-inventory.csv` | `openapi/budgeting.yaml` |
+| Sync Process API | `data/syncprocess-api-inventory.csv` | `openapi/sync-process.yaml` |
+
+`data/webapps-api-area-summary.csv` is a count summary only. It is not used to generate documentation.
+
+You can open the CSVs in Excel. Headers use short Title Case names (`Method`, `Path`, `Title`, `Auth Type`, and so on).
+
+### How to update an API endpoint
+
+1. Open the inventory CSV for that application.
+2. Add a new row, edit an existing row, or delete a row you want removed from the portal.
+3. Save the CSV (UTF-8 if your editor asks).
+4. From the repo root, rebuild and check:
 
 ```powershell
 npm run generate
 npm run validate
 ```
 
-`openapi/openapi.yaml`, `openapi/webapps.yaml`, `openapi/budgeting.yaml`, and `openapi/sync-process.yaml` are generated output and should not be edited by hand. Update `scripts/generate-openapi.js` and `scripts/lib/docs-model.js` when the inventory format or shared documentation metadata changes.
+5. Restart `npm run dev` if it is running, then refresh the browser.
+
+Changing CSV rows updates endpoints **inside** an app. It does **not** add or remove the four cards on the home menu. Those cards are defined in `src/apps-config.js`.
+
+Update `scripts/generate-openapi.js` and `scripts/lib/docs-model.js` only when the inventory format or shared documentation metadata changes.
 
 Each operation should normally include:
 
-- a stable `operationId`;
-- a Title Case summary and appropriate tag;
-- authentication metadata that the portal can show first in the category;
-- all path, query, header, and request-body inputs;
-- success and expected error responses;
-- realistic copy-ready examples with no production secrets or personal data.
+- a clear `Title` (shown Title Case in the portal);
+- authentication metadata (`Auth Type` / headers) so Authentication can appear first in the category;
+- path, query, header, and request-body inputs where they apply;
+- success and expected error codes;
+- realistic examples with no production secrets or personal data.
 
 Validate after every contract change:
 
 ```powershell
 npm run validate
 ```
+
+Or run the full suite with `npm run check`.
+
+### Column reference (full inventories)
+
+Used by Boga APP, Budgeting, and Sync Process.
+
+| Column | What it does | Example |
+| --- | --- | --- |
+| `Method` | HTTP verb | `POST`, `GET`, `ANY` |
+| `Path` | URL path | `/api/account/auth/login` |
+| `Controller` | Category grouping and audience hints | `AccountAuthController` |
+| `Title` | Endpoint display name | `changePassword` → Change Password |
+| `Source File` | Code location for traceability | `…/AccountAuthController.java:114` |
+| `Auth Type` | Auth classification (Bearer, Basic, Public, …) | `Bearer JWT (Authorization: Bearer <token>)…` |
+| `Auth Headers` | Extra authentication header names | `X-CLIENT-KEY; X-SIGNATURE` |
+| `Required Headers` | Headers callers must send | `Content-Type; X-TIMESTAMP` |
+| `Optional Headers` | Headers callers may send | `X-BOGA-Key` |
+| `Path Params` | Values inside `{…}` path segments | `fileType:String` |
+| `Query Params` | Query-string inputs | `offset:int (required); limit:int (required)` |
+| `Content Type` | Request body media type | `application/json` |
+| `Body Type` | DTO / schema title for the body | `CmsChangePasswordRequest` |
+| `Request Body` | Body fields for samples and required lists | `email:String; password:String` |
+| `Validation` | Required-field hints in the description | `email: @NotBlank; password: @NotBlank` |
+| `Success Codes` | Successful HTTP status codes | `200`, `201` |
+| `Error Codes` | Documented error status codes | `400; 401` |
+| `Error Messages` | Sample error text in docs | `Failed to get status data` |
+| `Response Type` | Success sample shape (JSON vs plain text) | `ResponseEntity<Object>`, `String` |
+| `App Area` | Top category (Budgeting / Sync; not on Boga CSV) | `Health`, `Sync` |
+| `Category` | Sub-category under App Area | `Reports`, `Admin` |
+| `App Error Codes` | Not used by the generator today | `ERROR_SUBSCRIPTION_INVALID` |
+| `Notes` | Maintainer notes in the CSV; not shown in the portal | `Static source scan; …` |
+
+### Column reference (WebApps)
+
+WebApps uses a shorter inventory. Missing body/auth detail is filled with safe defaults during generation.
+
+| Column | What it does | Example |
+| --- | --- | --- |
+| `App Area` | Product area: MyBoga, VMS, ATS, or BogaBOT | `ATS` |
+| `Category` | Sidebar grouping within that area | `ATS` |
+| `Method` | HTTP verb | `POST` |
+| `Path` | URL path | `/api/ATS/GetApplicantJobList` |
+| `Auth Type` | Auth classification (often public here) | `No visible handler-level auth` |
+| `Headers` | Optional auth/header list (often empty) | *(blank)* |
+| `Controller` | Source controller name | `ATSController` |
+| `Handler` | Becomes the endpoint title | `GetApplicantJobList` |
+| `Source File` | C# file path | `Boga.WebAPI/Controller/ATSController.cs` |
+| `Line` | Appended to Source File for exact location | `367` |
 
 The **Try it out** feature in Swagger UI sends requests from the browser directly to a URL listed in `servers`. It is disabled by default. To enable it, set `ENABLE_TRY_IT_OUT=true`; the target API must then allow the documentation site's origin through CORS. The reader portal does not send live requests; testers copy the sample into Postman, curl, or PowerShell.
 
