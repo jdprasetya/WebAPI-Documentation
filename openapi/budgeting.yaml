@@ -132,6 +132,39 @@ paths:
                 type: string
               example: OK
           x-java-response-type: String
+        "400":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 400
+                message: Request failed. Check headers, required fields, and authentication.
+          x-java-response-type: String
+        "401":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 401
+                message: Request failed. Check headers, required fields, and authentication.
+          x-java-response-type: String
+        "404":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 404
+                message: Request failed. Check headers, required fields, and authentication.
+          x-java-response-type: String
       x-source-controller: LandingHandler
       x-source-location: internal/httpserver/router.go:30
       x-source-http-method: GET

@@ -59,6 +59,144 @@ function summarizeCategoryAuth(operations) {
   };
 }
 
+function titleCaseName(value) {
+  return String(value || "")
+    .replace(/[_-]+/g, " ")
+    .replace(/([a-z])([A-Z])/g, "$1 $2")
+    .replace(/\s+/g, " ")
+    .trim()
+    .replace(/\b\w/g, (letter) => letter.toUpperCase());
+}
+
+function displayType(schema) {
+  if (!schema) return "String";
+  if (schema.type === "array") {
+    const item = displayType(schema.items || { type: "string" });
+    return `${item}[]`;
+  }
+  if (schema.format === "binary") return "File";
+  if (schema.format === "date-time") return "DateTime";
+  if (schema.format === "date") return "Date";
+  const type = schema.type || "string";
+  return type.charAt(0).toUpperCase() + type.slice(1);
+}
+
+function exampleType(value) {
+  if (Array.isArray(value)) return "Array";
+  if (value === null) return "Object";
+  if (typeof value === "object") return "Object";
+  if (typeof value === "number") return Number.isInteger(value) ? "Integer" : "Number";
+  if (typeof value === "boolean") return "Boolean";
+  return "String";
+}
+
+function schemaFields(schema, depth = 0) {
+  if (!schema?.properties) return [];
+  const required = new Set(schema.required || []);
+  const rows = [];
+  for (const [name, property] of Object.entries(schema.properties)) {
+    const description = property.description ||
+      `${required.has(name) ? "Required." : "Optional."} ${titleCaseName(name)}.`;
+    rows.push({
+      name,
+      type: displayType(property),
+      description,
+      depth
+    });
+    if (property.properties) {
+      rows.push(...schemaFields(property, depth + 1));
+    } else if (property.items?.properties) {
+      rows.push(...schemaFields(property.items, depth + 1));
+    }
+  }
+  return rows;
+}
+
+function exampleFields(value, depth = 0) {
+  if (value == null || typeof value !== "object") return [];
+  const object = Array.isArray(value) ? value[0] : value;
+  if (object == null || typeof object !== "object" || Array.isArray(object)) return [];
+  return Object.entries(object).flatMap(([name, nested]) => {
+    const row = {
+      name,
+      type: exampleType(nested),
+      description: titleCaseName(name),
+      depth
+    };
+    const children = nested && typeof nested === "object"
+      ? exampleFields(nested, depth + 1)
+      : [];
+    return [row, ...children];
+  });
+}
+
+function bodyFields(media) {
+  if (!media) return [];
+  const fromSchema = schemaFields(media.schema);
+  if (fromSchema.length) return fromSchema;
+  return exampleFields(media.example);
+}
+
+function formatJsonSample(value) {
+  if (value == null) return "";
+  return typeof value === "string" ? value : JSON.stringify(value, null, 2);
+}
+
+function formatHeaderSample(headers) {
+  if (!headers.length) return "No headers required.";
+  return headers.map((header) => `"${header.name}": "${header.example}"`).join("\n");
+}
+
+function collectRequestHeaders(auth, parameters, contentType) {
+  const headers = [];
+  const add = (name, example) => {
+    if (!name || headers.some((item) => item.name.toLowerCase() === name.toLowerCase())) return;
+    headers.push({ name, example: example || "" });
+  };
+  for (const header of auth?.headers || []) add(header.name, header.example);
+  for (const header of parameters.filter((item) => item.in === "header")) {
+    add(header.name, header.example);
+  }
+  if (contentType) add("Content-Type", contentType);
+  return headers;
+}
+
+function errorMessageForCode(code) {
+  const status = Number(code);
+  if (status === 401) return "Unauthorized";
+  if (status === 403) return "Forbidden";
+  if (status === 404) return "Not Found";
+  if (status === 409) return "Conflict";
+  if (status === 422) return "Unprocessable Entity";
+  if (status >= 500) return "Internal server error";
+  return "Request failed. Check headers, required fields, and authentication.";
+}
+
+function errorExample(template, message, code) {
+  const statusCode = String(code || 400);
+  const base = template && typeof template === "object" && !Array.isArray(template)
+    ? { ...template }
+    : {};
+  return {
+    status: base.status || "error",
+    code: String(base.code || statusCode),
+    httpStatus: Number(base.httpStatus || statusCode),
+    message: message || base.message || errorMessageForCode(statusCode),
+    errors: base.errors ?? null
+  };
+}
+
+function errorTab(label, example, code, key) {
+  const named = label.startsWith("Error:") ? label.replace(/^Error:\s*/, "") : "";
+  const message = example?.message || named || errorMessageForCode(code);
+  return {
+    label,
+    value: formatJsonSample(errorExample(example, message, code)),
+    kind: "error",
+    key
+  };
+}
+
 function collectAuthTypes(categories) {
   const map = new Map();
   for (const category of categories) {
@@ -116,6 +254,53 @@ function buildCatalog(openapiDocument) {
         ? Object.entries(operation.requestBody.content)[0]
         : null;
       const parameters = operation.parameters || [];
+      const auth = operation["x-auth"] || { type: "Public", required: false, summary: "No authentication documented.", headers: [] };
+      const errorMessages = operation["x-error-messages"] || [];
+      const responses = Object.entries(operation.responses || {}).map(([code, response]) => {
+        const content = response.content ? Object.values(response.content)[0] : null;
+        return {
+          code,
+          kind: Number(code) >= 400 ? "error" : "success",
+          description: response.description || "",
+          example: content?.example ?? null
+        };
+      });
+      const success = responses.find((item) => item.kind === "success") || responses[0];
+      const errorResponses = responses.filter((item) => item.kind === "error");
+      const errorTemplate = errorResponses[0]?.example;
+      const headerItems = collectRequestHeaders(auth, parameters, requestBody?.[0] || "");
+      const successTabs = responses.filter((item) => item.kind === "success" && item.example != null).map((item, index) => ({
+        label: responses.filter((entry) => entry.kind === "success").length > 1
+          ? `Success Response ${item.code}`
+          : "Success Response",
+        value: formatJsonSample(item.example),
+        kind: "success",
+        key: `success-${item.code}-${index}`
+      }));
+      const errorTabs = [
+        ...errorResponses.map((item, index) => errorTab(
+          `Error Response ${item.code}`,
+          item.example,
+          item.code,
+          `error-${item.code}-${index}`
+        )),
+        ...errorMessages.map((message, index) => errorTab(
+          `Error: ${message}`,
+          errorExample(errorTemplate, message, errorResponses[0]?.code || 400),
+          errorResponses[0]?.code || 400,
+          `error-msg-${index}`
+        ))
+      ];
+      if (!errorTabs.length) {
+        for (const code of [400, 401, 404]) {
+          errorTabs.push(errorTab(
+            `Error Response ${code}`,
+            errorExample(null, errorMessageForCode(code), code),
+            code,
+            `error-default-${code}`
+          ));
+        }
+      }
       return {
         id: slug,
         operationId: operation.operationId,
@@ -125,9 +310,9 @@ function buildCatalog(openapiDocument) {
         summary: operation.description?.split("\n\n")[0] || title,
         description: operation.description || "",
         audience: operation["x-audience"] || "",
-        auth: operation["x-auth"] || { type: "Public", required: false, summary: "No authentication documented.", headers: [] },
+        auth,
         validation: operation["x-validation"] || [],
-        errorMessages: operation["x-error-messages"] || [],
+        errorMessages,
         parameters: {
           path: parameters.filter((item) => item.in === "path"),
           query: parameters.filter((item) => item.in === "query"),
@@ -138,18 +323,18 @@ function buildCatalog(openapiDocument) {
               contentType: requestBody[0],
               example: requestBody[1].example ?? null,
               required: Boolean(operation.requestBody.required),
-              note: operation.requestBody.description || ""
+              note: operation.requestBody.description || "",
+              fields: bodyFields(requestBody[1])
             }
           : null,
-        responses: Object.entries(operation.responses || {}).map(([code, response]) => {
-          const content = response.content ? Object.values(response.content)[0] : null;
-          return {
-            code,
-            kind: Number(code) >= 400 ? "error" : "success",
-            description: response.description || "",
-            example: content?.example ?? null
-          };
-        }),
+        responseFields: exampleFields(success?.example),
+        samples: {
+          header: formatHeaderSample(headerItems),
+          body: requestBody ? formatJsonSample(requestBody[1].example) : "",
+          success: successTabs,
+          errors: errorTabs
+        },
+        responses,
         copy: operation["x-copy"] || {}
       };
     });

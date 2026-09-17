@@ -1669,6 +1669,39 @@ paths:
                 message: Request completed
                 data: {}
           x-java-response-type: Object
+        "400":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 400
+                message: Request failed. Check headers, required fields, and authentication.
+          x-java-response-type: Object
+        "401":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 401
+                message: Request failed. Check headers, required fields, and authentication.
+          x-java-response-type: Object
+        "404":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 404
+                message: Request failed. Check headers, required fields, and authentication.
+          x-java-response-type: Object
       x-source-controller: BannerController
       x-source-location: id/boga/mybogaapp/features/banner/BannerController.java:22
       x-source-http-method: GET
@@ -4301,6 +4334,39 @@ paths:
         "200":
           description: Successful response. The live JSON shape can vary; compare it with this sample.
           x-java-response-type: void
+        "400":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 400
+                message: Request failed. Check headers, required fields, and authentication.
+          x-java-response-type: void
+        "401":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 401
+                message: Request failed. Check headers, required fields, and authentication.
+          x-java-response-type: void
+        "404":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 404
+                message: Request failed. Check headers, required fields, and authentication.
+          x-java-response-type: void
       x-source-controller: VaBcaController
       x-source-location: id/boga/mybogaapp/features/vabca/VaBcaController.java:529
       x-source-http-method: GET
@@ -4377,6 +4443,39 @@ paths:
         "200":
           description: Successful response. The live JSON shape can vary; compare it with this sample.
           x-java-response-type: void
+        "400":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 400
+                message: Request failed. Check headers, required fields, and authentication.
+          x-java-response-type: void
+        "401":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 401
+                message: Request failed. Check headers, required fields, and authentication.
+          x-java-response-type: void
+        "404":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 404
+                message: Request failed. Check headers, required fields, and authentication.
+          x-java-response-type: void
       x-source-controller: VaBcaController
       x-source-location: id/boga/mybogaapp/features/vabca/VaBcaController.java:432
       x-source-http-method: GET
@@ -4450,6 +4549,39 @@ paths:
       responses:
         "200":
           description: Successful response. The live JSON shape can vary; compare it with this sample.
+          x-java-response-type: void
+        "400":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 400
+                message: Request failed. Check headers, required fields, and authentication.
+          x-java-response-type: void
+        "401":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 401
+                message: Request failed. Check headers, required fields, and authentication.
+          x-java-response-type: void
+        "404":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 404
+                message: Request failed. Check headers, required fields, and authentication.
           x-java-response-type: void
       x-source-controller: VaBcaController
       x-source-location: id/boga/mybogaapp/features/vabca/VaBcaController.java:699
@@ -4525,6 +4657,39 @@ paths:
         "200":
           description: Successful response. The live JSON shape can vary; compare it with this sample.
           x-java-response-type: void
+        "400":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 400
+                message: Request failed. Check headers, required fields, and authentication.
+          x-java-response-type: void
+        "401":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 401
+                message: Request failed. Check headers, required fields, and authentication.
+          x-java-response-type: void
+        "404":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 404
+                message: Request failed. Check headers, required fields, and authentication.
+          x-java-response-type: void
       x-source-controller: VaBcaController
       x-source-location: id/boga/mybogaapp/features/vabca/VaBcaController.java:738
       x-source-http-method: GET
@@ -4598,6 +4763,39 @@ paths:
       responses:
         "200":
           description: Successful response. The live JSON shape can vary; compare it with this sample.
+          x-java-response-type: void
+        "400":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 400
+                message: Request failed. Check headers, required fields, and authentication.
+          x-java-response-type: void
+        "401":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 401
+                message: Request failed. Check headers, required fields, and authentication.
+          x-java-response-type: void
+        "404":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 404
+                message: Request failed. Check headers, required fields, and authentication.
           x-java-response-type: void
       x-source-controller: VaBcaController
       x-source-location: id/boga/mybogaapp/features/vabca/VaBcaController.java:759
@@ -11777,6 +11975,39 @@ paths:
                 status: success
                 message: Request completed
                 data: {}
+          x-java-response-type: ResponseEntity<Object>
+        "400":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 400
+                message: Request failed. Check headers, required fields, and authentication.
+          x-java-response-type: ResponseEntity<Object>
+        "401":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 401
+                message: Request failed. Check headers, required fields, and authentication.
+          x-java-response-type: ResponseEntity<Object>
+        "404":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 404
+                message: Request failed. Check headers, required fields, and authentication.
           x-java-response-type: ResponseEntity<Object>
       x-source-controller: BannerDeliveryCmsController
       x-source-location: id/boga/mybogaapp/features/banner/BannerDeliveryCmsController.java:57
@@ -26429,6 +26660,39 @@ paths:
         "200":
           description: Successful response. The live JSON shape can vary; compare it with this sample.
           x-java-response-type: void
+        "400":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 400
+                message: Request failed. Check headers, required fields, and authentication.
+          x-java-response-type: void
+        "401":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 401
+                message: Request failed. Check headers, required fields, and authentication.
+          x-java-response-type: void
+        "404":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 404
+                message: Request failed. Check headers, required fields, and authentication.
+          x-java-response-type: void
       x-source-controller: MarketingCMSController
       x-source-location: id/boga/mybogaapp/features/marketing_automation/MarketingCMSController.java:339
       x-source-http-method: GET
@@ -26502,6 +26766,39 @@ paths:
       responses:
         "200":
           description: Successful response. The live JSON shape can vary; compare it with this sample.
+          x-java-response-type: void
+        "400":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 400
+                message: Request failed. Check headers, required fields, and authentication.
+          x-java-response-type: void
+        "401":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 401
+                message: Request failed. Check headers, required fields, and authentication.
+          x-java-response-type: void
+        "404":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 404
+                message: Request failed. Check headers, required fields, and authentication.
           x-java-response-type: void
       x-source-controller: MarketingCMSController
       x-source-location: id/boga/mybogaapp/features/marketing_automation/MarketingCMSController.java:383
@@ -26577,6 +26874,39 @@ paths:
         "200":
           description: Successful response. The live JSON shape can vary; compare it with this sample.
           x-java-response-type: void
+        "400":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 400
+                message: Request failed. Check headers, required fields, and authentication.
+          x-java-response-type: void
+        "401":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 401
+                message: Request failed. Check headers, required fields, and authentication.
+          x-java-response-type: void
+        "404":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 404
+                message: Request failed. Check headers, required fields, and authentication.
+          x-java-response-type: void
       x-source-controller: MarketingCMSController
       x-source-location: id/boga/mybogaapp/features/marketing_automation/MarketingCMSController.java:368
       x-source-http-method: GET
@@ -26650,6 +26980,39 @@ paths:
       responses:
         "200":
           description: Successful response. The live JSON shape can vary; compare it with this sample.
+          x-java-response-type: void
+        "400":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 400
+                message: Request failed. Check headers, required fields, and authentication.
+          x-java-response-type: void
+        "401":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 401
+                message: Request failed. Check headers, required fields, and authentication.
+          x-java-response-type: void
+        "404":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 404
+                message: Request failed. Check headers, required fields, and authentication.
           x-java-response-type: void
       x-source-controller: MarketingCMSController
       x-source-location: id/boga/mybogaapp/features/marketing_automation/MarketingCMSController.java:353
@@ -27200,6 +27563,39 @@ paths:
       responses:
         "200":
           description: Successful response. The live JSON shape can vary; compare it with this sample.
+          x-java-response-type: void
+        "400":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 400
+                message: Request failed. Check headers, required fields, and authentication.
+          x-java-response-type: void
+        "401":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 401
+                message: Request failed. Check headers, required fields, and authentication.
+          x-java-response-type: void
+        "404":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 404
+                message: Request failed. Check headers, required fields, and authentication.
           x-java-response-type: void
       x-source-controller: MarketingCMSController
       x-source-location: id/boga/mybogaapp/features/marketing_automation/MarketingCMSController.java:172
@@ -41465,6 +41861,39 @@ paths:
                 message: Request completed
                 data: {}
           x-java-response-type: ResponseEntity<?>
+        "400":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 400
+                message: Request failed. Check headers, required fields, and authentication.
+          x-java-response-type: ResponseEntity<?>
+        "401":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 401
+                message: Request failed. Check headers, required fields, and authentication.
+          x-java-response-type: ResponseEntity<?>
+        "404":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 404
+                message: Request failed. Check headers, required fields, and authentication.
+          x-java-response-type: ResponseEntity<?>
       x-source-controller: SpinWheelCMSController
       x-source-location: id/boga/mybogaapp/features/spin_wheel/SpinWheelCMSController.java:323
       x-source-http-method: GET
@@ -42042,6 +42471,39 @@ paths:
                 message: Request completed
                 data: {}
           x-java-response-type: ResponseEntity<?>
+        "400":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 400
+                message: Request failed. Check headers, required fields, and authentication.
+          x-java-response-type: ResponseEntity<?>
+        "401":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 401
+                message: Request failed. Check headers, required fields, and authentication.
+          x-java-response-type: ResponseEntity<?>
+        "404":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 404
+                message: Request failed. Check headers, required fields, and authentication.
+          x-java-response-type: ResponseEntity<?>
       x-source-controller: SpinWheelCMSController
       x-source-location: id/boga/mybogaapp/features/spin_wheel/SpinWheelCMSController.java:316
       x-source-http-method: GET
@@ -42149,6 +42611,39 @@ paths:
                 status: success
                 message: Request completed
                 data: {}
+          x-java-response-type: ResponseEntity<?>
+        "400":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 400
+                message: Request failed. Check headers, required fields, and authentication.
+          x-java-response-type: ResponseEntity<?>
+        "401":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 401
+                message: Request failed. Check headers, required fields, and authentication.
+          x-java-response-type: ResponseEntity<?>
+        "404":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 404
+                message: Request failed. Check headers, required fields, and authentication.
           x-java-response-type: ResponseEntity<?>
       x-source-controller: SpinWheelCMSController
       x-source-location: id/boga/mybogaapp/features/spin_wheel/SpinWheelCMSController.java:307
@@ -53333,6 +53828,39 @@ paths:
         "200":
           description: Successful response. The live JSON shape can vary; compare it with this sample.
           x-java-response-type: void
+        "400":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 400
+                message: Request failed. Check headers, required fields, and authentication.
+          x-java-response-type: void
+        "401":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 401
+                message: Request failed. Check headers, required fields, and authentication.
+          x-java-response-type: void
+        "404":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 404
+                message: Request failed. Check headers, required fields, and authentication.
+          x-java-response-type: void
       x-source-controller: CouponController
       x-source-location: id/boga/mybogaapp/features/coupon/CouponController.java:393
       x-source-http-method: GET
@@ -54865,6 +55393,39 @@ paths:
         "200":
           description: Successful response. The live JSON shape can vary; compare it with this sample.
           x-java-response-type: void
+        "400":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 400
+                message: Request failed. Check headers, required fields, and authentication.
+          x-java-response-type: void
+        "401":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 401
+                message: Request failed. Check headers, required fields, and authentication.
+          x-java-response-type: void
+        "404":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 404
+                message: Request failed. Check headers, required fields, and authentication.
+          x-java-response-type: void
       x-source-controller: EsbIntegrationController
       x-source-location: id/boga/mybogaapp/features/esb_integration/EsbIntegrationController.java:380
       x-source-http-method: GET
@@ -55944,6 +56505,39 @@ paths:
       responses:
         "200":
           description: Successful response. The live JSON shape can vary; compare it with this sample.
+          x-java-response-type: void
+        "400":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 400
+                message: Request failed. Check headers, required fields, and authentication.
+          x-java-response-type: void
+        "401":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 401
+                message: Request failed. Check headers, required fields, and authentication.
+          x-java-response-type: void
+        "404":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 404
+                message: Request failed. Check headers, required fields, and authentication.
           x-java-response-type: void
       x-source-controller: EsbIntegrationController
       x-source-location: id/boga/mybogaapp/features/esb_integration/EsbIntegrationController.java:214
@@ -60425,6 +61019,39 @@ paths:
                 type: string
               example: OK
           x-java-response-type: String
+        "400":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 400
+                message: Request failed. Check headers, required fields, and authentication.
+          x-java-response-type: String
+        "401":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 401
+                message: Request failed. Check headers, required fields, and authentication.
+          x-java-response-type: String
+        "404":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 404
+                message: Request failed. Check headers, required fields, and authentication.
+          x-java-response-type: String
       x-source-controller: ApiController
       x-source-location: id/boga/mybogaapp/features/api/ApiController.java:23
       x-source-http-method: GET
@@ -60512,6 +61139,39 @@ paths:
               schema:
                 type: string
               example: OK
+          x-java-response-type: String
+        "400":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 400
+                message: Request failed. Check headers, required fields, and authentication.
+          x-java-response-type: String
+        "401":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 401
+                message: Request failed. Check headers, required fields, and authentication.
+          x-java-response-type: String
+        "404":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 404
+                message: Request failed. Check headers, required fields, and authentication.
           x-java-response-type: String
       x-source-controller: InstagramController
       x-source-location: id/boga/mybogaapp/features/instagram/InstagramController.java:24
@@ -60609,6 +61269,39 @@ paths:
       responses:
         "200":
           description: Successful response. The live JSON shape can vary; compare it with this sample.
+          x-java-response-type: void
+        "400":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 400
+                message: Request failed. Check headers, required fields, and authentication.
+          x-java-response-type: void
+        "401":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 401
+                message: Request failed. Check headers, required fields, and authentication.
+          x-java-response-type: void
+        "404":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 404
+                message: Request failed. Check headers, required fields, and authentication.
           x-java-response-type: void
       x-source-controller: InstagramController
       x-source-location: id/boga/mybogaapp/features/instagram/InstagramController.java:36
@@ -62035,6 +62728,39 @@ paths:
         "200":
           description: Successful response. The live JSON shape can vary; compare it with this sample.
           x-java-response-type: void
+        "400":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 400
+                message: Request failed. Check headers, required fields, and authentication.
+          x-java-response-type: void
+        "401":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 401
+                message: Request failed. Check headers, required fields, and authentication.
+          x-java-response-type: void
+        "404":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 404
+                message: Request failed. Check headers, required fields, and authentication.
+          x-java-response-type: void
       x-source-controller: VaMandiriExpireTask
       x-source-location: id/boga/mybogaapp/batch/VaMandiriExpireTask.java:36
       x-source-http-method: GET
@@ -62567,6 +63293,39 @@ paths:
         "200":
           description: Successful response. The live JSON shape can vary; compare it with this sample.
           x-java-response-type: void
+        "400":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 400
+                message: Request failed. Check headers, required fields, and authentication.
+          x-java-response-type: void
+        "401":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 401
+                message: Request failed. Check headers, required fields, and authentication.
+          x-java-response-type: void
+        "404":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 404
+                message: Request failed. Check headers, required fields, and authentication.
+          x-java-response-type: void
       x-source-controller: VaMandiriController
       x-source-location: id/boga/mybogaapp/features/vamandiri/VaMandiriController.java:286
       x-source-http-method: GET
@@ -62643,6 +63402,39 @@ paths:
         "200":
           description: Successful response. The live JSON shape can vary; compare it with this sample.
           x-java-response-type: void
+        "400":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 400
+                message: Request failed. Check headers, required fields, and authentication.
+          x-java-response-type: void
+        "401":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 401
+                message: Request failed. Check headers, required fields, and authentication.
+          x-java-response-type: void
+        "404":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 404
+                message: Request failed. Check headers, required fields, and authentication.
+          x-java-response-type: void
       x-source-controller: VaMandiriController
       x-source-location: id/boga/mybogaapp/features/vamandiri/VaMandiriController.java:189
       x-source-http-method: GET
@@ -62718,6 +63510,39 @@ paths:
       responses:
         "200":
           description: Successful response. The live JSON shape can vary; compare it with this sample.
+          x-java-response-type: void
+        "400":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 400
+                message: Request failed. Check headers, required fields, and authentication.
+          x-java-response-type: void
+        "401":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 401
+                message: Request failed. Check headers, required fields, and authentication.
+          x-java-response-type: void
+        "404":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 404
+                message: Request failed. Check headers, required fields, and authentication.
           x-java-response-type: void
       x-source-controller: VaMandiriController
       x-source-location: id/boga/mybogaapp/features/vamandiri/VaMandiriController.java:329
@@ -66838,6 +67663,39 @@ paths:
         "200":
           description: Successful response. The live JSON shape can vary; compare it with this sample.
           x-java-response-type: void
+        "400":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 400
+                message: Request failed. Check headers, required fields, and authentication.
+          x-java-response-type: void
+        "401":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 401
+                message: Request failed. Check headers, required fields, and authentication.
+          x-java-response-type: void
+        "404":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 404
+                message: Request failed. Check headers, required fields, and authentication.
+          x-java-response-type: void
       x-source-controller: OutletController
       x-source-location: id/boga/mybogaapp/features/outlet/OutletController.java:413
       x-source-http-method: GET
@@ -67005,6 +67863,39 @@ paths:
       responses:
         "200":
           description: Successful response. The live JSON shape can vary; compare it with this sample.
+          x-java-response-type: void
+        "400":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 400
+                message: Request failed. Check headers, required fields, and authentication.
+          x-java-response-type: void
+        "401":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 401
+                message: Request failed. Check headers, required fields, and authentication.
+          x-java-response-type: void
+        "404":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 404
+                message: Request failed. Check headers, required fields, and authentication.
           x-java-response-type: void
       x-source-controller: OutletController
       x-source-location: id/boga/mybogaapp/features/outlet/OutletController.java:533
@@ -67345,6 +68236,39 @@ paths:
       responses:
         "200":
           description: Successful response. The live JSON shape can vary; compare it with this sample.
+          x-java-response-type: void
+        "400":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 400
+                message: Request failed. Check headers, required fields, and authentication.
+          x-java-response-type: void
+        "401":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 401
+                message: Request failed. Check headers, required fields, and authentication.
+          x-java-response-type: void
+        "404":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 404
+                message: Request failed. Check headers, required fields, and authentication.
           x-java-response-type: void
       x-source-controller: PointController
       x-source-location: id/boga/mybogaapp/features/point/PointController.java:197
@@ -68417,6 +69341,39 @@ paths:
               schema:
                 type: string
               example: OK
+          x-java-response-type: String
+        "400":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 400
+                message: Request failed. Check headers, required fields, and authentication.
+          x-java-response-type: String
+        "401":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 401
+                message: Request failed. Check headers, required fields, and authentication.
+          x-java-response-type: String
+        "404":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 404
+                message: Request failed. Check headers, required fields, and authentication.
           x-java-response-type: String
       x-source-controller: ApiController
       x-source-location: id/boga/mybogaapp/features/api/ApiController.java:29
@@ -70612,6 +71569,39 @@ paths:
         "200":
           description: Successful response. The live JSON shape can vary; compare it with this sample.
           x-java-response-type: void
+        "400":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 400
+                message: Request failed. Check headers, required fields, and authentication.
+          x-java-response-type: void
+        "401":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 401
+                message: Request failed. Check headers, required fields, and authentication.
+          x-java-response-type: void
+        "404":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 404
+                message: Request failed. Check headers, required fields, and authentication.
+          x-java-response-type: void
       x-source-controller: SalesReportController
       x-source-location: id/boga/mybogaapp/features/salesreport/SalesReportController.java:180
       x-source-http-method: GET
@@ -70685,6 +71675,39 @@ paths:
       responses:
         "200":
           description: Successful response. The live JSON shape can vary; compare it with this sample.
+          x-java-response-type: void
+        "400":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 400
+                message: Request failed. Check headers, required fields, and authentication.
+          x-java-response-type: void
+        "401":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 401
+                message: Request failed. Check headers, required fields, and authentication.
+          x-java-response-type: void
+        "404":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 404
+                message: Request failed. Check headers, required fields, and authentication.
           x-java-response-type: void
       x-source-controller: SalesReportController
       x-source-location: id/boga/mybogaapp/features/salesreport/SalesReportController.java:44
@@ -70760,6 +71783,39 @@ paths:
         "200":
           description: Successful response. The live JSON shape can vary; compare it with this sample.
           x-java-response-type: void
+        "400":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 400
+                message: Request failed. Check headers, required fields, and authentication.
+          x-java-response-type: void
+        "401":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 401
+                message: Request failed. Check headers, required fields, and authentication.
+          x-java-response-type: void
+        "404":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 404
+                message: Request failed. Check headers, required fields, and authentication.
+          x-java-response-type: void
       x-source-controller: SalesReportController
       x-source-location: id/boga/mybogaapp/features/salesreport/SalesReportController.java:24
       x-source-http-method: GET
@@ -70833,6 +71889,39 @@ paths:
       responses:
         "200":
           description: Successful response. The live JSON shape can vary; compare it with this sample.
+          x-java-response-type: void
+        "400":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 400
+                message: Request failed. Check headers, required fields, and authentication.
+          x-java-response-type: void
+        "401":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 401
+                message: Request failed. Check headers, required fields, and authentication.
+          x-java-response-type: void
+        "404":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 404
+                message: Request failed. Check headers, required fields, and authentication.
           x-java-response-type: void
       x-source-controller: SalesReportController
       x-source-location: id/boga/mybogaapp/features/salesreport/SalesReportController.java:54
@@ -70908,6 +71997,39 @@ paths:
         "200":
           description: Successful response. The live JSON shape can vary; compare it with this sample.
           x-java-response-type: void
+        "400":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 400
+                message: Request failed. Check headers, required fields, and authentication.
+          x-java-response-type: void
+        "401":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 401
+                message: Request failed. Check headers, required fields, and authentication.
+          x-java-response-type: void
+        "404":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 404
+                message: Request failed. Check headers, required fields, and authentication.
+          x-java-response-type: void
       x-source-controller: SalesReportController
       x-source-location: id/boga/mybogaapp/features/salesreport/SalesReportController.java:34
       x-source-http-method: GET
@@ -70981,6 +72103,39 @@ paths:
       responses:
         "200":
           description: Successful response. The live JSON shape can vary; compare it with this sample.
+          x-java-response-type: void
+        "400":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 400
+                message: Request failed. Check headers, required fields, and authentication.
+          x-java-response-type: void
+        "401":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 401
+                message: Request failed. Check headers, required fields, and authentication.
+          x-java-response-type: void
+        "404":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 404
+                message: Request failed. Check headers, required fields, and authentication.
           x-java-response-type: void
       x-source-controller: SalesReportController
       x-source-location: id/boga/mybogaapp/features/salesreport/SalesReportController.java:49
@@ -71056,6 +72211,39 @@ paths:
         "200":
           description: Successful response. The live JSON shape can vary; compare it with this sample.
           x-java-response-type: void
+        "400":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 400
+                message: Request failed. Check headers, required fields, and authentication.
+          x-java-response-type: void
+        "401":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 401
+                message: Request failed. Check headers, required fields, and authentication.
+          x-java-response-type: void
+        "404":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 404
+                message: Request failed. Check headers, required fields, and authentication.
+          x-java-response-type: void
       x-source-controller: SalesReportController
       x-source-location: id/boga/mybogaapp/features/salesreport/SalesReportController.java:29
       x-source-http-method: GET
@@ -71129,6 +72317,39 @@ paths:
       responses:
         "200":
           description: Successful response. The live JSON shape can vary; compare it with this sample.
+          x-java-response-type: void
+        "400":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 400
+                message: Request failed. Check headers, required fields, and authentication.
+          x-java-response-type: void
+        "401":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 401
+                message: Request failed. Check headers, required fields, and authentication.
+          x-java-response-type: void
+        "404":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 404
+                message: Request failed. Check headers, required fields, and authentication.
           x-java-response-type: void
       x-source-controller: SalesReportController
       x-source-location: id/boga/mybogaapp/features/salesreport/SalesReportController.java:59
@@ -71204,6 +72425,39 @@ paths:
         "200":
           description: Successful response. The live JSON shape can vary; compare it with this sample.
           x-java-response-type: void
+        "400":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 400
+                message: Request failed. Check headers, required fields, and authentication.
+          x-java-response-type: void
+        "401":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 401
+                message: Request failed. Check headers, required fields, and authentication.
+          x-java-response-type: void
+        "404":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 404
+                message: Request failed. Check headers, required fields, and authentication.
+          x-java-response-type: void
       x-source-controller: SalesReportController
       x-source-location: id/boga/mybogaapp/features/salesreport/SalesReportController.java:39
       x-source-http-method: GET
@@ -71277,6 +72531,39 @@ paths:
       responses:
         "200":
           description: Successful response. The live JSON shape can vary; compare it with this sample.
+          x-java-response-type: void
+        "400":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 400
+                message: Request failed. Check headers, required fields, and authentication.
+          x-java-response-type: void
+        "401":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 401
+                message: Request failed. Check headers, required fields, and authentication.
+          x-java-response-type: void
+        "404":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 404
+                message: Request failed. Check headers, required fields, and authentication.
           x-java-response-type: void
       x-source-controller: SalesReportController
       x-source-location: id/boga/mybogaapp/features/salesreport/SalesReportController.java:156
@@ -71352,6 +72639,39 @@ paths:
         "200":
           description: Successful response. The live JSON shape can vary; compare it with this sample.
           x-java-response-type: void
+        "400":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 400
+                message: Request failed. Check headers, required fields, and authentication.
+          x-java-response-type: void
+        "401":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 401
+                message: Request failed. Check headers, required fields, and authentication.
+          x-java-response-type: void
+        "404":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 404
+                message: Request failed. Check headers, required fields, and authentication.
+          x-java-response-type: void
       x-source-controller: SalesReportController
       x-source-location: id/boga/mybogaapp/features/salesreport/SalesReportController.java:74
       x-source-http-method: GET
@@ -71425,6 +72745,39 @@ paths:
       responses:
         "200":
           description: Successful response. The live JSON shape can vary; compare it with this sample.
+          x-java-response-type: void
+        "400":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 400
+                message: Request failed. Check headers, required fields, and authentication.
+          x-java-response-type: void
+        "401":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 401
+                message: Request failed. Check headers, required fields, and authentication.
+          x-java-response-type: void
+        "404":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 404
+                message: Request failed. Check headers, required fields, and authentication.
           x-java-response-type: void
       x-source-controller: SalesReportController
       x-source-location: id/boga/mybogaapp/features/salesreport/SalesReportController.java:69
@@ -71500,6 +72853,39 @@ paths:
         "200":
           description: Successful response. The live JSON shape can vary; compare it with this sample.
           x-java-response-type: void
+        "400":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 400
+                message: Request failed. Check headers, required fields, and authentication.
+          x-java-response-type: void
+        "401":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 401
+                message: Request failed. Check headers, required fields, and authentication.
+          x-java-response-type: void
+        "404":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 404
+                message: Request failed. Check headers, required fields, and authentication.
+          x-java-response-type: void
       x-source-controller: SalesReportController
       x-source-location: id/boga/mybogaapp/features/salesreport/SalesReportController.java:64
       x-source-http-method: GET
@@ -71573,6 +72959,39 @@ paths:
       responses:
         "200":
           description: Successful response. The live JSON shape can vary; compare it with this sample.
+          x-java-response-type: void
+        "400":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 400
+                message: Request failed. Check headers, required fields, and authentication.
+          x-java-response-type: void
+        "401":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 401
+                message: Request failed. Check headers, required fields, and authentication.
+          x-java-response-type: void
+        "404":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 404
+                message: Request failed. Check headers, required fields, and authentication.
           x-java-response-type: void
       x-source-controller: SalesReportController
       x-source-location: id/boga/mybogaapp/features/salesreport/SalesReportController.java:186
@@ -71809,6 +73228,39 @@ paths:
         "200":
           description: Successful response. The live JSON shape can vary; compare it with this sample.
           x-java-response-type: void
+        "400":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 400
+                message: Request failed. Check headers, required fields, and authentication.
+          x-java-response-type: void
+        "401":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 401
+                message: Request failed. Check headers, required fields, and authentication.
+          x-java-response-type: void
+        "404":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 404
+                message: Request failed. Check headers, required fields, and authentication.
+          x-java-response-type: void
       x-source-controller: SearchTagController
       x-source-location: id/boga/mybogaapp/features/searchtag/SearchTagController.java:118
       x-source-http-method: GET
@@ -71882,6 +73334,39 @@ paths:
       responses:
         "200":
           description: Successful response. The live JSON shape can vary; compare it with this sample.
+          x-java-response-type: void
+        "400":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 400
+                message: Request failed. Check headers, required fields, and authentication.
+          x-java-response-type: void
+        "401":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 401
+                message: Request failed. Check headers, required fields, and authentication.
+          x-java-response-type: void
+        "404":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 404
+                message: Request failed. Check headers, required fields, and authentication.
           x-java-response-type: void
       x-source-controller: SearchTagController
       x-source-location: id/boga/mybogaapp/features/searchtag/SearchTagController.java:134
@@ -72397,6 +73882,39 @@ paths:
         "200":
           description: Successful response. The live JSON shape can vary; compare it with this sample.
           x-java-response-type: void
+        "400":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 400
+                message: Request failed. Check headers, required fields, and authentication.
+          x-java-response-type: void
+        "401":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 401
+                message: Request failed. Check headers, required fields, and authentication.
+          x-java-response-type: void
+        "404":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 404
+                message: Request failed. Check headers, required fields, and authentication.
+          x-java-response-type: void
       x-source-controller: SecretaryPassController
       x-source-location: id/boga/mybogaapp/features/secretarypass/SecretaryPassController.java:88
       x-source-http-method: GET
@@ -72621,6 +74139,39 @@ paths:
               schema:
                 type: string
               example: OK
+          x-java-response-type: String
+        "400":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 400
+                message: Request failed. Check headers, required fields, and authentication.
+          x-java-response-type: String
+        "401":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 401
+                message: Request failed. Check headers, required fields, and authentication.
+          x-java-response-type: String
+        "404":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 404
+                message: Request failed. Check headers, required fields, and authentication.
           x-java-response-type: String
       x-source-controller: ApiController
       x-source-location: id/boga/mybogaapp/features/api/ApiController.java:35
@@ -74759,6 +76310,39 @@ paths:
                 message: Request completed
                 data: {}
           x-java-response-type: ResponseEntity<Object>
+        "400":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 400
+                message: Request failed. Check headers, required fields, and authentication.
+          x-java-response-type: ResponseEntity<Object>
+        "401":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 401
+                message: Request failed. Check headers, required fields, and authentication.
+          x-java-response-type: ResponseEntity<Object>
+        "404":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 404
+                message: Request failed. Check headers, required fields, and authentication.
+          x-java-response-type: ResponseEntity<Object>
       x-source-controller: ShareTheSmileController
       x-source-location: id/boga/mybogaapp/features/share_the_smile/ShareTheSmileController.java:213
       x-source-http-method: POST
@@ -74899,6 +76483,39 @@ paths:
                 status: success
                 message: Request completed
                 data: {}
+          x-java-response-type: ResponseEntity<Object>
+        "400":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 400
+                message: Request failed. Check headers, required fields, and authentication.
+          x-java-response-type: ResponseEntity<Object>
+        "401":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 401
+                message: Request failed. Check headers, required fields, and authentication.
+          x-java-response-type: ResponseEntity<Object>
+        "404":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 404
+                message: Request failed. Check headers, required fields, and authentication.
           x-java-response-type: ResponseEntity<Object>
       x-source-controller: ShareTheSmileController
       x-source-location: id/boga/mybogaapp/features/share_the_smile/ShareTheSmileController.java:206
@@ -76324,6 +77941,39 @@ paths:
         "200":
           description: Successful response. The live JSON shape can vary; compare it with this sample.
           x-java-response-type: void
+        "400":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 400
+                message: Request failed. Check headers, required fields, and authentication.
+          x-java-response-type: void
+        "401":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 401
+                message: Request failed. Check headers, required fields, and authentication.
+          x-java-response-type: void
+        "404":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 404
+                message: Request failed. Check headers, required fields, and authentication.
+          x-java-response-type: void
       x-source-controller: AutoRedeemSubscriptionCouponTask
       x-source-location: id/boga/mybogaapp/batch/AutoRedeemSubscriptionCouponTask.java:34
       x-source-http-method: GET
@@ -76504,6 +78154,39 @@ paths:
         "200":
           description: Successful response. The live JSON shape can vary; compare it with this sample.
           x-java-response-type: void
+        "400":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 400
+                message: Request failed. Check headers, required fields, and authentication.
+          x-java-response-type: void
+        "401":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 401
+                message: Request failed. Check headers, required fields, and authentication.
+          x-java-response-type: void
+        "404":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 404
+                message: Request failed. Check headers, required fields, and authentication.
+          x-java-response-type: void
       x-source-controller: BirthdayCouponGiftTask
       x-source-location: id/boga/mybogaapp/batch/BirthdayCouponGiftTask.java:140
       x-source-http-method: GET
@@ -76577,6 +78260,39 @@ paths:
       responses:
         "200":
           description: Successful response. The live JSON shape can vary; compare it with this sample.
+          x-java-response-type: void
+        "400":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 400
+                message: Request failed. Check headers, required fields, and authentication.
+          x-java-response-type: void
+        "401":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 401
+                message: Request failed. Check headers, required fields, and authentication.
+          x-java-response-type: void
+        "404":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 404
+                message: Request failed. Check headers, required fields, and authentication.
           x-java-response-type: void
       x-source-controller: BirthdayCouponGiftTask
       x-source-location: id/boga/mybogaapp/batch/BirthdayCouponGiftTask.java:92
@@ -76652,6 +78368,39 @@ paths:
         "200":
           description: Successful response. The live JSON shape can vary; compare it with this sample.
           x-java-response-type: void
+        "400":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 400
+                message: Request failed. Check headers, required fields, and authentication.
+          x-java-response-type: void
+        "401":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 401
+                message: Request failed. Check headers, required fields, and authentication.
+          x-java-response-type: void
+        "404":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 404
+                message: Request failed. Check headers, required fields, and authentication.
+          x-java-response-type: void
       x-source-controller: BirthdayPushNotiTask
       x-source-location: id/boga/mybogaapp/batch/BirthdayPushNotiTask.java:40
       x-source-http-method: GET
@@ -76725,6 +78474,39 @@ paths:
       responses:
         "200":
           description: Successful response. The live JSON shape can vary; compare it with this sample.
+          x-java-response-type: void
+        "400":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 400
+                message: Request failed. Check headers, required fields, and authentication.
+          x-java-response-type: void
+        "401":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 401
+                message: Request failed. Check headers, required fields, and authentication.
+          x-java-response-type: void
+        "404":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 404
+                message: Request failed. Check headers, required fields, and authentication.
           x-java-response-type: void
       x-source-controller: CouponExpireTask
       x-source-location: id/boga/mybogaapp/batch/CouponExpireTask.java:38
@@ -76800,6 +78582,39 @@ paths:
         "200":
           description: Successful response. The live JSON shape can vary; compare it with this sample.
           x-java-response-type: void
+        "400":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 400
+                message: Request failed. Check headers, required fields, and authentication.
+          x-java-response-type: void
+        "401":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 401
+                message: Request failed. Check headers, required fields, and authentication.
+          x-java-response-type: void
+        "404":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 404
+                message: Request failed. Check headers, required fields, and authentication.
+          x-java-response-type: void
       x-source-controller: CouponExpireTask
       x-source-location: id/boga/mybogaapp/batch/CouponExpireTask.java:58
       x-source-http-method: GET
@@ -76873,6 +78688,39 @@ paths:
       responses:
         "200":
           description: Successful response. The live JSON shape can vary; compare it with this sample.
+          x-java-response-type: void
+        "400":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 400
+                message: Request failed. Check headers, required fields, and authentication.
+          x-java-response-type: void
+        "401":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 401
+                message: Request failed. Check headers, required fields, and authentication.
+          x-java-response-type: void
+        "404":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 404
+                message: Request failed. Check headers, required fields, and authentication.
           x-java-response-type: void
       x-source-controller: ExpireTempTransactionTask
       x-source-location: id/boga/mybogaapp/batch/ExpireTempTransactionTask.java:38
@@ -76948,6 +78796,39 @@ paths:
         "200":
           description: Successful response. The live JSON shape can vary; compare it with this sample.
           x-java-response-type: void
+        "400":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 400
+                message: Request failed. Check headers, required fields, and authentication.
+          x-java-response-type: void
+        "401":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 401
+                message: Request failed. Check headers, required fields, and authentication.
+          x-java-response-type: void
+        "404":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 404
+                message: Request failed. Check headers, required fields, and authentication.
+          x-java-response-type: void
       x-source-controller: FlashSaleCouponNotiTask
       x-source-location: id/boga/mybogaapp/batch/FlashSaleCouponNotiTask.java:36
       x-source-http-method: GET
@@ -77021,6 +78902,39 @@ paths:
       responses:
         "200":
           description: Successful response. The live JSON shape can vary; compare it with this sample.
+          x-java-response-type: void
+        "400":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 400
+                message: Request failed. Check headers, required fields, and authentication.
+          x-java-response-type: void
+        "401":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 401
+                message: Request failed. Check headers, required fields, and authentication.
+          x-java-response-type: void
+        "404":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 404
+                message: Request failed. Check headers, required fields, and authentication.
           x-java-response-type: void
       x-source-controller: InjectPeriodWelcomeCouponTask
       x-source-location: id/boga/mybogaapp/batch/InjectPeriodWelcomeCouponTask.java:33
@@ -77096,6 +79010,39 @@ paths:
         "200":
           description: Successful response. The live JSON shape can vary; compare it with this sample.
           x-java-response-type: void
+        "400":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 400
+                message: Request failed. Check headers, required fields, and authentication.
+          x-java-response-type: void
+        "401":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 401
+                message: Request failed. Check headers, required fields, and authentication.
+          x-java-response-type: void
+        "404":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 404
+                message: Request failed. Check headers, required fields, and authentication.
+          x-java-response-type: void
       x-source-controller: InjectSubscriptionCouponTask
       x-source-location: id/boga/mybogaapp/batch/InjectSubscriptionCouponTask.java:37
       x-source-http-method: GET
@@ -77169,6 +79116,39 @@ paths:
       responses:
         "200":
           description: Successful response. The live JSON shape can vary; compare it with this sample.
+          x-java-response-type: void
+        "400":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 400
+                message: Request failed. Check headers, required fields, and authentication.
+          x-java-response-type: void
+        "401":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 401
+                message: Request failed. Check headers, required fields, and authentication.
+          x-java-response-type: void
+        "404":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 404
+                message: Request failed. Check headers, required fields, and authentication.
           x-java-response-type: void
       x-source-controller: InjectTransactionTask
       x-source-location: id/boga/mybogaapp/batch/InjectTransactionTask.java:53
@@ -77244,6 +79224,39 @@ paths:
         "200":
           description: Successful response. The live JSON shape can vary; compare it with this sample.
           x-java-response-type: void
+        "400":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 400
+                message: Request failed. Check headers, required fields, and authentication.
+          x-java-response-type: void
+        "401":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 401
+                message: Request failed. Check headers, required fields, and authentication.
+          x-java-response-type: void
+        "404":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 404
+                message: Request failed. Check headers, required fields, and authentication.
+          x-java-response-type: void
       x-source-controller: InjectTransactionTask
       x-source-location: id/boga/mybogaapp/batch/InjectTransactionTask.java:85
       x-source-http-method: GET
@@ -77317,6 +79330,39 @@ paths:
       responses:
         "200":
           description: Successful response. The live JSON shape can vary; compare it with this sample.
+          x-java-response-type: void
+        "400":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 400
+                message: Request failed. Check headers, required fields, and authentication.
+          x-java-response-type: void
+        "401":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 401
+                message: Request failed. Check headers, required fields, and authentication.
+          x-java-response-type: void
+        "404":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 404
+                message: Request failed. Check headers, required fields, and authentication.
           x-java-response-type: void
       x-source-controller: MembershipTierReminderTask
       x-source-location: id/boga/mybogaapp/batch/MembershipTierReminderTask.java:52
@@ -77392,6 +79438,39 @@ paths:
         "200":
           description: Successful response. The live JSON shape can vary; compare it with this sample.
           x-java-response-type: void
+        "400":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 400
+                message: Request failed. Check headers, required fields, and authentication.
+          x-java-response-type: void
+        "401":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 401
+                message: Request failed. Check headers, required fields, and authentication.
+          x-java-response-type: void
+        "404":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 404
+                message: Request failed. Check headers, required fields, and authentication.
+          x-java-response-type: void
       x-source-controller: MembershipTierYearlyValidationTask
       x-source-location: id/boga/mybogaapp/batch/MembershipTierYearlyValidationTask.java:55
       x-source-http-method: GET
@@ -77465,6 +79544,39 @@ paths:
       responses:
         "200":
           description: Successful response. The live JSON shape can vary; compare it with this sample.
+          x-java-response-type: void
+        "400":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 400
+                message: Request failed. Check headers, required fields, and authentication.
+          x-java-response-type: void
+        "401":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 401
+                message: Request failed. Check headers, required fields, and authentication.
+          x-java-response-type: void
+        "404":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 404
+                message: Request failed. Check headers, required fields, and authentication.
           x-java-response-type: void
       x-source-controller: MembershipTierYearlyValidationTask
       x-source-location: id/boga/mybogaapp/batch/MembershipTierYearlyValidationTask.java:73
@@ -77542,6 +79654,39 @@ paths:
         "200":
           description: Successful response. The live JSON shape can vary; compare it with this sample.
           x-java-response-type: void
+        "400":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 400
+                message: Request failed. Check headers, required fields, and authentication.
+          x-java-response-type: void
+        "401":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 401
+                message: Request failed. Check headers, required fields, and authentication.
+          x-java-response-type: void
+        "404":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 404
+                message: Request failed. Check headers, required fields, and authentication.
+          x-java-response-type: void
       x-source-controller: OngoingTransactionToWaitingConfirmTask
       x-source-location: id/boga/mybogaapp/batch/OngoingTransactionToWaitingConfirmTask.java:38
       x-source-http-method: GET
@@ -77615,6 +79760,39 @@ paths:
       responses:
         "200":
           description: Successful response. The live JSON shape can vary; compare it with this sample.
+          x-java-response-type: void
+        "400":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 400
+                message: Request failed. Check headers, required fields, and authentication.
+          x-java-response-type: void
+        "401":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 401
+                message: Request failed. Check headers, required fields, and authentication.
+          x-java-response-type: void
+        "404":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 404
+                message: Request failed. Check headers, required fields, and authentication.
           x-java-response-type: void
       x-source-controller: PaymentForceSettleTask
       x-source-location: id/boga/mybogaapp/batch/PaymentForceSettleTask.java:42
@@ -77690,6 +79868,39 @@ paths:
         "200":
           description: Successful response. The live JSON shape can vary; compare it with this sample.
           x-java-response-type: void
+        "400":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 400
+                message: Request failed. Check headers, required fields, and authentication.
+          x-java-response-type: void
+        "401":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 401
+                message: Request failed. Check headers, required fields, and authentication.
+          x-java-response-type: void
+        "404":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 404
+                message: Request failed. Check headers, required fields, and authentication.
+          x-java-response-type: void
       x-source-controller: CouponUploadProcessorTask
       x-source-location: id/boga/mybogaapp/batch/CouponUploadProcessorTask.java:78
       x-source-http-method: GET
@@ -77763,6 +79974,39 @@ paths:
       responses:
         "200":
           description: Successful response. The live JSON shape can vary; compare it with this sample.
+          x-java-response-type: void
+        "400":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 400
+                message: Request failed. Check headers, required fields, and authentication.
+          x-java-response-type: void
+        "401":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 401
+                message: Request failed. Check headers, required fields, and authentication.
+          x-java-response-type: void
+        "404":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 404
+                message: Request failed. Check headers, required fields, and authentication.
           x-java-response-type: void
       x-source-controller: CouponUploadProcessorTask
       x-source-location: id/boga/mybogaapp/batch/CouponUploadProcessorTask.java:346
@@ -77838,6 +80082,39 @@ paths:
         "200":
           description: Successful response. The live JSON shape can vary; compare it with this sample.
           x-java-response-type: void
+        "400":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 400
+                message: Request failed. Check headers, required fields, and authentication.
+          x-java-response-type: void
+        "401":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 401
+                message: Request failed. Check headers, required fields, and authentication.
+          x-java-response-type: void
+        "404":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 404
+                message: Request failed. Check headers, required fields, and authentication.
+          x-java-response-type: void
       x-source-controller: CouponUploadProcessorTask
       x-source-location: id/boga/mybogaapp/batch/CouponUploadProcessorTask.java:385
       x-source-http-method: GET
@@ -77911,6 +80188,39 @@ paths:
       responses:
         "200":
           description: Successful response. The live JSON shape can vary; compare it with this sample.
+          x-java-response-type: void
+        "400":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 400
+                message: Request failed. Check headers, required fields, and authentication.
+          x-java-response-type: void
+        "401":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 401
+                message: Request failed. Check headers, required fields, and authentication.
+          x-java-response-type: void
+        "404":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 404
+                message: Request failed. Check headers, required fields, and authentication.
           x-java-response-type: void
       x-source-controller: CouponUploadProcessorTask
       x-source-location: id/boga/mybogaapp/batch/CouponUploadProcessorTask.java:669
@@ -77988,6 +80298,39 @@ paths:
         "200":
           description: Successful response. The live JSON shape can vary; compare it with this sample.
           x-java-response-type: void
+        "400":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 400
+                message: Request failed. Check headers, required fields, and authentication.
+          x-java-response-type: void
+        "401":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 401
+                message: Request failed. Check headers, required fields, and authentication.
+          x-java-response-type: void
+        "404":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 404
+                message: Request failed. Check headers, required fields, and authentication.
+          x-java-response-type: void
       x-source-controller: PromoCouponSendTask
       x-source-location: id/boga/mybogaapp/batch/PromoCouponSendTask.java:32
       x-source-http-method: GET
@@ -78061,6 +80404,39 @@ paths:
       responses:
         "200":
           description: Successful response. The live JSON shape can vary; compare it with this sample.
+          x-java-response-type: void
+        "400":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 400
+                message: Request failed. Check headers, required fields, and authentication.
+          x-java-response-type: void
+        "401":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 401
+                message: Request failed. Check headers, required fields, and authentication.
+          x-java-response-type: void
+        "404":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 404
+                message: Request failed. Check headers, required fields, and authentication.
           x-java-response-type: void
       x-source-controller: PushNotiSendTask
       x-source-location: id/boga/mybogaapp/batch/PushNotiSendTask.java:42
@@ -78136,6 +80512,39 @@ paths:
         "200":
           description: Successful response. The live JSON shape can vary; compare it with this sample.
           x-java-response-type: void
+        "400":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 400
+                message: Request failed. Check headers, required fields, and authentication.
+          x-java-response-type: void
+        "401":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 401
+                message: Request failed. Check headers, required fields, and authentication.
+          x-java-response-type: void
+        "404":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 404
+                message: Request failed. Check headers, required fields, and authentication.
+          x-java-response-type: void
       x-source-controller: ReservationNotificationTask
       x-source-location: id/boga/mybogaapp/batch/ReservationNotificationTask.java:150
       x-source-http-method: GET
@@ -78209,6 +80618,39 @@ paths:
       responses:
         "200":
           description: Successful response. The live JSON shape can vary; compare it with this sample.
+          x-java-response-type: void
+        "400":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 400
+                message: Request failed. Check headers, required fields, and authentication.
+          x-java-response-type: void
+        "401":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 401
+                message: Request failed. Check headers, required fields, and authentication.
+          x-java-response-type: void
+        "404":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 404
+                message: Request failed. Check headers, required fields, and authentication.
           x-java-response-type: void
       x-source-controller: ReservationNotificationTask
       x-source-location: id/boga/mybogaapp/batch/ReservationNotificationTask.java:93
@@ -78284,6 +80726,39 @@ paths:
         "200":
           description: Successful response. The live JSON shape can vary; compare it with this sample.
           x-java-response-type: void
+        "400":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 400
+                message: Request failed. Check headers, required fields, and authentication.
+          x-java-response-type: void
+        "401":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 401
+                message: Request failed. Check headers, required fields, and authentication.
+          x-java-response-type: void
+        "404":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 404
+                message: Request failed. Check headers, required fields, and authentication.
+          x-java-response-type: void
       x-source-controller: ReservationNotificationTask
       x-source-location: id/boga/mybogaapp/batch/ReservationNotificationTask.java:61
       x-source-http-method: GET
@@ -78357,6 +80832,39 @@ paths:
       responses:
         "200":
           description: Successful response. The live JSON shape can vary; compare it with this sample.
+          x-java-response-type: void
+        "400":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 400
+                message: Request failed. Check headers, required fields, and authentication.
+          x-java-response-type: void
+        "401":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 401
+                message: Request failed. Check headers, required fields, and authentication.
+          x-java-response-type: void
+        "404":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 404
+                message: Request failed. Check headers, required fields, and authentication.
           x-java-response-type: void
       x-source-controller: SpinWheelExpireTask
       x-source-location: id/boga/mybogaapp/batch/SpinWheelExpireTask.java:26
@@ -78535,6 +81043,39 @@ paths:
         "200":
           description: Successful response. The live JSON shape can vary; compare it with this sample.
           x-java-response-type: void
+        "400":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 400
+                message: Request failed. Check headers, required fields, and authentication.
+          x-java-response-type: void
+        "401":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 401
+                message: Request failed. Check headers, required fields, and authentication.
+          x-java-response-type: void
+        "404":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 404
+                message: Request failed. Check headers, required fields, and authentication.
+          x-java-response-type: void
       x-source-controller: BogaAppTelegramTask
       x-source-location: id/boga/mybogaapp/batch/BogaAppTelegramTask.java:62
       x-source-http-method: GET
@@ -78610,6 +81151,39 @@ paths:
       responses:
         "200":
           description: Successful response. The live JSON shape can vary; compare it with this sample.
+          x-java-response-type: void
+        "400":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 400
+                message: Request failed. Check headers, required fields, and authentication.
+          x-java-response-type: void
+        "401":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 401
+                message: Request failed. Check headers, required fields, and authentication.
+          x-java-response-type: void
+        "404":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 404
+                message: Request failed. Check headers, required fields, and authentication.
           x-java-response-type: void
       x-source-controller: BogaAppTelegramTask
       x-source-location: id/boga/mybogaapp/batch/BogaAppTelegramTask.java:144
@@ -78687,6 +81261,39 @@ paths:
         "200":
           description: Successful response. The live JSON shape can vary; compare it with this sample.
           x-java-response-type: void
+        "400":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 400
+                message: Request failed. Check headers, required fields, and authentication.
+          x-java-response-type: void
+        "401":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 401
+                message: Request failed. Check headers, required fields, and authentication.
+          x-java-response-type: void
+        "404":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 404
+                message: Request failed. Check headers, required fields, and authentication.
+          x-java-response-type: void
       x-source-controller: UpdateTransactionPaymentStatusTask
       x-source-location: id/boga/mybogaapp/batch/UpdateTransactionPaymentStatusTask.java:35
       x-source-http-method: GET
@@ -78760,6 +81367,39 @@ paths:
       responses:
         "200":
           description: Successful response. The live JSON shape can vary; compare it with this sample.
+          x-java-response-type: void
+        "400":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 400
+                message: Request failed. Check headers, required fields, and authentication.
+          x-java-response-type: void
+        "401":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 401
+                message: Request failed. Check headers, required fields, and authentication.
+          x-java-response-type: void
+        "404":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 404
+                message: Request failed. Check headers, required fields, and authentication.
           x-java-response-type: void
       x-source-controller: VoucherExpireTask
       x-source-location: id/boga/mybogaapp/batch/VoucherExpireTask.java:26
@@ -78868,6 +81508,39 @@ paths:
                 status: success
                 message: Request completed
                 data: {}
+          x-java-response-type: ResponseEntity<Object>
+        "400":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 400
+                message: Request failed. Check headers, required fields, and authentication.
+          x-java-response-type: ResponseEntity<Object>
+        "401":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 401
+                message: Request failed. Check headers, required fields, and authentication.
+          x-java-response-type: ResponseEntity<Object>
+        "404":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 404
+                message: Request failed. Check headers, required fields, and authentication.
           x-java-response-type: ResponseEntity<Object>
       x-source-controller: TestController
       x-source-location: id/boga/mybogaapp/commons/TestController.java:19
@@ -82049,6 +84722,39 @@ paths:
         "200":
           description: Successful response. The live JSON shape can vary; compare it with this sample.
           x-java-response-type: void
+        "400":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 400
+                message: Request failed. Check headers, required fields, and authentication.
+          x-java-response-type: void
+        "401":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 401
+                message: Request failed. Check headers, required fields, and authentication.
+          x-java-response-type: void
+        "404":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 404
+                message: Request failed. Check headers, required fields, and authentication.
+          x-java-response-type: void
       x-source-controller: TransactionController
       x-source-location: id/boga/mybogaapp/features/transaction/TransactionController.java:1036
       x-source-http-method: GET
@@ -82122,6 +84828,39 @@ paths:
       responses:
         "200":
           description: Successful response. The live JSON shape can vary; compare it with this sample.
+          x-java-response-type: void
+        "400":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 400
+                message: Request failed. Check headers, required fields, and authentication.
+          x-java-response-type: void
+        "401":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 401
+                message: Request failed. Check headers, required fields, and authentication.
+          x-java-response-type: void
+        "404":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 404
+                message: Request failed. Check headers, required fields, and authentication.
           x-java-response-type: void
       x-source-controller: TransactionController
       x-source-location: id/boga/mybogaapp/features/transaction/TransactionController.java:1041
@@ -82387,6 +85126,39 @@ paths:
         "200":
           description: Successful response. The live JSON shape can vary; compare it with this sample.
           x-java-response-type: void
+        "400":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 400
+                message: Request failed. Check headers, required fields, and authentication.
+          x-java-response-type: void
+        "401":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 401
+                message: Request failed. Check headers, required fields, and authentication.
+          x-java-response-type: void
+        "404":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 404
+                message: Request failed. Check headers, required fields, and authentication.
+          x-java-response-type: void
       x-source-controller: TransactionRevenueShareController
       x-source-location: id/boga/mybogaapp/features/transaction/TransactionRevenueShareController.java:255
       x-source-http-method: GET
@@ -82460,6 +85232,39 @@ paths:
       responses:
         "200":
           description: Successful response. The live JSON shape can vary; compare it with this sample.
+          x-java-response-type: void
+        "400":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 400
+                message: Request failed. Check headers, required fields, and authentication.
+          x-java-response-type: void
+        "401":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 401
+                message: Request failed. Check headers, required fields, and authentication.
+          x-java-response-type: void
+        "404":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 404
+                message: Request failed. Check headers, required fields, and authentication.
           x-java-response-type: void
       x-source-controller: TransactionRevenueShareController
       x-source-location: id/boga/mybogaapp/features/transaction/TransactionRevenueShareController.java:260
@@ -83025,6 +85830,39 @@ paths:
                 status: success
                 message: Request completed
                 data: {}
+          x-java-response-type: ResponseEntity<?>
+        "400":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 400
+                message: Request failed. Check headers, required fields, and authentication.
+          x-java-response-type: ResponseEntity<?>
+        "401":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 401
+                message: Request failed. Check headers, required fields, and authentication.
+          x-java-response-type: ResponseEntity<?>
+        "404":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 404
+                message: Request failed. Check headers, required fields, and authentication.
           x-java-response-type: ResponseEntity<?>
       x-source-controller: TransactionController
       x-source-location: id/boga/mybogaapp/features/transaction/TransactionController.java:972
@@ -93020,6 +95858,39 @@ paths:
                 message: Request completed
                 data: {}
           x-java-response-type: ResponseEntity<Object>
+        "400":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 400
+                message: Request failed. Check headers, required fields, and authentication.
+          x-java-response-type: ResponseEntity<Object>
+        "401":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 401
+                message: Request failed. Check headers, required fields, and authentication.
+          x-java-response-type: ResponseEntity<Object>
+        "404":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 404
+                message: Request failed. Check headers, required fields, and authentication.
+          x-java-response-type: ResponseEntity<Object>
       x-source-controller: AuthenticationController
       x-source-location: id/boga/mybogaapp/features/user/AuthenticationController.java:632
       x-source-http-method: POST
@@ -96679,6 +99550,39 @@ paths:
         "200":
           description: Successful response. The live JSON shape can vary; compare it with this sample.
           x-java-response-type: void
+        "400":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 400
+                message: Request failed. Check headers, required fields, and authentication.
+          x-java-response-type: void
+        "401":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 401
+                message: Request failed. Check headers, required fields, and authentication.
+          x-java-response-type: void
+        "404":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 404
+                message: Request failed. Check headers, required fields, and authentication.
+          x-java-response-type: void
       x-source-controller: UserController
       x-source-location: id/boga/mybogaapp/features/user/UserController.java:1544
       x-source-http-method: GET
@@ -96762,6 +99666,39 @@ paths:
       responses:
         "200":
           description: Successful response. The live JSON shape can vary; compare it with this sample.
+          x-java-response-type: void
+        "400":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 400
+                message: Request failed. Check headers, required fields, and authentication.
+          x-java-response-type: void
+        "401":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 401
+                message: Request failed. Check headers, required fields, and authentication.
+          x-java-response-type: void
+        "404":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 404
+                message: Request failed. Check headers, required fields, and authentication.
           x-java-response-type: void
       x-source-controller: UserController
       x-source-location: id/boga/mybogaapp/features/user/UserController.java:1569
@@ -102445,6 +105382,39 @@ paths:
         "200":
           description: Successful response. The live JSON shape can vary; compare it with this sample.
           x-java-response-type: void
+        "400":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 400
+                message: Request failed. Check headers, required fields, and authentication.
+          x-java-response-type: void
+        "401":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 401
+                message: Request failed. Check headers, required fields, and authentication.
+          x-java-response-type: void
+        "404":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 404
+                message: Request failed. Check headers, required fields, and authentication.
+          x-java-response-type: void
       x-source-controller: MembershipIntegrationController
       x-source-location: id/boga/mybogaapp/features/membership_integration/MembershipIntegrationController.java:1427
       x-source-http-method: GET
@@ -102519,6 +105489,39 @@ paths:
         "200":
           description: Successful response. The live JSON shape can vary; compare it with this sample.
           x-java-response-type: void
+        "400":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 400
+                message: Request failed. Check headers, required fields, and authentication.
+          x-java-response-type: void
+        "401":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 401
+                message: Request failed. Check headers, required fields, and authentication.
+          x-java-response-type: void
+        "404":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 404
+                message: Request failed. Check headers, required fields, and authentication.
+          x-java-response-type: void
       x-source-controller: MembershipIntegrationController
       x-source-location: id/boga/mybogaapp/features/membership_integration/MembershipIntegrationController.java:1119
       x-source-http-method: GET
@@ -102592,6 +105595,39 @@ paths:
       responses:
         "200":
           description: Successful response. The live JSON shape can vary; compare it with this sample.
+          x-java-response-type: void
+        "400":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 400
+                message: Request failed. Check headers, required fields, and authentication.
+          x-java-response-type: void
+        "401":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 401
+                message: Request failed. Check headers, required fields, and authentication.
+          x-java-response-type: void
+        "404":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 404
+                message: Request failed. Check headers, required fields, and authentication.
           x-java-response-type: void
       x-source-controller: MembershipIntegrationController
       x-source-location: id/boga/mybogaapp/features/membership_integration/MembershipIntegrationController.java:1092
@@ -103416,6 +106452,39 @@ paths:
         "200":
           description: Successful response. The live JSON shape can vary; compare it with this sample.
           x-java-response-type: void
+        "400":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 400
+                message: Request failed. Check headers, required fields, and authentication.
+          x-java-response-type: void
+        "401":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 401
+                message: Request failed. Check headers, required fields, and authentication.
+          x-java-response-type: void
+        "404":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 404
+                message: Request failed. Check headers, required fields, and authentication.
+          x-java-response-type: void
       x-source-controller: MembershipIntegrationController
       x-source-location: id/boga/mybogaapp/features/membership_integration/MembershipIntegrationController.java:1076
       x-source-http-method: POST
@@ -104148,6 +107217,39 @@ paths:
         "200":
           description: Successful response. The live JSON shape can vary; compare it with this sample.
           x-java-response-type: void
+        "400":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 400
+                message: Request failed. Check headers, required fields, and authentication.
+          x-java-response-type: void
+        "401":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 401
+                message: Request failed. Check headers, required fields, and authentication.
+          x-java-response-type: void
+        "404":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 404
+                message: Request failed. Check headers, required fields, and authentication.
+          x-java-response-type: void
       x-source-controller: MembershipIntegrationController
       x-source-location: id/boga/mybogaapp/features/membership_integration/MembershipIntegrationController.java:1153
       x-source-http-method: GET
@@ -104224,6 +107326,39 @@ paths:
         "200":
           description: Successful response. The live JSON shape can vary; compare it with this sample.
           x-java-response-type: void
+        "400":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 400
+                message: Request failed. Check headers, required fields, and authentication.
+          x-java-response-type: void
+        "401":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 401
+                message: Request failed. Check headers, required fields, and authentication.
+          x-java-response-type: void
+        "404":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 404
+                message: Request failed. Check headers, required fields, and authentication.
+          x-java-response-type: void
       x-source-controller: MembershipIntegrationController
       x-source-location: id/boga/mybogaapp/features/membership_integration/MembershipIntegrationController.java:1137
       x-source-http-method: GET
@@ -104297,6 +107432,39 @@ paths:
       responses:
         "200":
           description: Successful response. The live JSON shape can vary; compare it with this sample.
+          x-java-response-type: void
+        "400":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 400
+                message: Request failed. Check headers, required fields, and authentication.
+          x-java-response-type: void
+        "401":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 401
+                message: Request failed. Check headers, required fields, and authentication.
+          x-java-response-type: void
+        "404":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 404
+                message: Request failed. Check headers, required fields, and authentication.
           x-java-response-type: void
       x-source-controller: MembershipIntegrationController
       x-source-location: id/boga/mybogaapp/features/membership_integration/MembershipIntegrationController.java:1318
@@ -107263,6 +110431,39 @@ paths:
                 type: string
               example: OK
           x-java-response-type: String
+        "400":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 400
+                message: Request failed. Check headers, required fields, and authentication.
+          x-java-response-type: String
+        "401":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 401
+                message: Request failed. Check headers, required fields, and authentication.
+          x-java-response-type: String
+        "404":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 404
+                message: Request failed. Check headers, required fields, and authentication.
+          x-java-response-type: String
       x-source-controller: WebhookController
       x-source-location: id/boga/mybogaapp/features/webhook/WebhookController.java:84
       x-source-http-method: POST
@@ -107730,6 +110931,39 @@ paths:
               schema:
                 type: string
               example: OK
+          x-java-response-type: String
+        "400":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 400
+                message: Request failed. Check headers, required fields, and authentication.
+          x-java-response-type: String
+        "401":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 401
+                message: Request failed. Check headers, required fields, and authentication.
+          x-java-response-type: String
+        "404":
+          description: Request failed. Check authentication, required fields, and headers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                status: error
+                httpStatus: 404
+                message: Request failed. Check headers, required fields, and authentication.
           x-java-response-type: String
       x-source-controller: WebhookController
       x-source-location: id/boga/mybogaapp/features/webhook/WebhookController.java:36

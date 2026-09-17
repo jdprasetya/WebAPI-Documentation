@@ -440,6 +440,7 @@ function normalizeInventoryRow(row) {
     content_type: row.content_type || (isWebapps && isPost ? "application/json" : row.content_type),
     body_type: row.body_type || (isWebapps && isPost ? "Object (schema not statically declared)" : row.body_type),
     success_http_codes: row.success_http_codes || (isWebapps ? "200" : row.success_http_codes),
+    error_http_codes: row.error_http_codes || "400; 401; 404",
     documentation_notes: row.documentation_notes || (isWebapps
       ? "Static source scan of Boga.WebAPI. Handler-level authentication, request body schema, and runtime-only errors were not declared in this inventory."
       : row.documentation_notes)
@@ -1002,7 +1003,7 @@ function buildDocument(rows, options = {}) {
     for (const code of successCodes.length ? successCodes : ["200"]) {
       operation.responses[code] = responseFor(row, code);
     }
-    for (const code of errorCodes) {
+    for (const code of errorCodes.length ? errorCodes : ["400", "401", "404"]) {
       operation.responses[code] = responseFor(row, code);
     }
 

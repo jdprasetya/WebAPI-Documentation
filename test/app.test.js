@@ -122,6 +122,10 @@ test("includes every WebApps inventory operation", () => {
   assert.equal(webappsOpenapiDocument.info.title, "WebApps API Documentation");
   assert.ok(webappsOpenapiDocument.paths["/api/ATS/GetApplicantJobList"].post);
   assert.ok(webappsOpenapiDocument.paths["/api/VendorRequest/Vendor_List"].post);
+  assert.deepEqual(
+    Object.keys(webappsOpenapiDocument.paths["/api/ATS/GetApplicantActivityLogs"].post.responses).sort(),
+    ["200", "400", "401", "404"]
+  );
   assert.equal(
     webappsOpenapiDocument.paths["/api/ATS/GetApplicantJobList"].post.tags[0],
     "ATS"
@@ -147,7 +151,59 @@ test("builds a category catalog with authentication first", () => {
   assert.ok(accountAuth.authentication.summary);
   assert.ok(accountAuth.operations.some((operation) => operation.title === "Login"));
   assert.ok(accountAuth.operations.every((operation) => /^[A-Z0-9]/.test(operation.title)));
-  assert.match(accountAuth.operations.find((operation) => operation.title === "Login").copy.curl, /curl -X POST/);
+  const login = accountAuth.operations.find((operation) => operation.title === "Login");
+  assert.match(login.copy.curl, /curl -X POST/);
+  assert.deepEqual(login.body.fields.map((field) => field.name), ["email", "password"]);
+  assert.equal(login.body.fields[0].type, "String");
+  assert.match(login.samples.header, /"Content-Type": "application\/json"/);
+  assert.match(login.samples.body, /analyst@example.com/);
+  assert.equal(login.samples.success[0].label, "Success Response");
+  assert.ok(login.samples.errors.some((item) => item.label === "Error Response 400"));
+  assert.ok(login.samples.errors.some((item) => item.label === "Error Response 401"));
+  assert.match(login.samples.errors[0].value, /"code": "400"/);
+  assert.ok(login.responseFields.some((field) => field.name === "status"));
+  const pingAuth = accountAuth.operations.find((operation) => operation.title === "Ping Auth");
+  assert.match(pingAuth.samples.header, /"Authorization": "Bearer <access_token>"/);
+  assert.ok(pingAuth.samples.errors.some((item) => item.label === "Error Response 401"));
+  const webappsCatalog = buildCatalog(webappsOpenapiDocument);
+  const ats = webappsCatalog.categories.find((category) => category.name === "ATS");
+  const activityLogs = ats.operations.find((operation) => operation.title === "Get Applicant Activity Logs");
+  assert.ok(activityLogs.samples.errors.some((item) => item.label === "Error Response 400"));
+  assert.match(activityLogs.samples.errors[0].value, /"code": "400"/);
+});
+
+test("every application catalog includes error response samples", () => {
+  const catalogs = [
+    ["Boga APP API", buildCatalog(openapiDocument)],
+    ["WebApps API", buildCatalog(webappsOpenapiDocument)],
+    ["Budgeting API", buildCatalog(budgetingOpenapiDocument)],
+    ["Sync Process API", buildCatalog(syncOpenapiDocument)]
+  ];
+
+  for (const [name, catalog] of catalogs) {
+    for (const category of catalog.categories) {
+      for (const operation of category.operations) {
+        assert.ok(
+          operation.samples?.errors?.length,
+          `${name} ${operation.method} ${operation.path} is missing error response samples`
+        );
+        assert.match(
+          operation.samples.errors[0].value,
+          /"code":/,
+          `${name} ${operation.method} ${operation.path} error sample is missing a code field`
+        );
+      }
+    }
+  }
+
+  const webappsCatalog = catalogs[1][1];
+  const activityLogs = webappsCatalog.categories
+    .flatMap((category) => category.operations)
+    .find((operation) => operation.title === "Get Applicant Activity Logs");
+  assert.deepEqual(
+    activityLogs.samples.errors.map((item) => item.label),
+    ["Error Response 400", "Error Response 401", "Error Response 404"]
+  );
 });
 
 test("includes every Sync Process inventory operation", () => {
@@ -281,7 +337,6 @@ test("serves the reader portal, catalog, and Swagger UI", async (context) => {
   const docsHtml = await docsResponse.text();
   assert.match(docsHtml, /<title>Boga API Documentation<\/title>/);
   assert.match(docsHtml, /id="sidenav"/);
-  assert.match(docsHtml, /id="theme-toggle"/);
   assert.match(docsHtml, /boga-docs-theme/);
   assert.match(docsHtml, /href="#apps"/);
   assert.match(docsHtml, /Boga APP API/);
@@ -292,6 +347,8 @@ test("serves the reader portal, catalog, and Swagger UI", async (context) => {
   assert.doesNotMatch(docsHtml, /\{\{APPS_JSON\}\}/);
   assert.match(docsHtml, /\/portal\/assets\/boga-logo.webp/);
   assert.match(docsHtml, /\/portal\/docs\/catalog.json/);
+  assert.doesNotMatch(docsHtml, /id="theme-toggle"/);
+  assert.doesNotMatch(docsHtml, /class="swagger-link"/);
 
   const catalogResponse = await fetch(`${origin}/portal/docs/catalog.json`);
   assert.equal(catalogResponse.status, 200);

@@ -1,5 +1,4 @@
 const config = window.DOCS_CONFIG || { catalogUrl: "./catalog.json" };
-const THEME_KEY = "boga-docs-theme";
 const DEFAULT_APP_ID = "boga-app";
 const FALLBACK_APPS = [
   {
@@ -41,41 +40,39 @@ function findApp(appId) {
   return getApps().find((app) => app.id === appId) || null;
 }
 
-function currentTheme() {
-  return document.documentElement.getAttribute("data-theme") === "dark" ? "dark" : "light";
-}
-
-function syncThemeToggle() {
-  const button = document.getElementById("theme-toggle");
-  if (!button) return;
-  const dark = currentTheme() === "dark";
-  button.setAttribute("aria-label", dark ? "Switch to light mode" : "Switch to dark mode");
-  button.textContent = dark ? "Light mode" : "Dark mode";
-}
-
-function applyTheme(theme) {
-  document.documentElement.setAttribute("data-theme", theme);
-  try {
-    localStorage.setItem(THEME_KEY, theme);
-  } catch {
-    // Ignore private-mode storage failures.
-  }
-  syncThemeToggle();
-}
-
-function bindThemeToggle() {
-  syncThemeToggle();
-  document.getElementById("theme-toggle")?.addEventListener("click", () => {
-    applyTheme(currentTheme() === "dark" ? "light" : "dark");
-  });
-}
-
 function escapeHtml(value) {
   return String(value ?? "")
     .replaceAll("&", "&amp;")
     .replaceAll("<", "&lt;")
     .replaceAll(">", "&gt;")
     .replaceAll('"', "&quot;");
+}
+
+function highlightJson(value) {
+  const text = String(value ?? "");
+  if (!text.trim()) return "";
+  const looksStructured = /^\s*[\[{]/.test(text) || /"[^"\n]+"\s*:/.test(text);
+  if (!looksStructured) return escapeHtml(text);
+
+  const pattern = /("(?:\\.|[^"\\])*")(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d+)?(?:[eE][+-]?\d+)?|[{}\[\],:]/g;
+  let result = "";
+  let lastIndex = 0;
+  let match;
+  while ((match = pattern.exec(text)) !== null) {
+    result += escapeHtml(text.slice(lastIndex, match.index));
+    if (match[1] != null) {
+      const className = match[2] != null ? "json-key" : "json-string";
+      result += `<span class="${className}">${escapeHtml(match[1])}</span>${escapeHtml(match[2] || "")}`;
+    } else if (match[3] != null) {
+      result += `<span class="json-literal">${escapeHtml(match[3])}</span>`;
+    } else if (/^-?\d/.test(match[0])) {
+      result += `<span class="json-number">${escapeHtml(match[0])}</span>`;
+    } else {
+      result += escapeHtml(match[0]);
+    }
+    lastIndex = pattern.lastIndex;
+  }
+  return result + escapeHtml(text.slice(lastIndex));
 }
 
 function copyText(text) {
@@ -86,26 +83,67 @@ function methodClass(method) {
   return `method ${escapeHtml(method)}`;
 }
 
-function parameterRows(parameters) {
-  if (!parameters?.length) return "";
+function displayFieldType(parameter) {
+  const schema = parameter.schema || {};
+  if (schema.type === "array") {
+    const item = schema.items?.format || schema.items?.type || "string";
+    return `${item.charAt(0).toUpperCase()}${item.slice(1)}[]`;
+  }
+  if (schema.format === "date-time") return "DateTime";
+  if (schema.format === "binary") return "File";
+  const type = schema.format || schema.type || "string";
+  return type.charAt(0).toUpperCase() + type.slice(1);
+}
+
+function schemaTable(title, fields) {
+  if (!fields?.length) return "";
   return `
-    <div class="table-wrap">
-      <table>
+    <h3 class="schema-heading">${escapeHtml(title)}</h3>
+    <div class="schema-wrap">
+      <table class="schema-table">
         <thead>
-          <tr><th>Field</th><th>Type</th><th>Required</th><th>Example</th><th>Description</th></tr>
+          <tr><th>Field</th><th>Type</th><th>Description</th></tr>
         </thead>
         <tbody>
-          ${parameters.map((parameter) => `
+          ${fields.map((field) => `
             <tr>
-              <td><code>${escapeHtml(parameter.name)}</code></td>
-              <td>${escapeHtml(parameter.schema?.format || parameter.schema?.type || "string")}</td>
-              <td><span class="badge ${parameter.required ? "required" : "optional"}">${parameter.required ? "Yes" : "No"}</span></td>
-              <td><code>${escapeHtml(parameter.example ?? "")}</code></td>
-              <td>${escapeHtml(parameter.description || "")}</td>
+              <td class="schema-field depth-${Number(field.depth) || 0}">${escapeHtml(field.name)}</td>
+              <td>${escapeHtml(field.type || "String")}</td>
+              <td>${escapeHtml(field.description || "")}</td>
             </tr>
           `).join("")}
         </tbody>
       </table>
+    </div>
+  `;
+}
+
+function parameterFields(parameters) {
+  return (parameters || []).map((parameter) => ({
+    name: parameter.name,
+    type: displayFieldType(parameter),
+    description: parameter.description || "",
+    depth: 0
+  }));
+}
+
+function renderTabs(id, tabs) {
+  if (!tabs.length) return "";
+  return `
+    <div class="doc-tabs" data-tabs>
+      <div class="doc-tablist" role="tablist">
+        ${tabs.map((tab, index) => `
+          <button class="doc-tab${index === 0 ? " active" : ""}" type="button" role="tab" id="${escapeHtml(id)}-tab-${index}" aria-selected="${index === 0}" aria-controls="${escapeHtml(id)}-panel-${index}">${escapeHtml(tab.label)}</button>
+        `).join("")}
+      </div>
+      ${tabs.map((tab, index) => `
+        <div class="doc-tabpanel${index === 0 ? " active" : ""}" role="tabpanel" id="${escapeHtml(id)}-panel-${index}" aria-labelledby="${escapeHtml(id)}-tab-${index}" ${index === 0 ? "" : "hidden"}>
+          <div class="doc-code">
+            <button class="copy doc-copy" type="button" data-copy-target="${escapeHtml(id)}-pre-${index}">Copy</button>
+            <pre id="${escapeHtml(id)}-pre-${index}" class="json-sample">${highlightJson(tab.value)}</pre>
+          </div>
+        </div>
+      `).join("")}
     </div>
   `;
 }
@@ -179,7 +217,7 @@ function renderHome(catalog, app) {
       <ol class="steps">
         <li>Select a category from the sidebar.</li>
         <li>Read <strong>Authentication</strong> at the top of that category.</li>
-        <li>Open the endpoint and use <strong>Copy everything</strong>.</li>
+        <li>Open the endpoint and copy the <strong>Header</strong> or <strong>Body (JSON)</strong> sample.</li>
         <li>Replace placeholders such as <code>&lt;access_token&gt;</code> and sample values.</li>
         <li>Paste into Postman, curl, or PowerShell. Never use production secrets or customer personal data.</li>
       </ol>
@@ -213,57 +251,30 @@ function renderAuthCard(category) {
 }
 
 function renderEndpoint(category, operation) {
-  const copy = operation.copy || {};
-  const extra = [];
-  if (copy.curl) extra.push({ label: "Copy curl", value: copy.curl });
-  if (copy.powershell) extra.push({ label: "Copy PowerShell", value: copy.powershell });
-  if (operation.body?.example != null) {
-    const bodyText = typeof operation.body.example === "string"
-      ? operation.body.example
-      : JSON.stringify(operation.body.example, null, 2);
-    extra.push({ label: "Copy body", value: bodyText });
-  }
+  const samples = operation.samples || {};
+  const requestTabs = [];
+  if (samples.header) requestTabs.push({ label: "Header", value: samples.header });
+  if (samples.body) requestTabs.push({ label: "Body (JSON)", value: samples.body });
+  const sampleId = `${category.id}-${operation.id}`;
   return `
     <article class="endpoint" id="api-${escapeHtml(category.id)}-${escapeHtml(operation.id)}">
       <h2 class="endpoint-title">${escapeHtml(operation.title)}</h2>
       <div class="method-path">
         <span class="${methodClass(operation.method)}">${escapeHtml(operation.method)}</span>
         <code class="path-code">${escapeHtml(operation.path)}</code>
-        <button class="inline-copy" type="button" data-copy="${escapeHtml(operation.path)}">Copy URL</button>
+        ${operation.copy?.curl ? `
+          <button class="inline-copy" type="button" data-copy-target="curl-${escapeHtml(category.id)}-${escapeHtml(operation.id)}">Copy Curl</button>
+          <pre id="curl-${escapeHtml(category.id)}-${escapeHtml(operation.id)}" hidden>${escapeHtml(operation.copy.curl)}</pre>
+        ` : ""}
       </div>
-      <p>${escapeHtml(operation.summary)}</p>
-      <p><strong>Who this is for:</strong> ${escapeHtml(operation.audience || "Application, System Analysts, and Support")}</p>
-      <p><strong>Authentication:</strong> ${escapeHtml(operation.auth?.summary || "See category authentication.")}</p>
-      ${copyBox(`copy-${category.id}-${operation.id}`, "everything", copy.all, extra)}
-      ${operation.auth?.headers?.length ? `<h3 class="section-title">Headers To Send</h3>${parameterRows(operation.auth.headers.map((header) => ({
-        name: header.name,
-        required: true,
-        schema: { type: "string" },
-        example: header.example,
-        description: header.note || "Replace the placeholder with the real value."
-      })))}` : ""}
-      ${operation.parameters.path.length ? `<h3 class="section-title">Path Parameters</h3>${parameterRows(operation.parameters.path)}` : ""}
-      ${operation.parameters.query.length ? `<h3 class="section-title">Query Parameters</h3>${parameterRows(operation.parameters.query)}` : ""}
-      ${operation.parameters.header.length ? `<h3 class="section-title">Other Headers</h3>${parameterRows(operation.parameters.header)}` : ""}
-      ${operation.body ? `
-        <h3 class="section-title">Request Body <span class="muted">${escapeHtml(operation.body.contentType || "")}</span></h3>
-        ${operation.body.note ? `<p class="note">${escapeHtml(operation.body.note)}</p>` : ""}
-        ${copyBox(
-          `body-${category.id}-${operation.id}`,
-          "JSON",
-          typeof operation.body.example === "string" ? operation.body.example : JSON.stringify(operation.body.example, null, 2)
-        )}
-      ` : ""}
-      ${operation.validation?.length ? `<h3 class="section-title">Validation</h3><ul>${operation.validation.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}</ul>` : ""}
-      <h3 class="section-title">Responses</h3>
-      ${operation.responses.map((response) => `
-        <div class="response ${response.kind}">
-          <div class="response-label">${response.kind === "success" ? "Success" : "Error"} ${escapeHtml(response.code)}</div>
-          <p>${escapeHtml(response.description)}</p>
-          ${response.example ? `<pre>${escapeHtml(typeof response.example === "string" ? response.example : JSON.stringify(response.example, null, 2))}</pre>` : ""}
-        </div>
-      `).join("")}
-      ${operation.errorMessages?.length ? `<p class="note"><strong>Known error messages:</strong> ${escapeHtml(operation.errorMessages.join("; "))}</p>` : ""}
+      <p class="endpoint-summary">${escapeHtml(operation.summary)}</p>
+      ${renderTabs(`req-${sampleId}`, requestTabs)}
+      ${schemaTable("URI Parameter", parameterFields(operation.parameters.path))}
+      ${schemaTable("Query Parameter", parameterFields(operation.parameters.query))}
+      ${schemaTable("Request Body", operation.body?.fields)}
+      ${schemaTable("Body Response", operation.responseFields)}
+      ${renderTabs(`ok-${sampleId}`, samples.success || [])}
+      ${renderTabs(`err-${sampleId}`, samples.errors || [])}
     </article>
   `;
 }
@@ -414,8 +425,28 @@ function bindCopyButtons(root) {
   });
 }
 
+function bindTabs(root) {
+  root.querySelectorAll("[data-tabs]").forEach((group) => {
+    const tabs = [...group.querySelectorAll("[role='tab']")];
+    const panels = [...group.querySelectorAll("[role='tabpanel']")];
+    tabs.forEach((tab, index) => {
+      tab.addEventListener("click", () => {
+        tabs.forEach((item, itemIndex) => {
+          const selected = itemIndex === index;
+          item.classList.toggle("active", selected);
+          item.setAttribute("aria-selected", String(selected));
+        });
+        panels.forEach((panel, panelIndex) => {
+          const selected = panelIndex === index;
+          panel.classList.toggle("active", selected);
+          panel.hidden = !selected;
+        });
+      });
+    });
+  });
+}
+
 async function main() {
-  bindThemeToggle();
   const content = document.getElementById("content");
   const sidenav = document.getElementById("sidenav");
   const search = document.getElementById("nav-search");
@@ -484,6 +515,7 @@ async function main() {
       content.innerHTML = category ? renderCategory(category) : renderHome(catalog, route.app);
     }
     bindCopyButtons(document);
+    bindTabs(document);
     const focusId = route.type === "home" ? "getting-started" : focusIdFromHash();
     const focusNode = document.getElementById(focusId);
     if (focusNode) {
