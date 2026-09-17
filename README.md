@@ -70,7 +70,7 @@ The API catalog is generated from inventory CSV files:
 | `data/budgeting-api-inventory.csv` | Budgeting API |
 | `data/syncprocess-api-inventory.csv` | Sync Process API |
 
-After replacing or editing an inventory, rebuild and validate the documentation:
+Edit these CSVs in Excel if you prefer. Column headers use short Title Case names such as `Method`, `Path`, `Title`, `Auth Type`, `Request Body`, and `Notes`. WebApps also uses `Handler`, `Category`, and `App Area`. After replacing or editing an inventory, rebuild and validate the documentation:
 
 ```powershell
 npm run generate

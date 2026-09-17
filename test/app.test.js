@@ -6,37 +6,31 @@ const YAML = require("yaml");
 const { createApp, normalizeBasePath } = require("../src/app");
 const { apps } = require("../src/apps-config");
 const { buildCatalog } = require("../src/build-catalog");
-const { titleCase, normalizeInventoryRow } = require("../scripts/lib/docs-model");
+const { titleCase, normalizeInventoryRow, canonicalizeRow } = require("../scripts/lib/docs-model");
+
+function loadInventory(file, { requirePath = false } = {}) {
+  const rows = parse(fs.readFileSync(file, "utf8"), {
+    bom: true,
+    columns: true,
+    skip_empty_lines: true
+  }).map((row) => canonicalizeRow(row));
+  return requirePath ? rows.filter((row) => row.path) : rows;
+}
 
 const methods = new Set(["get", "post", "put", "patch", "delete", "head", "options", "trace"]);
 const openapiSource = fs.readFileSync("openapi/openapi.yaml", "utf8");
 const openapiDocument = YAML.parse(openapiSource);
-const inventoryRows = parse(fs.readFileSync("data/api_documentation_inventory.csv", "utf8"), {
-  bom: true,
-  columns: true,
-  skip_empty_lines: true
-});
+const inventoryRows = loadInventory("data/api_documentation_inventory.csv");
 const webappsOpenapiSource = fs.readFileSync("openapi/webapps.yaml", "utf8");
 const webappsOpenapiDocument = YAML.parse(webappsOpenapiSource);
-const webappsInventoryRows = parse(fs.readFileSync("data/webapps-api-inventory.csv", "utf8"), {
-  bom: true,
-  columns: true,
-  skip_empty_lines: true
-}).filter((row) => row.path);
+const webappsInventoryRows = loadInventory("data/webapps-api-inventory.csv", { requirePath: true });
 const syncOpenapiSource = fs.readFileSync("openapi/sync-process.yaml", "utf8");
 const syncOpenapiDocument = YAML.parse(syncOpenapiSource);
-const syncInventoryRows = parse(fs.readFileSync("data/syncprocess-api-inventory.csv", "utf8"), {
-  bom: true,
-  columns: true,
-  skip_empty_lines: true
-}).filter((row) => row.path);
+const syncInventoryRows = loadInventory("data/syncprocess-api-inventory.csv", { requirePath: true });
 const budgetingOpenapiSource = fs.readFileSync("openapi/budgeting.yaml", "utf8");
 const budgetingOpenapiDocument = YAML.parse(budgetingOpenapiSource);
-const budgetingInventoryRows = parse(fs.readFileSync("data/budgeting-api-inventory.csv", "utf8"), {
-  bom: true,
-  columns: true,
-  skip_empty_lines: true
-}).filter((row) => row.path);
+const budgetingInventoryRows = loadInventory("data/budgeting-api-inventory.csv", { requirePath: true });
+
 
 test("title-cases category and endpoint names", () => {
   assert.equal(titleCase("VoucherB2BCMSController"), "Voucher B2B CMS");
@@ -347,8 +341,14 @@ test("serves the reader portal, catalog, and Swagger UI", async (context) => {
   assert.doesNotMatch(docsHtml, /\{\{APPS_JSON\}\}/);
   assert.match(docsHtml, /\/portal\/assets\/boga-logo.webp/);
   assert.match(docsHtml, /\/portal\/docs\/catalog.json/);
+  assert.match(docsHtml, /site-footer/);
+  assert.match(docsHtml, /Copyrights © 2026 Boga Dev/);
+  assert.doesNotMatch(docsHtml, /guide\.html/);
   assert.doesNotMatch(docsHtml, /id="theme-toggle"/);
   assert.doesNotMatch(docsHtml, /class="swagger-link"/);
+
+  const guideResponse = await fetch(`${origin}/portal/docs/guide.html`);
+  assert.equal(guideResponse.status, 404);
 
   const catalogResponse = await fetch(`${origin}/portal/docs/catalog.json`);
   assert.equal(catalogResponse.status, 200);

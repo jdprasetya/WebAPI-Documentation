@@ -593,7 +593,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -739,7 +739,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -880,7 +880,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -1021,7 +1021,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -1162,7 +1162,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -1303,7 +1303,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -1444,7 +1444,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -1585,7 +1585,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -1726,7 +1726,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -1867,7 +1867,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -2008,7 +2008,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -2149,7 +2149,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -2290,7 +2290,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -2431,7 +2431,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -2572,7 +2572,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -2713,7 +2713,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -2854,7 +2854,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -2995,7 +2995,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -3136,7 +3136,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: ATS
@@ -3277,7 +3277,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: ATS
@@ -3418,7 +3418,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: ATS
@@ -3559,7 +3559,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: ATS
@@ -3705,7 +3705,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: ATS
@@ -3846,7 +3846,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: ATS
@@ -3987,7 +3987,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: ATS
@@ -4133,7 +4133,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: ATS
@@ -4279,7 +4279,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: ATS
@@ -4420,7 +4420,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: ATS
@@ -4561,7 +4561,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: ATS
@@ -4702,7 +4702,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: ATS
@@ -4848,7 +4848,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: ATS
@@ -4989,7 +4989,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: ATS
@@ -5130,7 +5130,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: ATS
@@ -5271,7 +5271,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -5412,7 +5412,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -5553,7 +5553,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -5694,7 +5694,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -5835,7 +5835,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -5976,7 +5976,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -6117,7 +6117,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -6258,7 +6258,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -6399,7 +6399,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -6540,7 +6540,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -6681,7 +6681,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -6827,7 +6827,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -6968,7 +6968,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -7114,7 +7114,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -7260,7 +7260,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -7401,7 +7401,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -7542,7 +7542,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -7688,7 +7688,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -7834,7 +7834,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -7980,7 +7980,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -8121,7 +8121,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -8267,7 +8267,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -8408,7 +8408,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -8549,7 +8549,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -8690,7 +8690,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -8831,7 +8831,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -8972,7 +8972,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -9113,7 +9113,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -9254,7 +9254,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -9400,7 +9400,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -9546,7 +9546,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -9692,7 +9692,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -9838,7 +9838,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -9984,7 +9984,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -10130,7 +10130,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -10276,7 +10276,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -10422,7 +10422,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -10568,7 +10568,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -10714,7 +10714,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -10860,7 +10860,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -11001,7 +11001,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -11142,7 +11142,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -11288,7 +11288,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -11429,7 +11429,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -11575,7 +11575,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -11721,7 +11721,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -11862,7 +11862,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -12008,7 +12008,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -12149,7 +12149,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -12290,7 +12290,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: VMS
@@ -12436,7 +12436,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: VMS
@@ -12577,7 +12577,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: VMS
@@ -12723,7 +12723,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: VMS
@@ -12869,7 +12869,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: VMS
@@ -13015,7 +13015,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: VMS
@@ -13156,7 +13156,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -13297,7 +13297,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -13443,7 +13443,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -13584,7 +13584,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -13730,7 +13730,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -13876,7 +13876,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -14017,7 +14017,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -14158,7 +14158,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -14299,7 +14299,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -14440,7 +14440,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -14581,7 +14581,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -14727,7 +14727,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -14868,7 +14868,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -15009,7 +15009,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -15155,7 +15155,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -15296,7 +15296,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -15437,7 +15437,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -15578,7 +15578,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -15719,7 +15719,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -15860,7 +15860,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -16001,7 +16001,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -16142,7 +16142,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: ATS
@@ -16283,7 +16283,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -16424,7 +16424,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -16570,7 +16570,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -16711,7 +16711,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -16852,7 +16852,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -16998,7 +16998,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -17144,7 +17144,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -17290,7 +17290,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -17431,7 +17431,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -17572,7 +17572,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -17718,7 +17718,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -17864,7 +17864,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -18010,7 +18010,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -18151,7 +18151,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -18297,7 +18297,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -18443,7 +18443,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -18589,7 +18589,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -18735,7 +18735,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -18881,7 +18881,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -19027,7 +19027,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -19173,7 +19173,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -19319,7 +19319,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -19460,7 +19460,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -19606,7 +19606,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -19747,7 +19747,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -19893,7 +19893,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -20034,7 +20034,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -20175,7 +20175,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -20321,7 +20321,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -20462,7 +20462,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -20603,7 +20603,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -20749,7 +20749,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -20890,7 +20890,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -21036,7 +21036,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -21182,7 +21182,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -21323,7 +21323,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -21464,7 +21464,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -21605,7 +21605,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -21746,7 +21746,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -21887,7 +21887,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -22028,7 +22028,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -22169,7 +22169,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -22315,7 +22315,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -22456,7 +22456,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -22597,7 +22597,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -22738,7 +22738,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -22879,7 +22879,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -23020,7 +23020,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -23161,7 +23161,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -23302,7 +23302,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: BogaBOT
@@ -23448,7 +23448,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: BogaBOT
@@ -23594,7 +23594,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: BogaBOT
@@ -23735,7 +23735,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: BogaBOT
@@ -23876,7 +23876,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: BogaBOT
@@ -24017,7 +24017,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: BogaBOT
@@ -24163,7 +24163,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: BogaBOT
@@ -24309,7 +24309,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: BogaBOT
@@ -24455,7 +24455,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: BogaBOT
@@ -24596,7 +24596,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: BogaBOT
@@ -24742,7 +24742,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: BogaBOT
@@ -24883,7 +24883,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: BogaBOT
@@ -25024,7 +25024,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: BogaBOT
@@ -25165,7 +25165,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: BogaBOT
@@ -25306,7 +25306,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: BogaBOT
@@ -25447,7 +25447,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -25593,7 +25593,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -25739,7 +25739,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -25880,7 +25880,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -26021,7 +26021,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -26162,7 +26162,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -26303,7 +26303,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -26444,7 +26444,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -26585,7 +26585,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -26726,7 +26726,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -26867,7 +26867,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -27008,7 +27008,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -27149,7 +27149,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -27290,7 +27290,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -27436,7 +27436,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -27582,7 +27582,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -27728,7 +27728,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -27874,7 +27874,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -28020,7 +28020,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -28161,7 +28161,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -28307,7 +28307,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -28453,7 +28453,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -28594,7 +28594,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -28740,7 +28740,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -28886,7 +28886,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -29032,7 +29032,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -29173,7 +29173,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -29314,7 +29314,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -29455,7 +29455,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -29601,7 +29601,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -29742,7 +29742,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -29883,7 +29883,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -30024,7 +30024,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -30165,7 +30165,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -30306,7 +30306,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -30452,7 +30452,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -30598,7 +30598,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -30739,7 +30739,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -30880,7 +30880,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -31021,7 +31021,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -31162,7 +31162,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -31308,7 +31308,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -31449,7 +31449,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -31595,7 +31595,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -31741,7 +31741,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -31887,7 +31887,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -32033,7 +32033,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -32179,7 +32179,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -32325,7 +32325,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -32471,7 +32471,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -32612,7 +32612,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -32753,7 +32753,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -32899,7 +32899,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -33045,7 +33045,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -33186,7 +33186,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -33332,7 +33332,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -33478,7 +33478,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -33624,7 +33624,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -33770,7 +33770,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -33916,7 +33916,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -34062,7 +34062,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -34208,7 +34208,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -34354,7 +34354,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -34500,7 +34500,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -34641,7 +34641,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -34787,7 +34787,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -34933,7 +34933,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -35079,7 +35079,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -35220,7 +35220,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -35366,7 +35366,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -35512,7 +35512,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: VMS
@@ -35658,7 +35658,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: VMS
@@ -35799,7 +35799,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: VMS
@@ -35945,7 +35945,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: VMS
@@ -36091,7 +36091,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: VMS
@@ -36237,7 +36237,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: VMS
@@ -36383,7 +36383,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: VMS
@@ -36524,7 +36524,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -36665,7 +36665,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -36806,7 +36806,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -36947,7 +36947,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -37088,7 +37088,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -37234,7 +37234,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -37380,7 +37380,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -37521,7 +37521,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -37662,7 +37662,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -37803,7 +37803,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -37949,7 +37949,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -38090,7 +38090,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -38231,7 +38231,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -38372,7 +38372,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -38518,7 +38518,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -38664,7 +38664,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -38805,7 +38805,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -38946,7 +38946,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -39087,7 +39087,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -39228,7 +39228,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -39369,7 +39369,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -39510,7 +39510,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -39651,7 +39651,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -39797,7 +39797,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -39938,7 +39938,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -40084,7 +40084,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -40225,7 +40225,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -40366,7 +40366,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -40507,7 +40507,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -40648,7 +40648,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -40789,7 +40789,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -40930,7 +40930,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -41076,7 +41076,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -41222,7 +41222,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -41363,7 +41363,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -41509,7 +41509,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -41655,7 +41655,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -41801,7 +41801,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: VMS
@@ -41942,7 +41942,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: VMS
@@ -42088,7 +42088,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: VMS
@@ -42229,7 +42229,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: VMS
@@ -42370,7 +42370,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: BogaBOT
@@ -42511,7 +42511,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: BogaBOT
@@ -42652,7 +42652,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -42798,7 +42798,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -42939,7 +42939,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -43085,7 +43085,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -43226,7 +43226,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -43367,7 +43367,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -43508,7 +43508,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -43649,7 +43649,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -43790,7 +43790,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -43931,7 +43931,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -44072,7 +44072,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -44213,7 +44213,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -44354,7 +44354,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -44495,7 +44495,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -44636,7 +44636,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -44777,7 +44777,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -44918,7 +44918,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -45059,7 +45059,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -45200,7 +45200,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -45341,7 +45341,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -45482,7 +45482,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -45623,7 +45623,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -45764,7 +45764,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -45905,7 +45905,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -46046,7 +46046,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: VMS
@@ -46187,7 +46187,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: VMS
@@ -46333,7 +46333,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: VMS
@@ -46479,7 +46479,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: VMS
@@ -46620,7 +46620,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: VMS
@@ -46766,7 +46766,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: VMS
@@ -46907,7 +46907,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: VMS
@@ -47048,7 +47048,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: VMS
@@ -47189,7 +47189,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: VMS
@@ -47330,7 +47330,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -47471,7 +47471,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -47617,7 +47617,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -47763,7 +47763,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -47909,7 +47909,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -48055,7 +48055,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -48201,7 +48201,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -48342,7 +48342,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -48488,7 +48488,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -48629,7 +48629,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -48770,7 +48770,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -48916,7 +48916,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -49057,7 +49057,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -49198,7 +49198,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -49339,7 +49339,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -49480,7 +49480,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -49621,7 +49621,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -49767,7 +49767,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -49908,7 +49908,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -50049,7 +50049,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -50195,7 +50195,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -50336,7 +50336,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -50477,7 +50477,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -50618,7 +50618,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -50759,7 +50759,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -50900,7 +50900,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -51041,7 +51041,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -51182,7 +51182,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -51323,7 +51323,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -51464,7 +51464,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -51605,7 +51605,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -51746,7 +51746,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -51887,7 +51887,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -52028,7 +52028,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -52169,7 +52169,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -52310,7 +52310,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -52451,7 +52451,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -52592,7 +52592,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -52733,7 +52733,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -52874,7 +52874,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga
@@ -53015,7 +53015,7 @@ paths:
         required: false
         summary: Public endpoint. You can call this without a login token or API key.
         headers: []
-        raw: None declared at handler; method is permitAll in SecurityConfig
+        raw: No visible handler-level auth
       x-validation: []
       x-error-messages: []
       x-app-area: MyBoga

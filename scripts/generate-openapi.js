@@ -2,7 +2,7 @@ const fs = require("node:fs");
 const path = require("node:path");
 const { parse } = require("csv-parse/sync");
 const YAML = require("yaml");
-const { allowedMethods, buildDocument, WEBAPPS_INFO_DESCRIPTION, SYNC_INFO_DESCRIPTION, BUDGETING_INFO_DESCRIPTION } = require("./lib/docs-model");
+const { allowedMethods, buildDocument, canonicalizeRow, WEBAPPS_INFO_DESCRIPTION, SYNC_INFO_DESCRIPTION, BUDGETING_INFO_DESCRIPTION } = require("./lib/docs-model");
 
 const targets = [
   {
@@ -45,7 +45,9 @@ function generateTarget(target) {
     bom: true,
     columns: true,
     skip_empty_lines: true
-  }).filter((row) => row.path);
+  })
+    .map((row) => canonicalizeRow(row))
+    .filter((row) => row.path);
 
   const document = buildDocument(rows, {
     title: target.title,

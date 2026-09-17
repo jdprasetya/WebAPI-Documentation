@@ -409,6 +409,47 @@ function mapAuthGroup(value) {
   return String(value).trim();
 }
 
+/** Friendly Excel headers → internal inventory keys. Old snake_case headers still work. */
+const COLUMN_ALIASES = {
+  Method: "http_method",
+  Path: "path",
+  Controller: "controller",
+  Title: "operation",
+  "Source File": "source",
+  "Auth Type": "authorization",
+  "Auth Headers": "auth_headers",
+  "Required Headers": "required_headers",
+  "Optional Headers": "optional_headers",
+  "Path Params": "path_parameters",
+  "Query Params": "query_parameters",
+  "Content Type": "content_type",
+  "Body Type": "body_type",
+  "Request Body": "request_payload",
+  Validation: "validation_rules",
+  "Success Codes": "success_http_codes",
+  "Error Codes": "error_http_codes",
+  "App Error Codes": "application_error_codes",
+  "Error Messages": "error_messages",
+  "Response Type": "response_type",
+  Notes: "documentation_notes",
+  "App Area": "app_area",
+  Category: "section",
+  Headers: "headers",
+  Handler: "method",
+  Line: "line"
+};
+
+function canonicalizeRow(row) {
+  const out = {};
+  for (const [key, value] of Object.entries(row)) {
+    const canonical = COLUMN_ALIASES[key] || key;
+    if (out[canonical] === undefined || out[canonical] === "") {
+      out[canonical] = value;
+    }
+  }
+  return out;
+}
+
 function tagFor(row) {
   const area = String(row.app_area || "").trim();
   if (area) {
@@ -422,28 +463,29 @@ function tagFor(row) {
 }
 
 function normalizeInventoryRow(row) {
-  const httpMethod = String(row.http_method || "GET").toUpperCase();
-  const source = String(row.source || "").trim();
-  const line = String(row.line || "").trim();
+  const canonical = canonicalizeRow(row);
+  const httpMethod = String(canonical.http_method || "GET").toUpperCase();
+  const source = String(canonical.source || "").trim();
+  const line = String(canonical.line || "").trim();
   const sourceWithLine = source && line && !/:\d+$/.test(source) ? `${source}:${line}` : source;
-  const area = String(row.app_area || "").trim();
+  const area = String(canonical.app_area || "").trim();
   const isWebapps = ["ATS", "BogaBOT", "MyBoga", "VMS"].includes(area);
   const isPost = httpMethod === "POST";
 
   return {
-    ...row,
+    ...canonical,
     http_method: httpMethod,
-    operation: row.operation || row.method,
+    operation: canonical.operation || canonical.method,
     source: sourceWithLine,
-    authorization: row.authorization || mapAuthGroup(row.auth_group),
-    auth_headers: row.auth_headers || row.headers || "",
-    content_type: row.content_type || (isWebapps && isPost ? "application/json" : row.content_type),
-    body_type: row.body_type || (isWebapps && isPost ? "Object (schema not statically declared)" : row.body_type),
-    success_http_codes: row.success_http_codes || (isWebapps ? "200" : row.success_http_codes),
-    error_http_codes: row.error_http_codes || "400; 401; 404",
-    documentation_notes: row.documentation_notes || (isWebapps
+    authorization: canonical.authorization || mapAuthGroup(canonical.auth_group),
+    auth_headers: canonical.auth_headers || canonical.headers || "",
+    content_type: canonical.content_type || (isWebapps && isPost ? "application/json" : canonical.content_type),
+    body_type: canonical.body_type || (isWebapps && isPost ? "Object (schema not statically declared)" : canonical.body_type),
+    success_http_codes: canonical.success_http_codes || (isWebapps ? "200" : canonical.success_http_codes),
+    error_http_codes: canonical.error_http_codes || "400; 401; 404",
+    documentation_notes: canonical.documentation_notes || (isWebapps
       ? "Static source scan of Boga.WebAPI. Handler-level authentication, request body schema, and runtime-only errors were not declared in this inventory."
-      : row.documentation_notes)
+      : canonical.documentation_notes)
   };
 }
 
@@ -872,7 +914,7 @@ function buildDocument(rows, options = {}) {
   };
 
   const sortedRows = [...rows]
-    .map((row) => normalizeInventoryRow(row))
+    .map((row) => normalizeInventoryRow(canonicalizeRow(row)))
     .sort((left, right) =>
       left.path.localeCompare(right.path) || left.http_method.localeCompare(right.http_method)
     );
@@ -1073,7 +1115,9 @@ function buildDocument(rows, options = {}) {
 module.exports = {
   allowedMethods,
   buildDocument,
+  canonicalizeRow,
   classifyAuth,
+  COLUMN_ALIASES,
   humanize,
   normalizeInventoryRow,
   titleCase,

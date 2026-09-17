@@ -1,4 +1,4 @@
-app_area,section,http_method,path,auth_group,headers,controller,method,source,line
+App Area,Category,Method,Path,Auth Type,Headers,Controller,Handler,Source File,Line
 ATS,ATS,POST,/api/ATS/GetApplicantActivityLogs,No visible handler-level auth,,ATSController,GetApplicantActivityLogs,Boga.WebAPI/Controller/ATSController.cs,367
 ATS,ATS,POST,/api/ATS/GetApplicantJobDetail,No visible handler-level auth,,ATSController,GetApplicantJobDetail,Boga.WebAPI/Controller/ATSController.cs,319
 ATS,ATS,POST,/api/ATS/GetApplicantJobList,No visible handler-level auth,,ATSController,GetApplicantJobList,Boga.WebAPI/Controller/ATSController.cs,278
