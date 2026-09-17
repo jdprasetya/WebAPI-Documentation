@@ -43,7 +43,7 @@ The portal is written so non-developers can test an API without guessing headers
 2. Search or scan the **left sidebar** by category.
 3. Open the category and read **Authentication** at the top.
 4. Open an endpoint. Titles are **Title Case** and bold.
-5. Use **Copy everything**, **Copy curl**, **Copy PowerShell**, or **Copy JSON**.
+5. Copy the **Header**, **Body (JSON)**, or response sample from the endpoint tabs.
 6. Replace placeholders such as `<access_token>` and `{baseUrl}` before sending the request.
 
 Never paste production secrets, customer personal data, or live credentials into examples or tickets.
