@@ -332,19 +332,11 @@ body {
   line-height: 1.55;
 }
 
-.steps, .auth-type-list {
+.steps {
   padding-left: 20px;
   line-height: 1.6;
 }
 
-.auth-type-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 360px), 1fr));
-  gap: 16px;
-  margin: 20px 0 8px;
-}
-
-.auth-type-card,
 .auth-card,
 .copy-box,
 .table-wrap {
@@ -353,7 +345,6 @@ body {
   border-radius: 12px;
 }
 
-.auth-type-card,
 .auth-card,
 .copy-box {
   padding: 16px 18px;

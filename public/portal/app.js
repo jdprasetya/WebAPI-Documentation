@@ -207,7 +207,7 @@ function renderPlaceholder(app) {
   `;
 }
 
-function renderHome(catalog, app) {
+function renderHome(app) {
   return `
     <section class="hero" id="getting-started">
       <p class="crumb"><a href="#apps">Applications</a> / ${escapeHtml(app?.name || "Boga APP API")}</p>
@@ -219,20 +219,8 @@ function renderHome(catalog, app) {
         <li>Read <strong>Authentication</strong> at the top of that category.</li>
         <li>Open the endpoint and copy the <strong>Header</strong> or <strong>Body (JSON)</strong> sample.</li>
         <li>Replace placeholders such as <code>&lt;access_token&gt;</code> and sample values.</li>
-        <li>Paste into Postman, curl, or PowerShell. Never use production secrets or customer personal data.</li>
+        <li>Paste into Postman or Curl. Never use <strong>production secrets</strong> or customer <strong>personal data</strong>.</li>
       </ol>
-      <p class="note"><code>{baseUrl}</code> is the API host you are testing, for example <code>https://staging.example.internal</code>.</p>
-      <h2 class="section-title">Authentication Types Used In This API</h2>
-      <div class="auth-type-grid">
-        ${catalog.authTypes.map((type) => `
-          <article class="auth-type-card">
-            <h3>${escapeHtml(type.title)}</h3>
-            <p>${escapeHtml(type.summary)}</p>
-            <p class="muted">${type.count} endpoint${type.count === 1 ? "" : "s"}</p>
-            ${copyBox(`auth-type-${type.id}`, "headers", type.copyExample)}
-          </article>
-        `).join("")}
-      </div>
     </section>
   `;
 }
@@ -509,10 +497,10 @@ async function main() {
     if (catalog.loadError) {
       content.innerHTML = `<p class="error">Could not load the API catalog. ${escapeHtml(catalog.loadError)}</p>`;
     } else if (route.type === "home") {
-      content.innerHTML = renderHome(catalog, route.app);
+      content.innerHTML = renderHome(route.app);
     } else {
       const category = catalog.categories.find((item) => item.id === route.categoryId);
-      content.innerHTML = category ? renderCategory(category) : renderHome(catalog, route.app);
+      content.innerHTML = category ? renderCategory(category) : renderHome(route.app);
     }
     bindCopyButtons(document);
     bindTabs(document);
